@@ -11,10 +11,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -31,11 +34,14 @@ fun InputField(
     onFocusChange: (FocusState) -> Unit,
     onValueChange: (String) -> Unit,
     icon: @Composable (() -> Unit)? = null,
-    keyboardType: KeyboardType = KeyboardType.Text
+    keyboardType: KeyboardType = KeyboardType.Text,
+    imeAction: ImeAction = ImeAction.Next,
+    nextFocusDirection: FocusDirection = FocusDirection.Down
 ) {
     val touched = remember {
         mutableStateOf(false)
     }
+    val focusManager = LocalFocusManager.current
     OutlinedTextField(
         value = value,
         textStyle = textStyle,
@@ -62,9 +68,18 @@ fun InputField(
         ),
         leadingIcon = icon,
         keyboardOptions = KeyboardOptions(
-            keyboardType = keyboardType
+            keyboardType = keyboardType,
+            imeAction = imeAction
         ),
-        shape = RoundedCornerShape(20)
+        shape = RoundedCornerShape(20),
+        keyboardActions = KeyboardActions(
+            onNext = {
+                focusManager.moveFocus(nextFocusDirection)
+            },
+            onDone = {
+                focusManager.clearFocus()
+            }
+        )
     )
     if (hasError) {
         Text(

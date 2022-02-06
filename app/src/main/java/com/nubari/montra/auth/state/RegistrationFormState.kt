@@ -7,5 +7,6 @@ data class RegistrationFormState(
     val name: InputState = InputState(type = InputType.TEXT),
     val email: InputState = InputState(type = InputType.EMAIL),
     val password: InputState = InputState(type = InputType.PASSWORD),
-    val formValid: Boolean
+    val formValid: Boolean,
+    val agreedToTerms: Boolean = false,
 )

@@ -83,6 +83,12 @@ class RegisterViewModel : ViewModel() {
                     }
                 }
             }
+            is RegistrationEvent.ToggleTermsCheckBox -> {
+                _state.value = state.value.copy(
+                    agreedToTerms = !state.value.agreedToTerms,
+                    formValid = !state.value.agreedToTerms
+                )
+            }
         }
     }
 }
