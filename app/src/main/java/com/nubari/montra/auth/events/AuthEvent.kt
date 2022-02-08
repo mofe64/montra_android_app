@@ -1,9 +1,6 @@
 package com.nubari.montra.auth.events
 
 sealed class AuthEvent {
-    object SwitchToRegister : AuthEvent()
-    object SwitchToLogin : AuthEvent()
-    object forgotPassword : AuthEvent()
     data class Login(
         val email: String,
         val password: String
@@ -14,5 +11,17 @@ sealed class AuthEvent {
         val email: String,
         val password: String
     ) : AuthEvent()
+
+    data class VerifyEmail(
+        val verificationCode: String
+    ) : AuthEvent()
+
+    data class FailedRegistration(
+        val errorMessage: String
+    ) : AuthEvent()
+
+    data class SuccessfulRegistration(val message: String) : AuthEvent()
+    object SuccessfulVerification : AuthEvent()
+
 
 }

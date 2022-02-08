@@ -1,8 +1,10 @@
 package com.nubari.montra.auth.state
 
+import com.nubari.montra.data.UserDetails
+
 data class AuthState(
     val isAuthenticated: Boolean = false,
-    var authDetails: Map<String, String>? = null,
+    var userDetails: UserDetails? = null,
     val inLoginMode: Boolean = true,
     val isProcessing: Boolean = false
 )

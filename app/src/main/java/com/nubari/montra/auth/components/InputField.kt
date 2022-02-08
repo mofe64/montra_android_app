@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -36,7 +37,8 @@ fun InputField(
     icon: @Composable (() -> Unit)? = null,
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Next,
-    nextFocusDirection: FocusDirection = FocusDirection.Down
+    nextFocusDirection: FocusDirection = FocusDirection.Down,
+    capitalization: KeyboardCapitalization = KeyboardCapitalization.None
 ) {
     val touched = remember {
         mutableStateOf(false)
@@ -69,7 +71,8 @@ fun InputField(
         leadingIcon = icon,
         keyboardOptions = KeyboardOptions(
             keyboardType = keyboardType,
-            imeAction = imeAction
+            imeAction = imeAction,
+            capitalization = capitalization
         ),
         shape = RoundedCornerShape(20),
         keyboardActions = KeyboardActions(
