@@ -25,9 +25,8 @@ import com.nubari.montra.auth.components.ValidationCodeTextField
 import com.nubari.montra.auth.util.Keyboard
 import com.nubari.montra.auth.util.keyboardAsState
 import com.nubari.montra.auth.viewmodels.AuthViewModel
-import com.nubari.montra.data.UserDetails
+import com.nubari.montra.data.models.UserDetails
 import com.nubari.montra.general.components.MainAppBar
-import com.nubari.montra.navigation.destinations.Destination
 
 @ExperimentalComposeUiApi
 @Composable

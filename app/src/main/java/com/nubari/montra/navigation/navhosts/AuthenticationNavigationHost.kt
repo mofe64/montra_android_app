@@ -2,6 +2,7 @@ package com.nubari.montra.navigation.navhosts
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -13,6 +14,7 @@ import com.nubari.montra.auth.screens.Verification
 import com.nubari.montra.auth.viewmodels.AuthViewModel
 import com.nubari.montra.navigation.destinations.Destination
 import com.nubari.montra.welcome.screens.onboarding.OnBoarding
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 @ExperimentalComposeUiApi
 @ExperimentalPagerApi
@@ -20,8 +22,7 @@ import com.nubari.montra.welcome.screens.onboarding.OnBoarding
 fun AuthenticationNavigationHost(
     navController: NavHostController
 ) {
-    //TODO("REPLACE WITH HILT INJECTION")
-    val authViewModel: AuthViewModel = viewModel()
+    val authViewModel: AuthViewModel = hiltViewModel()
     NavHost(
         navController = navController,
         startDestination = Destination.OnBoardingDestination.route

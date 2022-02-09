@@ -1,13 +1,17 @@
 package com.nubari.montra.auth.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.ImeAction
@@ -23,7 +27,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nubari.montra.auth.components.InputField
 import com.nubari.montra.auth.components.PasswordField
-import com.nubari.montra.auth.events.AuthEvent
+import com.nubari.montra.auth.events.AuthProcessEvent
+import com.nubari.montra.auth.events.AuthUIEvent
 import com.nubari.montra.auth.events.RegistrationEvent
 import com.nubari.montra.auth.viewmodels.AuthViewModel
 import com.nubari.montra.auth.viewmodels.RegisterViewModel
@@ -31,7 +36,9 @@ import com.nubari.montra.general.components.MainAppBar
 import com.nubari.montra.navigation.destinations.Destination
 import com.nubari.montra.ui.theme.violet100
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
+@ExperimentalComposeUiApi
 @Composable
 fun SignUp(
     navController: NavController,
@@ -39,16 +46,27 @@ fun SignUp(
     authViewModel: AuthViewModel
 ) {
     val scaffoldState = rememberScaffoldState()
+    val coroutineScope = rememberCoroutineScope()
     val formState = registerViewModel.state.value
     val isLoading = authViewModel.state.value.isProcessing
+    val keyboardController = LocalSoftwareKeyboardController.current
     LaunchedEffect(Unit) {
         authViewModel.eventFlow.collectLatest { event ->
             when (event) {
-                is AuthEvent.SuccessfulRegistration -> {
+                is AuthProcessEvent.SuccessfulRegistration -> {
                     navController.navigate(Destination.VerificationDestination.route)
                 }
-                is AuthEvent.FailedRegistration -> {}
-                else -> {}
+                is AuthProcessEvent.FailedRegistration -> {
+                    coroutineScope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            message = event.errorMessage,
+                            actionLabel = "Error",
+                        )
+                    }
+                }
+                else -> {
+
+                }
             }
         }
     }
@@ -164,11 +182,13 @@ fun SignUp(
             Spacer(modifier = Modifier.height(20.dp))
             Button(
                 onClick = {
+                    keyboardController?.hide()
                     val name = formState.name.text
                     val email = formState.email.text
                     val password = formState.email.text
+                    Log.i("xyz", "on click")
                     authViewModel.createEvent(
-                        AuthEvent.Register(name, email, password)
+                        AuthUIEvent.Register(name, email, password)
                     )
                 },
                 modifier = Modifier
@@ -212,6 +232,7 @@ fun SignUp(
     }
 }
 
+@ExperimentalComposeUiApi
 @Preview(showBackground = true)
 @Composable
 fun PreviewSignUp() {
