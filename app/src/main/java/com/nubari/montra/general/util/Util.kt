@@ -1,10 +1,10 @@
-package com.nubari.montra.auth.util
+package com.nubari.montra.general.util
 
 import android.text.TextUtils
 import com.nubari.montra.general.util.InputType
 
-object AuthUtil {
-    fun validateAuthInput(inputValue: String, inputType: InputType): Pair<Boolean, String> {
+object Util {
+    fun validateInput(inputValue: String, inputType: InputType): Pair<Boolean, String> {
         when (inputType) {
             InputType.EMAIL -> {
                 val emailValid =
@@ -33,6 +33,9 @@ object AuthUtil {
                 } else {
                     Pair(textValid, "Text cannot be empty")
                 }
+            }
+            InputType.NUMBER -> {
+                return Pair(true, "")
             }
 
         }

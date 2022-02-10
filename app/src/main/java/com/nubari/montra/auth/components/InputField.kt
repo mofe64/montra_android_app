@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Colors
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
@@ -38,7 +39,8 @@ fun InputField(
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Next,
     nextFocusDirection: FocusDirection = FocusDirection.Down,
-    capitalization: KeyboardCapitalization = KeyboardCapitalization.None
+    capitalization: KeyboardCapitalization = KeyboardCapitalization.None,
+    textColor: Color = Color.White
 ) {
     val touched = remember {
         mutableStateOf(false)
@@ -66,7 +68,8 @@ fun InputField(
         colors = TextFieldDefaults.outlinedTextFieldColors(
             errorBorderColor = Color.Red,
             errorLabelColor = Color.Red,
-            errorLeadingIconColor = Color.Red
+            errorLeadingIconColor = Color.Red,
+            textColor = textColor
         ),
         leadingIcon = icon,
         keyboardOptions = KeyboardOptions(

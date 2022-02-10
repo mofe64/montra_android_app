@@ -6,10 +6,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.nubari.montra.auth.events.RegistrationEvent
 import com.nubari.montra.auth.state.RegistrationFormState
-import com.nubari.montra.auth.util.AuthUtil
+import com.nubari.montra.general.util.Util
 import com.nubari.montra.general.util.InputType
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class RegisterViewModel : ViewModel() {
+@HiltViewModel
+class RegisterViewModel @Inject constructor() : ViewModel() {
     private val _state = mutableStateOf(RegistrationFormState(formValid = true))
     val state: State<RegistrationFormState> = _state
 
@@ -46,7 +49,7 @@ class RegisterViewModel : ViewModel() {
                     "email" -> {
                         Log.i("validating", state.value.email.toString())
                         val validity: Pair<Boolean, String> =
-                            AuthUtil.validateAuthInput(state.value.email.text, InputType.EMAIL)
+                            Util.validateInput(state.value.email.text, InputType.EMAIL)
                         _state.value = state.value.copy(
                             email = state.value.email.copy(
                                 isValid = validity.first,
@@ -58,7 +61,7 @@ class RegisterViewModel : ViewModel() {
                     "name" -> {
                         Log.i("validating", state.value.name.toString())
                         val validity: Pair<Boolean, String> =
-                            AuthUtil.validateAuthInput(state.value.name.text, InputType.TEXT)
+                            Util.validateInput(state.value.name.text, InputType.TEXT)
                         _state.value = state.value.copy(
                             name = state.value.name.copy(
                                 isValid = validity.first,
@@ -69,7 +72,7 @@ class RegisterViewModel : ViewModel() {
                     }
                     "password" -> {
                         Log.i("validating", state.value.password.toString())
-                        val validity: Pair<Boolean, String> = AuthUtil.validateAuthInput(
+                        val validity: Pair<Boolean, String> = Util.validateInput(
                             state.value.password.text,
                             InputType.PASSWORD
                         )

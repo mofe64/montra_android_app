@@ -11,6 +11,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.nubari.montra.navigation.destinations.Destination
+import com.nubari.montra.navigation.destinations.PrimaryDestination
 
 @Composable
 fun AccountSetupPrompt(
@@ -32,7 +34,7 @@ fun AccountSetupPrompt(
             )
             Spacer(modifier = Modifier.height(25.dp))
             Text(
-                text = "Accounts represent some stuff bla bla bla bla",
+                text = "Accounts help organize income and expenses",
                 fontWeight = FontWeight(500),
                 fontSize = 18.sp
             )
@@ -40,6 +42,9 @@ fun AccountSetupPrompt(
 
         Button(
             onClick = {
+                navController.navigate(
+                    Destination.AccountSetupFormDestination.route
+                )
             },
             modifier = Modifier
                 .fillMaxWidth()

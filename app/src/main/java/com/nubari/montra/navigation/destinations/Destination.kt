@@ -8,8 +8,6 @@ sealed class Destination(val name: String, val route: String) {
         Destination(name = "forgot password", route = "forgot_password")
 
     object VerificationDestination : Destination(name = "verification", route = "verification")
-    object SetupAccountPromptDestination :
-        Destination(name = "set up account prompt", route = "setup_account_prompt")
 
     object AccountSetupFormDestination :
         Destination(name = "set up account", route = "setup_account")
