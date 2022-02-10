@@ -20,9 +20,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 @ExperimentalPagerApi
 @Composable
 fun AuthenticationNavigationHost(
-    navController: NavHostController
+    navController: NavHostController,
+    authViewModel: AuthViewModel
 ) {
-    val authViewModel: AuthViewModel = hiltViewModel()
     NavHost(
         navController = navController,
         startDestination = Destination.OnBoardingDestination.route
@@ -34,7 +34,7 @@ fun AuthenticationNavigationHost(
             SignUp(navController = navController, authViewModel = authViewModel)
         }
         composable(Destination.LoginDestination.route) {
-            Login(navController = navController)
+            Login(navController = navController, authViewModel = authViewModel)
         }
         composable(Destination.VerificationDestination.route) {
             Verification(navController = navController, authViewModel = authViewModel)

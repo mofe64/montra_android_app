@@ -22,6 +22,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -42,7 +43,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun SignUp(
     navController: NavController,
-    registerViewModel: RegisterViewModel = viewModel(),
+    registerViewModel: RegisterViewModel = hiltViewModel(),
     authViewModel: AuthViewModel
 ) {
     val scaffoldState = rememberScaffoldState()
@@ -64,9 +65,7 @@ fun SignUp(
                         )
                     }
                 }
-                else -> {
-
-                }
+                else -> {}
             }
         }
     }
@@ -85,8 +84,7 @@ fun SignUp(
                 backIconColor = Color.Black
             )
         },
-
-        )
+    )
     {
         Column(
             modifier = Modifier

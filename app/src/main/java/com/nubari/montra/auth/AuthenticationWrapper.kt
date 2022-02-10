@@ -14,6 +14,6 @@ fun AuthenticationWrapper(
     viewModel: AuthViewModel
 ) {
     val navController = rememberNavController()
-    AuthenticationNavigationHost(navController = navController)
+    AuthenticationNavigationHost(navController = navController, authViewModel = viewModel)
 
 }

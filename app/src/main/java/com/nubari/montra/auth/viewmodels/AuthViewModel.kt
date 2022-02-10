@@ -13,6 +13,7 @@ import com.nubari.montra.data.remote.requests.LoginRequest
 import com.nubari.montra.data.remote.requests.RegistrationRequest
 import com.nubari.montra.domain.usecases.authUsecases.AuthenticationUseCases
 import com.nubari.montra.general.util.Resource
+import com.nubari.montra.preferences
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -25,7 +26,11 @@ import javax.inject.Inject
 class AuthViewModel @Inject constructor(
     private val authenticationUseCases: AuthenticationUseCases
 ) : ViewModel() {
-    private val _state = mutableStateOf(AuthState())
+    private val _state = mutableStateOf(
+        AuthState(
+            isAuthenticated = preferences.authenticationToken != ""
+        )
+    )
     val state: State<AuthState> = _state
 
     fun createEvent(event: AuthEvent) {
@@ -172,6 +177,8 @@ class AuthViewModel @Inject constructor(
                             userDetails = userDetails,
                             isAuthenticated = true
                         )
+                        preferences.authenticationToken = userDetails.token
+                        preferences.userId = userDetails.id
                         _eventFlow.emit(
                             AuthProcessEvent.SuccessfulLogin
                         )

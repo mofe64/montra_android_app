@@ -4,7 +4,17 @@ sealed class Destination(val name: String, val route: String) {
     object SignupDestination : Destination(name = "signup", route = "signup")
     object OnBoardingDestination : Destination(name = "onboarding", route = "onboarding")
     object LoginDestination : Destination(name = "login", route = "login")
-    object ForgotPasswordDestination : Destination(name = "forgot password", route = "forgot_password")
+    object ForgotPasswordDestination :
+        Destination(name = "forgot password", route = "forgot_password")
+
     object VerificationDestination : Destination(name = "verification", route = "verification")
+    object SetupAccountPromptDestination :
+        Destination(name = "set up account prompt", route = "setup_account_prompt")
+
+    object AccountSetupFormDestination :
+        Destination(name = "set up account", route = "setup_account")
+
+    object AccountSetupCompleteDestination :
+        Destination(name = "account setup complete", route = "account_setup_complete")
 
 }

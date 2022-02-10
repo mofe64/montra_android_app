@@ -39,7 +39,8 @@ fun Verification(
     val code = remember {
         mutableStateOf("")
     }
-    val userDetails = authViewModel.state.value.userDetails ?: UserDetails("name", "ab@gmail.com")
+    val userDetails =
+        authViewModel.state.value.userDetails ?: UserDetails("name", "ab@gmail.com", "123")
     Log.i("testVerify", authViewModel.state.value.toString())
     Scaffold(
         scaffoldState = scaffoldState,
