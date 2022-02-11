@@ -5,10 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,12 +21,17 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.nubari.montra.accountsetup.events.AccountFormEvent
+import com.nubari.montra.accountsetup.events.AccountFormUIEvent
+import com.nubari.montra.accountsetup.events.AccountProcessEvent
 import com.nubari.montra.accountsetup.viewmodels.AccountSetupViewModel
 import com.nubari.montra.auth.components.InputField
 import com.nubari.montra.auth.util.Keyboard
 import com.nubari.montra.auth.util.keyboardAsState
 import com.nubari.montra.general.components.MainAppBar
+import com.nubari.montra.navigation.destinations.Destination
 import com.nubari.montra.ui.theme.light80
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @ExperimentalComposeUiApi
 @Composable
@@ -42,11 +44,28 @@ fun SetupAccount(
     val keyboardController = LocalSoftwareKeyboardController.current
     val isKeyboardOpen by keyboardAsState()
     val isLoading = formState.isProcessing
+    val coroutineScope = rememberCoroutineScope()
     val shouldExpand = isKeyboardOpen == Keyboard.Opened
-    val expanded = remember {
-        mutableStateOf(shouldExpand)
+
+    LaunchedEffect(Unit) {
+        viewModel.eventFlow.collectLatest { event ->
+            when (event) {
+                is AccountProcessEvent.SuccessfulAccountCreation -> {
+                    navController.navigate(Destination.AccountSetupCompleteDestination.route)
+                }
+                is AccountProcessEvent.FailedAccountCreation -> {
+                    coroutineScope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            message = event.errorMessage,
+                            actionLabel = "Error",
+                        )
+                    }
+                }
+                else -> {}
+            }
+        }
     }
-    Scaffold(
+    com.google.accompanist.insets.ui.Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
             MainAppBar(
@@ -71,6 +90,7 @@ fun SetupAccount(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .padding(it)
                     .animateContentSize(),
                 verticalArrangement = Arrangement.Bottom
             ) {
@@ -129,12 +149,12 @@ fun SetupAccount(
                             placeholder = "Account name Ex.( My main account )",
                             onFocusChange = {
                                 viewModel.createEvent(
-                                    AccountFormEvent.FocusChange("name")
+                                    AccountFormUIEvent.FocusChange("name")
                                 )
                             },
                             onValueChange = {
                                 viewModel.createEvent(
-                                    AccountFormEvent.EnteredName(it)
+                                    AccountFormUIEvent.EnteredName(it)
                                 )
                             },
                             modifier = Modifier.fillMaxWidth(),
@@ -148,12 +168,12 @@ fun SetupAccount(
                             placeholder = "Initial balance Ex.( 1,000,000)",
                             onFocusChange = {
                                 viewModel.createEvent(
-                                    AccountFormEvent.FocusChange("initialBalance")
+                                    AccountFormUIEvent.FocusChange("initialBalance")
                                 )
                             },
                             onValueChange = {
                                 viewModel.createEvent(
-                                    AccountFormEvent.EnteredInitialBalance(it)
+                                    AccountFormUIEvent.EnteredInitialBalance(it)
                                 )
                             },
                             modifier = Modifier.fillMaxWidth(),
@@ -167,6 +187,12 @@ fun SetupAccount(
                         Button(
                             onClick = {
                                 keyboardController?.hide()
+                                viewModel.createEvent(
+                                    AccountFormUIEvent.Create(
+                                        name = formState.name.text,
+                                        balance = formState.initialBalance.text
+                                    )
+                                )
                             },
                             modifier = Modifier
                                 .fillMaxWidth()

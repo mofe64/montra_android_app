@@ -1,4 +1,4 @@
-package com.nubari.montra.domain.usecases.authUsecases
+package com.nubari.montra.domain.usecases.auth
 
 import android.util.Log
 import com.nubari.montra.data.remote.requests.RegistrationRequest
@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.flow
 import okio.IOException
 import retrofit2.HttpException
 
-class RegisterUseCase(
+class Register(
     private val repository: UserRepository
 ) {
     operator fun invoke(request: RegistrationRequest): Flow<Resource<RegistrationResponse>> =

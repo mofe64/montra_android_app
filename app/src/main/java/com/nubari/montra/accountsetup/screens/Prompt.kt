@@ -11,6 +11,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.google.accompanist.insets.navigationBarsPadding
 import com.nubari.montra.navigation.destinations.Destination
 import com.nubari.montra.navigation.destinations.PrimaryDestination
 
@@ -22,6 +23,7 @@ fun AccountSetupPrompt(
         modifier = Modifier
             .fillMaxSize()
             .padding(start = 20.dp, top = 50.dp, end = 20.dp, bottom = 10.dp)
+            .navigationBarsPadding()
     ) {
         Column(
             modifier = Modifier

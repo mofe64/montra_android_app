@@ -11,7 +11,7 @@ import com.nubari.montra.auth.state.AuthState
 import com.nubari.montra.data.models.UserDetails
 import com.nubari.montra.data.remote.requests.LoginRequest
 import com.nubari.montra.data.remote.requests.RegistrationRequest
-import com.nubari.montra.domain.usecases.authUsecases.AuthenticationUseCases
+import com.nubari.montra.domain.usecases.auth.AuthenticationUseCases
 import com.nubari.montra.general.util.Resource
 import com.nubari.montra.preferences
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,13 +33,12 @@ class AuthViewModel @Inject constructor(
     )
     val state: State<AuthState> = _state
 
-    fun createEvent(event: AuthEvent) {
-        onEvent(event = event)
-    }
-
     private val _eventFlow = MutableSharedFlow<AuthEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
+    fun createEvent(event: AuthEvent) {
+        onEvent(event = event)
+    }
 
     private fun onEvent(event: AuthEvent) {
         when (event) {
@@ -67,7 +66,7 @@ class AuthViewModel @Inject constructor(
     }
 
     private fun verifyEmail(id: String, token: String) {
-        authenticationUseCases.verifyEmailUseCase(id, token)
+        authenticationUseCases.verifyEmail(id, token)
             .onEach {
                 when (it) {
                     is Resource.Loading -> {
@@ -108,7 +107,7 @@ class AuthViewModel @Inject constructor(
 
 
     private fun register(request: RegistrationRequest) {
-        authenticationUseCases.registerUseCase(request = request)
+        authenticationUseCases.register(request = request)
             .onEach {
                 when (it) {
                     is Resource.Loading -> {
@@ -146,7 +145,7 @@ class AuthViewModel @Inject constructor(
     }
 
     private fun login(request: LoginRequest) {
-        authenticationUseCases.loginUseCase(request = request)
+        authenticationUseCases.login(request = request)
             .onEach {
                 when (it) {
                     is Resource.Loading -> {

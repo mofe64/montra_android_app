@@ -1,6 +1,5 @@
 package com.nubari.montra.auth.screens
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -61,7 +60,7 @@ fun Login(
             }
         }
     }
-    Scaffold(
+    com.google.accompanist.insets.ui.Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
             MainAppBar(
@@ -81,9 +80,10 @@ fun Login(
     {
         Column(
             modifier = Modifier
-                .padding(top = 50.dp, start = 20.dp, end = 20.dp, bottom = 20.dp)
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .fillMaxSize()
+                .padding(it)
+                .padding(top = 50.dp, start = 20.dp, end = 20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             InputField(
                 value = formState.email.text,
@@ -103,7 +103,8 @@ fun Login(
                 singleLine = true,
                 keyboardType = KeyboardType.Email,
                 modifier = Modifier.fillMaxWidth(),
-                imeAction = ImeAction.Next
+                imeAction = ImeAction.Next,
+                textColor = Color.Black
             )
             Spacer(modifier = Modifier.height(20.dp))
             PasswordField(
@@ -121,7 +122,7 @@ fun Login(
                     )
                 },
                 errorMessage = formState.password.errorMessage,
-                imeAction = ImeAction.Done
+                imeAction = ImeAction.Done,
             )
             Spacer(modifier = Modifier.height(30.dp))
             Button(
@@ -183,5 +184,6 @@ fun Login(
                 }
             }
         }
+
     }
 }

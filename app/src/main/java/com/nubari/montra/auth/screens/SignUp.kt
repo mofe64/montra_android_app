@@ -69,7 +69,7 @@ fun SignUp(
             }
         }
     }
-    Scaffold(
+    com.google.accompanist.insets.ui.Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
             MainAppBar(
@@ -88,8 +88,10 @@ fun SignUp(
     {
         Column(
             modifier = Modifier
-                .padding(top = 70.dp, start = 20.dp, end = 20.dp, bottom = 20.dp)
                 .fillMaxSize()
+                .padding(it)
+                .padding(top = 70.dp, start = 20.dp, end = 20.dp, bottom = 20.dp)
+
         ) {
             InputField(
                 value = formState.name.text,

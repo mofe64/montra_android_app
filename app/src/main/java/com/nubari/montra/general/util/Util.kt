@@ -41,4 +41,10 @@ object Util {
         }
 
     }
+
+    fun cleanNumberInput(inputValue: String): String {
+        val numberParts = inputValue.split(",")
+        return numberParts.joinToString("")
+
+    }
 }

@@ -10,6 +10,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.google.accompanist.insets.LocalWindowInsets
+import com.google.accompanist.insets.rememberInsetsPaddingValues
 import com.google.accompanist.insets.ui.TopAppBar
 import com.nubari.montra.R
 
@@ -48,6 +50,10 @@ fun MainAppBar(
             }
         },
         backgroundColor = backgroundColor,
-        elevation = 0.dp
+        elevation = 0.dp,
+        contentPadding = rememberInsetsPaddingValues(
+            insets = LocalWindowInsets.current.systemBars,
+            applyBottom = false,
+        )
     )
 }

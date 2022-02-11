@@ -42,7 +42,7 @@ fun Verification(
     val userDetails =
         authViewModel.state.value.userDetails ?: UserDetails("name", "ab@gmail.com", "123")
 
-    Scaffold(
+    com.google.accompanist.insets.ui.Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
             MainAppBar(
@@ -62,6 +62,7 @@ fun Verification(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(it)
                 .padding(20.dp)
         ) {
             AnimatedVisibility(visible = isKeyboardOpen != Keyboard.Opened) {
@@ -75,8 +76,8 @@ fun Verification(
             )
             ValidationCodeTextField(
                 modifier = Modifier.fillMaxWidth(),
-                whenFull = {
-                    code.value = it
+                whenFull = { text ->
+                    code.value = text
                 }
             )
             Spacer(modifier = Modifier.height(15.dp))

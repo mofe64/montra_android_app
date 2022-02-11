@@ -1,8 +1,10 @@
 package com.nubari.montra.data.remote
 
+import com.nubari.montra.data.remote.requests.AccountCreationRequest
 import com.nubari.montra.data.remote.requests.LoginRequest
 import com.nubari.montra.data.remote.requests.RegistrationRequest
 import com.nubari.montra.data.remote.responses.AuthResponse
+import com.nubari.montra.data.remote.responses.CreateAccountResponse
 import com.nubari.montra.data.remote.responses.RegistrationResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -22,4 +24,7 @@ interface MontraApi {
         @Path("id") id: String,
         @Path("token") token: String
     ): AuthResponse
+
+    @POST("accounts")
+    suspend fun newAccount(@Body request: AccountCreationRequest): CreateAccountResponse
 }

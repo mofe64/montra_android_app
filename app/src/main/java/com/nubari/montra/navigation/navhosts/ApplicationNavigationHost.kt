@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.nubari.montra.accountsetup.screens.AccountSetupComplete
 import com.nubari.montra.accountsetup.screens.AccountSetupPrompt
 import com.nubari.montra.accountsetup.screens.SetupAccount
 import com.nubari.montra.home.screens.Home
@@ -37,6 +38,9 @@ fun NavigationHost(
             }
             composable(Destination.AccountSetupFormDestination.route) {
                 SetupAccount(navController = navController)
+            }
+            composable(Destination.AccountSetupCompleteDestination.route) {
+                AccountSetupComplete(navController = navController)
             }
         }
         navigation(

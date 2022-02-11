@@ -8,6 +8,8 @@ import androidx.activity.compose.setContent
 
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.WindowCompat
+import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.nubari.montra.application.ApplicationSwitch
 import com.nubari.montra.ui.theme.MontraTheme
@@ -19,13 +21,15 @@ class MainActivity : ComponentActivity() {
     @ExperimentalPagerApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         installSplashScreen()
         val token = preferences.authenticationToken
         Log.i("token-test", token)
         setContent {
             MontraTheme {
-                ApplicationSwitch()
-
+                ProvideWindowInsets {
+                    ApplicationSwitch()
+                }
             }
         }
     }
