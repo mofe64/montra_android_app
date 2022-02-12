@@ -1,4 +1,4 @@
-package com.nubari.montra.home.screens
+package com.nubari.montra.profile.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,13 +9,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun Home() {
+fun Profile() {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        modifier = Modifier.fillMaxSize()
     ) {
-        Text(text = "Home")
+        Text(text = "Profile")
     }
 
 }
