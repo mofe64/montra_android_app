@@ -67,7 +67,7 @@ fun NavigationHost(
                 LaunchedEffect(Unit) {
                     bottomBarState.value = true
                 }
-                Home()
+                Home(navController = navController)
             }
         }
 
