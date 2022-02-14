@@ -7,4 +7,5 @@ sealed class TransactionFormEvent {
     data class AddedAttachment(val attachment: String) : TransactionFormEvent()
     object ToggledRepeatTransaction : TransactionFormEvent()
     data class FocusChange(val focusFieldName: String) : TransactionFormEvent()
+    data class EnteredAmount(val amount: String) : TransactionFormEvent()
 }

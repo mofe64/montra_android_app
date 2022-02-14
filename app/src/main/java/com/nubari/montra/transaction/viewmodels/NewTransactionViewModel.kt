@@ -55,6 +55,13 @@ class NewTransactionViewModel @Inject constructor() : ViewModel() {
                 )
             }
             is TransactionFormEvent.FocusChange -> {}
+            is TransactionFormEvent.EnteredAmount -> {
+                _state.value = state.value.copy(
+                    amount = state.value.amount.copy(
+                        text = event.amount
+                    )
+                )
+            }
         }
     }
 }

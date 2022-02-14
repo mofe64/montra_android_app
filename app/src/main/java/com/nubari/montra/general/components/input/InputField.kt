@@ -42,7 +42,7 @@ fun InputField(
     imeAction: ImeAction = ImeAction.Next,
     nextFocusDirection: FocusDirection = FocusDirection.Down,
     capitalization: KeyboardCapitalization = KeyboardCapitalization.None,
-    textColor: Color = Color.White,
+    textColor: Color = Color.Black,
     hasTrailingIcon: Boolean = false,
     readOnly: Boolean = false
 ) {
