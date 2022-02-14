@@ -1,4 +1,4 @@
-package com.nubari.montra.general.components
+package com.nubari.montra.general.components.input
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

@@ -1,4 +1,4 @@
-package com.nubari.montra.auth.components
+ package com.nubari.montra.auth.components
 
 import android.util.Log
 import androidx.compose.foundation.layout.*

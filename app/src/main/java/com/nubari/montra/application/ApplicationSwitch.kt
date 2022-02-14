@@ -1,6 +1,7 @@
 package com.nubari.montra.application
 
 import android.util.Log
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -12,6 +13,7 @@ import com.nubari.montra.auth.viewmodels.AuthViewModel
 import com.nubari.montra.navigation.navhosts.NavigationHost
 import com.nubari.montra.preferences
 
+@ExperimentalMaterialApi
 @ExperimentalComposeUiApi
 @ExperimentalPagerApi
 @Composable

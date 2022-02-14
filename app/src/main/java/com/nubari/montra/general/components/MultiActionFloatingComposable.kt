@@ -17,7 +17,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.nubari.montra.R
+import com.nubari.montra.navigation.destinations.Destination
 import com.nubari.montra.ui.theme.blue100
 import com.nubari.montra.ui.theme.green100
 import com.nubari.montra.ui.theme.red100
@@ -29,7 +31,8 @@ enum class MultiFabState {
 
 @Composable
 fun MultiActionFAB(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavController
 ) {
     val fabState = rememberSaveable {
         mutableStateOf(MultiFabState.COLLAPSED)
@@ -73,7 +76,12 @@ fun MultiActionFAB(
                 }
                 Row {
                     FloatingActionButton(
-                        onClick = {},
+                        onClick = {
+                            val isExpense = false
+                            navController.navigate(
+                                route = Destination.NewTransaction.route + "?isExpense=$isExpense"
+                            )
+                        },
                         backgroundColor = green100,
                     ) {
                         Icon(
@@ -84,7 +92,12 @@ fun MultiActionFAB(
                     }
                     Spacer(modifier = Modifier.width(65.dp))
                     FloatingActionButton(
-                        onClick = {},
+                        onClick = {
+                            val isExpense = true
+                            navController.navigate(
+                                route = Destination.NewTransaction.route + "?isExpense=$isExpense"
+                            )
+                        },
                         backgroundColor = red100
                     ) {
                         Icon(
@@ -115,10 +128,4 @@ fun MultiActionFAB(
         }
     }
 
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewMultiActionFAB() {
-    MultiActionFAB()
 }

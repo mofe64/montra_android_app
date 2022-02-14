@@ -26,14 +26,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.nubari.montra.auth.components.InputField
-import com.nubari.montra.auth.components.PasswordField
+import com.nubari.montra.general.components.input.InputField
+import com.nubari.montra.general.components.input.PasswordField
 import com.nubari.montra.auth.events.AuthProcessEvent
 import com.nubari.montra.auth.events.AuthUIEvent
 import com.nubari.montra.auth.events.RegistrationEvent
 import com.nubari.montra.auth.viewmodels.AuthViewModel
 import com.nubari.montra.auth.viewmodels.RegisterViewModel
-import com.nubari.montra.general.components.MainAppBar
+import com.nubari.montra.general.components.app.MainAppBar
 import com.nubari.montra.navigation.destinations.Destination
 import com.nubari.montra.ui.theme.violet100
 import kotlinx.coroutines.flow.collectLatest

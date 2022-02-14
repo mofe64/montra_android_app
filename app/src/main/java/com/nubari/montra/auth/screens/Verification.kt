@@ -1,6 +1,5 @@
 package com.nubari.montra.auth.screens
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,7 +25,7 @@ import com.nubari.montra.auth.util.Keyboard
 import com.nubari.montra.auth.util.keyboardAsState
 import com.nubari.montra.auth.viewmodels.AuthViewModel
 import com.nubari.montra.data.models.UserDetails
-import com.nubari.montra.general.components.MainAppBar
+import com.nubari.montra.general.components.app.MainAppBar
 
 @ExperimentalComposeUiApi
 @Composable

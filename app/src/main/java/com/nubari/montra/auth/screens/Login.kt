@@ -19,14 +19,14 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.nubari.montra.auth.components.InputField
-import com.nubari.montra.auth.components.PasswordField
+import com.nubari.montra.general.components.input.InputField
+import com.nubari.montra.general.components.input.PasswordField
 import com.nubari.montra.auth.events.AuthProcessEvent
 import com.nubari.montra.auth.events.AuthUIEvent
 import com.nubari.montra.auth.events.LoginEvent
 import com.nubari.montra.auth.viewmodels.AuthViewModel
 import com.nubari.montra.auth.viewmodels.LoginViewModel
-import com.nubari.montra.general.components.MainAppBar
+import com.nubari.montra.general.components.app.MainAppBar
 import com.nubari.montra.navigation.destinations.Destination
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

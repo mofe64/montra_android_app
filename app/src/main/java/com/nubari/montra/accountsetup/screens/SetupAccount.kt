@@ -20,14 +20,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.nubari.montra.accountsetup.events.AccountFormEvent
 import com.nubari.montra.accountsetup.events.AccountFormUIEvent
 import com.nubari.montra.accountsetup.events.AccountProcessEvent
 import com.nubari.montra.accountsetup.viewmodels.AccountSetupViewModel
-import com.nubari.montra.auth.components.InputField
+import com.nubari.montra.general.components.input.InputField
 import com.nubari.montra.auth.util.Keyboard
 import com.nubari.montra.auth.util.keyboardAsState
-import com.nubari.montra.general.components.MainAppBar
+import com.nubari.montra.general.components.app.MainAppBar
 import com.nubari.montra.navigation.destinations.Destination
 import com.nubari.montra.ui.theme.light80
 import kotlinx.coroutines.flow.collectLatest

@@ -69,10 +69,10 @@ fun TransactionTile(
                     color = light20
                 )
             }
-            Spacer(modifier = Modifier.width(10.dp))
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     text = "-123",

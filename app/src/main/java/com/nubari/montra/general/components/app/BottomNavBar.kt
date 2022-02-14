@@ -1,4 +1,4 @@
-package com.nubari.montra.general.components
+package com.nubari.montra.general.components.app
 
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon

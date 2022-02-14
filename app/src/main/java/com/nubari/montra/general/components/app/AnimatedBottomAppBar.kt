@@ -1,4 +1,4 @@
-package com.nubari.montra.general.components
+package com.nubari.montra.general.components.app
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
@@ -12,6 +12,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.accompanist.insets.LocalWindowInsets
+import com.nubari.montra.general.components.app.BottomNavBar
 
 @Composable
 fun AnimatedBottomAppBar(

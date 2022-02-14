@@ -18,7 +18,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
-import com.nubari.montra.general.components.SystemNavigationBarAvoidingBox
+import com.nubari.montra.general.components.util.SystemNavigationBarAvoidingBox
 import com.nubari.montra.navigation.destinations.Destination
 import com.nubari.montra.ui.theme.violet100
 import com.nubari.montra.ui.theme.violet40

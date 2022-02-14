@@ -10,7 +10,8 @@ import androidx.navigation.NavController
 import com.google.accompanist.insets.ui.Scaffold
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.nubari.montra.R
-import com.nubari.montra.general.components.*
+import com.nubari.montra.general.components.app.MainAppBar
+import com.nubari.montra.general.components.input.MonthDropDown
 import com.nubari.montra.home.components.HomeBanner
 import com.nubari.montra.home.components.RecentTransactions
 import com.nubari.montra.home.components.SpendingFrequency
@@ -55,7 +56,6 @@ fun Home(
             SpendingFrequency()
             RecentTransactions()
         }
-
     }
 }
 
