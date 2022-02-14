@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.nubari.montra.accountsetup.screens.AccountSetupComplete
 import com.nubari.montra.accountsetup.screens.AccountSetupPrompt
 import com.nubari.montra.accountsetup.screens.SetupAccount
@@ -19,6 +20,7 @@ import com.nubari.montra.preferences
 import com.nubari.montra.profile.screens.Profile
 import com.nubari.montra.transaction.screens.Transaction
 
+@ExperimentalPagerApi
 @ExperimentalComposeUiApi
 @Composable
 fun NavigationHost(

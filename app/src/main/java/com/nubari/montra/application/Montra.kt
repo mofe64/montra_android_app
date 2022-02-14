@@ -8,10 +8,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.insets.ui.Scaffold
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.nubari.montra.general.components.AnimatedBottomAppBar
 import com.nubari.montra.general.components.MultiActionFAB
 import com.nubari.montra.navigation.navhosts.NavigationHost
 
+@ExperimentalPagerApi
 @ExperimentalComposeUiApi
 @Composable
 fun Montra() {
