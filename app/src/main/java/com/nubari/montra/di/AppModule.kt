@@ -1,6 +1,9 @@
 package com.nubari.montra.di
 
+import android.app.Application
 import android.content.Context
+import androidx.room.Room
+import com.nubari.montra.data.local.MontraDatabase
 import com.nubari.montra.data.remote.AuthInterceptor
 import com.nubari.montra.data.remote.MontraApi
 import com.nubari.montra.data.repository.AccountRepositoryImpl
@@ -26,6 +29,16 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+    @Singleton
+    @Provides
+    fun provideMontraDatabase(app: Application): MontraDatabase {
+        return Room.databaseBuilder(
+            app,
+            MontraDatabase::class.java,
+            MontraDatabase.DATABASE_NAME
+        ).createFromAsset("database/Montra.db").build()
+    }
 
     @Singleton
     @Provides
