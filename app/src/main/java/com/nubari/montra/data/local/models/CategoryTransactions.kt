@@ -7,7 +7,7 @@ data class CategoryTransactions(
     @Embedded val category: Category,
     @Relation(
         parentColumn = "id",
-        entityColumn = "categoryId"
+        entityColumn = "category_id"
     )
     val transactions: List<Transaction>
 )

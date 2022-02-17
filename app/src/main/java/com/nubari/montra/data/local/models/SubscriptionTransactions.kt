@@ -7,7 +7,7 @@ data class SubscriptionTransactions(
     @Embedded val subscription: Subscription,
     @Relation(
         parentColumn = "id",
-        entityColumn = "subscriptionId"
+        entityColumn = "subscription_id"
     )
     val transactions: List<Transaction>
 )

@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -73,6 +74,7 @@ class AccountSetupViewModel @Inject constructor(
             }
             is AccountFormUIEvent.Create -> {
                 val request = AccountCreationRequest(
+                    id = UUID.randomUUID().toString(),
                     name = event.name,
                     balance = Util.cleanNumberInput(event.balance),
                     userId = preferences.userId

@@ -68,8 +68,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAccountRepository(api: MontraApi): AccountRepository {
-        return AccountRepositoryImpl(api = api)
+    fun provideAccountRepository(api: MontraApi, db: MontraDatabase): AccountRepository {
+        return AccountRepositoryImpl(api = api, accountDao = db.accountDao)
     }
 
     @Provides
