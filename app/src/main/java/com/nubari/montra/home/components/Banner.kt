@@ -19,7 +19,11 @@ import com.nubari.montra.R
 import com.nubari.montra.ui.theme.*
 
 @Composable
-fun HomeBanner() {
+fun HomeBanner(
+    accountBalance: String,
+    income: String = "₦5000",
+    expenses: String = "₦12000",
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -47,7 +51,7 @@ fun HomeBanner() {
                 color = light20
             )
             Text(
-                text = "₦9400",
+                text = "₦$accountBalance",
                 fontSize = 35.sp,
                 fontWeight = FontWeight(600),
                 color = dark75
@@ -87,7 +91,7 @@ fun HomeBanner() {
                             )
                         }
                         Spacer(modifier = Modifier.width(10.dp))
-                        Column() {
+                        Column {
                             Text(
                                 text = "Income",
                                 color = Color.White,
@@ -95,7 +99,7 @@ fun HomeBanner() {
                                 fontWeight = FontWeight(500)
                             )
                             Text(
-                                text = "₦5000",
+                                text = income,
                                 color = Color.White,
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight(600)
@@ -128,7 +132,7 @@ fun HomeBanner() {
                             )
                         }
                         Spacer(modifier = Modifier.width(10.dp))
-                        Column() {
+                        Column {
                             Text(
                                 text = "Expenses",
                                 color = Color.White,
@@ -136,7 +140,7 @@ fun HomeBanner() {
                                 fontWeight = FontWeight(500)
                             )
                             Text(
-                                text = "₦12000",
+                                text = expenses,
                                 color = Color.White,
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight(600)

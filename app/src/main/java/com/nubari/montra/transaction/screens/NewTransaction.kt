@@ -1,5 +1,6 @@
 package com.nubari.montra.transaction.screens
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -26,11 +27,16 @@ import com.nubari.montra.auth.events.AuthUIEvent
 import com.nubari.montra.general.components.input.InputField
 import com.nubari.montra.auth.util.Keyboard
 import com.nubari.montra.auth.util.keyboardAsState
+import com.nubari.montra.data.local.models.enums.TransactionType
 import com.nubari.montra.general.components.app.MainAppBar
 import com.nubari.montra.general.components.input.SelectInput
+import com.nubari.montra.navigation.destinations.PrimaryDestination
+import com.nubari.montra.preferences
 import com.nubari.montra.transaction.events.TransactionFormEvent
+import com.nubari.montra.transaction.events.TransactionProcessEvent
 import com.nubari.montra.transaction.viewmodels.NewTransactionViewModel
 import com.nubari.montra.ui.theme.*
+import kotlinx.coroutines.flow.collectLatest
 
 @ExperimentalComposeUiApi
 @ExperimentalMaterialApi
@@ -46,6 +52,25 @@ fun NewTransaction(
     val formState = newTransactionViewModel.state.value
     val keyboardController = LocalSoftwareKeyboardController.current
     val isLoading: Boolean = formState.isProcessing
+    val categoryOptions = formState.categories?.map { category ->
+        category.second
+    } ?: emptyList()
+
+    LaunchedEffect(Unit) {
+        newTransactionViewModel.eventFlow.collectLatest { event ->
+            when (event) {
+                is TransactionProcessEvent.TransactionCreationSuccess -> {
+                    Log.i("account", "tx created success")
+                    navController.navigate(
+                        PrimaryDestination.Home.startRoute
+                    )
+                }
+                is TransactionProcessEvent.TransactionCreationFail -> {}
+            }
+
+        }
+    }
+
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
@@ -134,7 +159,7 @@ fun NewTransaction(
                         modifier = Modifier.fillMaxWidth(),
                         placeHolder = "Category",
                         value = formState.category.text,
-                        options = formState.categories,
+                        options = categoryOptions,
                         onSelect = { category ->
                             newTransactionViewModel.createEvent(
                                 TransactionFormEvent.ChangedCategory(
@@ -156,20 +181,6 @@ fun NewTransaction(
                             )
                         },
                         modifier = Modifier.fillMaxWidth()
-                    )
-                    Spacer(modifier = Modifier.height(10.dp))
-                    SelectInput(
-                        modifier = Modifier.fillMaxWidth(),
-                        placeHolder = "Select Account",
-                        value = formState.category.text,
-                        options = formState.categories,
-                        onSelect = { category ->
-                            newTransactionViewModel.createEvent(
-                                TransactionFormEvent.ChangedCategory(
-                                    category = category
-                                )
-                            )
-                        }
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     InputField(
@@ -249,6 +260,18 @@ fun NewTransaction(
                     Button(
                         onClick = {
                             keyboardController?.hide()
+                            newTransactionViewModel.createEvent(
+                                TransactionFormEvent.CreateTransaction(
+                                    categoryName = formState.category.text,
+                                    description = "",
+                                    amount = formState.amount.text,
+                                    type = if (isExpense) {
+                                        TransactionType.EXPENSE
+                                    } else {
+                                        TransactionType.INCOME
+                                    }
+                                )
+                            )
                         },
                         modifier = Modifier
                             .fillMaxWidth()

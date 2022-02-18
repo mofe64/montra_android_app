@@ -1,19 +1,56 @@
 package com.nubari.montra.transaction.viewmodels
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.nubari.montra.data.local.models.Transaction
+import com.nubari.montra.domain.usecases.category.CategoryUseCases
+import com.nubari.montra.domain.usecases.transaction.TransactionUseCases
+import com.nubari.montra.preferences
 import com.nubari.montra.transaction.events.TransactionFormEvent
+import com.nubari.montra.transaction.events.TransactionProcessEvent
 import com.nubari.montra.transaction.state.TransactionFormState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import java.math.BigDecimal
+import java.util.*
 import javax.inject.Inject
 
-class NewTransactionViewModel @Inject constructor() : ViewModel() {
+@HiltViewModel
+class NewTransactionViewModel @Inject constructor(
+    private val categoryUseCases: CategoryUseCases,
+    private val transactionUseCases: TransactionUseCases
+) : ViewModel() {
     private val _state = mutableStateOf(
         TransactionFormState(
-            formValid = true
+            formValid = true,
+            categories = null,
         )
     )
     val state: State<TransactionFormState> = _state
+
+    private val _eventFlow = MutableSharedFlow<TransactionProcessEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
+
+    init {
+        categoryUseCases.getAllCategories()
+            .onEach {
+                val categoryNameIdPair = mutableListOf<Pair<String, String>>()
+                it.forEach { category ->
+                    val pair = Pair(category.id, category.name)
+                    categoryNameIdPair.add(pair)
+                }
+                _state.value = state.value.copy(
+                    categories = categoryNameIdPair
+                )
+            }.launchIn(viewModelScope)
+    }
 
     fun createEvent(event: TransactionFormEvent) {
         onEvent(event = event)
@@ -61,6 +98,30 @@ class NewTransactionViewModel @Inject constructor() : ViewModel() {
                         text = event.amount
                     )
                 )
+            }
+            is TransactionFormEvent.CreateTransaction -> {
+                var categoryId = ""
+                state.value.categories?.forEach {
+                    if (it.second == event.categoryName) {
+                        categoryId = it.first
+                    }
+                }
+                viewModelScope.launch {
+                    val tx = Transaction(
+                        id = UUID.randomUUID().toString(),
+                        accountId = preferences.activeAccountId,
+                        categoryId = categoryId,
+                        date = Date(),
+                        type = event.type,
+                        amount = BigDecimal(event.amount),
+                        isRecurring = false,
+                        subscriptionId = null,
+                    )
+                    transactionUseCases.createTransaction(tx)
+                    _eventFlow.emit(
+                        TransactionProcessEvent.TransactionCreationSuccess
+                    )
+                }
             }
         }
     }

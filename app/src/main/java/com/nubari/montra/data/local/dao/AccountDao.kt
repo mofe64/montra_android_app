@@ -11,7 +11,7 @@ interface AccountDao {
     fun getMyAccounts(): Flow<List<Account>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun createAccount(account: Account)
+    suspend fun insert(account: Account)
 
     @Query("select * from account where id = :id")
     suspend fun getAccount(id: String): Account?

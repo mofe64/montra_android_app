@@ -7,4 +7,5 @@ object Constants {
     const val HAS_ONBOARDED_PREF_KEY = "com.nubari.montra.ONBOARDED"
     const val AUTH_TOKEN_PREF_KEY = "com.nubari.montra.authtoken"
     const val USER_ID_PREF_KEY = "com.nubari.montra.userId"
+    const val ACTIVE_ACCOUNT_ID_PREF_KEY = "com.nubari.montra.activeAccountId"
 }

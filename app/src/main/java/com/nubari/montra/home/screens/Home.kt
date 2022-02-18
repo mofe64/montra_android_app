@@ -6,6 +6,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.insets.ui.Scaffold
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -15,15 +16,18 @@ import com.nubari.montra.general.components.input.MonthDropDown
 import com.nubari.montra.home.components.HomeBanner
 import com.nubari.montra.home.components.RecentTransactions
 import com.nubari.montra.home.components.SpendingFrequency
+import com.nubari.montra.home.viewmodels.HomeViewModel
 import com.nubari.montra.ui.theme.*
 
 
 @ExperimentalPagerApi
 @Composable
 fun Home(
-    navController: NavController
+    navController: NavController,
+    homeViewModel: HomeViewModel = hiltViewModel()
 ) {
     val scaffoldState = rememberScaffoldState()
+    val state = homeViewModel.state.value
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
@@ -52,7 +56,10 @@ fun Home(
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            HomeBanner()
+            HomeBanner(
+                accountBalance = state
+                    .account?.balance?.toPlainString() ?: "₦0"
+            )
             SpendingFrequency()
             RecentTransactions()
         }

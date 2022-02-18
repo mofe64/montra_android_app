@@ -2,6 +2,7 @@ package com.nubari.montra.general.util
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.nubari.montra.general.util.Constants.ACTIVE_ACCOUNT_ID_PREF_KEY
 import com.nubari.montra.general.util.Constants.AUTH_TOKEN_PREF_KEY
 import com.nubari.montra.general.util.Constants.HAS_ONBOARDED_PREF_KEY
 import com.nubari.montra.general.util.Constants.MONTRA_SHARED_PREF_FILE
@@ -22,6 +23,10 @@ class Preferences(context: Context) {
     var userId: String
         get() = preferences.getString(USER_ID_PREF_KEY, "") ?: ""
         set(value) = preferences.edit().putString(USER_ID_PREF_KEY, value).apply()
+
+    var activeAccountId: String
+        get() = preferences.getString(ACTIVE_ACCOUNT_ID_PREF_KEY, "") ?: ""
+        set(value) = preferences.edit().putString(ACTIVE_ACCOUNT_ID_PREF_KEY, value).apply()
 
     fun clearAuthenticationToken() {
         val editor = preferences.edit()
