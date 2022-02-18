@@ -117,6 +117,7 @@ class NewTransactionViewModel @Inject constructor(
                         isRecurring = false,
                         subscriptionId = null,
                     )
+                    Log.i("account-tx", tx.toString())
                     transactionUseCases.createTransaction(tx)
                     _eventFlow.emit(
                         TransactionProcessEvent.TransactionCreationSuccess

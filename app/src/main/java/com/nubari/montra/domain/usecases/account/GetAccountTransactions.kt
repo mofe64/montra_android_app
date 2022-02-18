@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 class GetAccountTransactions(
     private val repository: AccountRepository
 ) {
-    operator fun invoke(accountId: String): Flow<List<AccountTransactions>> {
+    suspend operator fun invoke(accountId: String): AccountTransactions? {
         return repository.getAccountTransactions(accountId)
     }
 }

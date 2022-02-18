@@ -58,7 +58,9 @@ fun Home(
         ) {
             HomeBanner(
                 accountBalance = state
-                    .account?.balance?.toPlainString() ?: "₦0"
+                    .account?.balance?.toPlainString() ?: "0",
+                income = state.income,
+                expenses = state.expenses
             )
             SpendingFrequency()
             RecentTransactions()

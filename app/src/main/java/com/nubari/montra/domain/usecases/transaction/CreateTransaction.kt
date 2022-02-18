@@ -19,16 +19,12 @@ class CreateTransaction(
         account?.let {
             when (transactionType) {
                 TransactionType.INCOME -> {
-                    val updatedAccount = account.copy(
-                        balance = it.balance.add(transactionAmount)
-                    )
-                    accountRepository.saveAccount(updatedAccount)
+                    val balance = it.balance.add(transactionAmount)
+                    accountRepository.updateAccountBalance(balance = balance, id = accountId)
                 }
                 TransactionType.EXPENSE -> {
-                    val updatedAccount = account.copy(
-                        balance = it.balance.minus(transactionAmount)
-                    )
-                    accountRepository.saveAccount(updatedAccount)
+                    val balance = it.balance.minus(transactionAmount)
+                    accountRepository.updateAccountBalance(balance = balance, id = accountId)
                 }
             }
         }

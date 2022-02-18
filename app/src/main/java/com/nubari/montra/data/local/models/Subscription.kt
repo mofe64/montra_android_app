@@ -9,14 +9,6 @@ import java.util.*
 
 @Entity(
     tableName = "subscriptions",
-    foreignKeys = [
-        ForeignKey(
-            entity = Account::class,
-            parentColumns = ["id"],
-            childColumns = ["account_id"],
-            onDelete = ForeignKey.CASCADE
-        )
-    ]
 )
 data class Subscription(
     @PrimaryKey(autoGenerate = false)

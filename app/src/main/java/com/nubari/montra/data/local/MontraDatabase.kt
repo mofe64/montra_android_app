@@ -1,5 +1,6 @@
 package com.nubari.montra.data.local
 
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
@@ -20,7 +21,10 @@ import com.nubari.montra.data.local.typeconverters.ApplicationTypeConverters
         Subscription::class,
         Category::class
     ],
-    version = 1
+    version = 2,
+    autoMigrations = [
+        AutoMigration(from = 1, to = 2)
+    ]
 )
 @TypeConverters(ApplicationTypeConverters::class)
 abstract class MontraDatabase : RoomDatabase() {

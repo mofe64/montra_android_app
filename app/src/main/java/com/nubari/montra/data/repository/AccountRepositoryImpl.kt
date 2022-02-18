@@ -31,6 +31,10 @@ class AccountRepositoryImpl(
         accountDao.insert(account = account)
     }
 
+    override suspend fun updateAccountBalance(balance: BigDecimal, id: String) {
+        accountDao.updateAccountBalance(balance, id)
+    }
+
     override suspend fun getAccount(id: String): Account? {
         return accountDao.getAccount(id = id)
     }
@@ -39,7 +43,7 @@ class AccountRepositoryImpl(
         return accountDao.getMyAccounts()
     }
 
-    override fun getAccountTransactions(id: String): Flow<List<AccountTransactions>> {
+    override suspend fun getAccountTransactions(id: String): AccountTransactions? {
         return accountDao.getAccountTransactions(id = id)
     }
 

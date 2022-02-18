@@ -47,7 +47,9 @@ object AppModule {
             app,
             MontraDatabase::class.java,
             MontraDatabase.DATABASE_NAME
-        ).createFromAsset("database/Montra.db").build()
+        )
+            .createFromAsset("database/Montra.db")
+            .build()
     }
 
     @Singleton

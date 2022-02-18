@@ -21,8 +21,8 @@ import com.nubari.montra.ui.theme.*
 @Composable
 fun HomeBanner(
     accountBalance: String,
-    income: String = "₦5000",
-    expenses: String = "₦12000",
+    income: String,
+    expenses: String,
 ) {
     Box(
         modifier = Modifier
@@ -99,7 +99,7 @@ fun HomeBanner(
                                 fontWeight = FontWeight(500)
                             )
                             Text(
-                                text = income,
+                                text = "₦$income",
                                 color = Color.White,
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight(600)
@@ -140,7 +140,7 @@ fun HomeBanner(
                                 fontWeight = FontWeight(500)
                             )
                             Text(
-                                text = expenses,
+                                text = "₦$expenses",
                                 color = Color.White,
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight(600)

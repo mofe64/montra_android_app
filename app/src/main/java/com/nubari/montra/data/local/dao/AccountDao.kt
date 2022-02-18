@@ -4,6 +4,7 @@ import androidx.room.*
 import com.nubari.montra.data.local.models.Account
 import com.nubari.montra.data.local.models.AccountTransactions
 import kotlinx.coroutines.flow.Flow
+import java.math.BigDecimal
 
 @Dao
 interface AccountDao {
@@ -21,5 +22,8 @@ interface AccountDao {
 
     @Transaction
     @Query("select * from account where id = :id")
-    fun getAccountTransactions(id: String): Flow<List<AccountTransactions>>
+    suspend fun getAccountTransactions(id: String): AccountTransactions
+
+    @Query("update account set account_balance= :accountBalance where id = :id")
+    suspend fun updateAccountBalance(accountBalance: BigDecimal, id: String)
 }

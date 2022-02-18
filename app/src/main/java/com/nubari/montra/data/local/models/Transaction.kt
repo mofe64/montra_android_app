@@ -10,14 +10,6 @@ import java.util.*
 
 @Entity(
     tableName = "transactions",
-    foreignKeys = [
-        ForeignKey(
-            entity = Account::class,
-            parentColumns = ["id"],
-            childColumns = ["account_id"],
-            onDelete = ForeignKey.CASCADE
-        )
-    ]
 )
 data class Transaction(
     @PrimaryKey(autoGenerate = false)
