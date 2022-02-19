@@ -5,8 +5,11 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nubari.montra.data.local.models.AccountTransactions
+import com.nubari.montra.data.local.models.Transaction
 import com.nubari.montra.data.local.models.enums.TransactionType
 import com.nubari.montra.domain.usecases.account.AccountUseCases
+import com.nubari.montra.home.events.HomeEvent
 import com.nubari.montra.home.state.HomeState
 import com.nubari.montra.preferences
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +26,10 @@ class HomeViewModel @Inject constructor(
     private val _state = mutableStateOf(
         HomeState(
             account = null,
-            accountTransactions = null
+            accountTransactions = null,
+            recentTransactions = null,
+            monthsTransactions = null,
+            spendingData = null,
         )
     )
     val state: State<HomeState> = _state
@@ -69,6 +75,7 @@ class HomeViewModel @Inject constructor(
             var totalExpense = BigDecimal.ZERO
             val accountTransactions =
                 accountUseCases.getAccountTransactions(accountId = activeAccountId)
+
             accountTransactions?.let {
                 Log.i("account-tx", it.toString())
                 it.transactions.forEach { tx ->
@@ -78,13 +85,72 @@ class HomeViewModel @Inject constructor(
                         totalIncome = totalIncome.add(tx.amount)
                     }
                 }
+                val recentTx = getRecentTransactions(it)
+                val monthTx = getMonthTransactions(it)
+                Log.i("spending-data-init", monthTx.size.toString())
+                Log.i("spending-data-init", monthTx.toString())
+                val data = generateSpendingData(monthTx)
                 _state.value = state.value.copy(
                     income = totalIncome.toPlainString(),
                     expenses = totalExpense.toPlainString(),
-                    accountTransactions = it
+                    accountTransactions = it,
+                    monthsTransactions = monthTx,
+                    recentTransactions = recentTx,
+                    spendingData = data
                 )
             }
+        }
+    }
 
+    private fun getMonthTransactions(accountTx: AccountTransactions): List<Transaction> {
+        Log.i("month-tx", accountTx.transactions.toString())
+        val x = accountTx.transactions.filter {
+            it.date.month == state.value.currentMonth
+        }
+        Log.i("month", state.value.currentMonth.toString())
+        Log.i("spending-data-init-test", x.toString())
+        return x
+    }
+
+    private fun getRecentTransactions(accountTx: AccountTransactions): List<Transaction> {
+        val sortedTx = accountTx.transactions.sortedByDescending { it.date }
+        return if (sortedTx.size >= 11) {
+            sortedTx.subList(0, 11);
+        } else {
+            sortedTx.subList(0, sortedTx.size)
+        }
+    }
+
+    fun createEvent(event: HomeEvent) {
+        onEvent(event)
+    }
+
+    private fun generateSpendingData(tx: List<Transaction>): List<Double> {
+        val spendingData = mutableListOf<Double>()
+        val sortedTx = tx.sortedBy { it.date }
+        sortedTx.forEach {
+            if (it.type == TransactionType.EXPENSE) {
+                spendingData.add(it.amount.toDouble())
+            }
+        }
+        Log.i("spending-data", spendingData.toString())
+        return spendingData.toList()
+    }
+
+    private fun onEvent(event: HomeEvent) {
+        when (event) {
+            is HomeEvent.ChangeMonth -> {
+                _state.value = state.value.copy(
+                    currentMonth = event.newMonth,
+                )
+                state.value.accountTransactions?.let {
+                    val monthTx = getMonthTransactions(it)
+                    _state.value = state.value.copy(
+                        monthsTransactions = monthTx,
+                        spendingData = generateSpendingData(monthTx)
+                    )
+                }
+            }
         }
     }
 

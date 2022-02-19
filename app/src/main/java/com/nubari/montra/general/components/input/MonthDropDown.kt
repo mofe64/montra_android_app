@@ -16,7 +16,8 @@ import java.util.*
 
 @Composable
 fun MonthDropDown(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    updateMonth: (month: Int) -> Unit
 ) {
     var expanded by remember {
         mutableStateOf(false)
@@ -76,6 +77,7 @@ fun MonthDropDown(
                 DropdownMenuItem(onClick = {
                     monthIndex = index
                     expanded = false
+                    updateMonth(index)
                 }) {
                     Text(
                         text = month,

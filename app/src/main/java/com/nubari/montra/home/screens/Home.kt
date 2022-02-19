@@ -16,6 +16,7 @@ import com.nubari.montra.general.components.input.MonthDropDown
 import com.nubari.montra.home.components.HomeBanner
 import com.nubari.montra.home.components.RecentTransactions
 import com.nubari.montra.home.components.SpendingFrequency
+import com.nubari.montra.home.events.HomeEvent
 import com.nubari.montra.home.viewmodels.HomeViewModel
 import com.nubari.montra.ui.theme.*
 
@@ -36,6 +37,9 @@ fun Home(
                 title = {
                     MonthDropDown(
                         modifier = Modifier.fillMaxWidth(),
+                        updateMonth = {
+                            homeViewModel.createEvent(HomeEvent.ChangeMonth(it))
+                        }
                     )
                 },
                 backgroundColor = oldLace
@@ -62,8 +66,12 @@ fun Home(
                 income = state.income,
                 expenses = state.expenses
             )
-            SpendingFrequency()
-            RecentTransactions()
+            SpendingFrequency(
+                spendingData = state.spendingData ?: emptyList()
+            )
+            RecentTransactions(
+                recentTx = state.recentTransactions ?: emptyList()
+            )
         }
     }
 }

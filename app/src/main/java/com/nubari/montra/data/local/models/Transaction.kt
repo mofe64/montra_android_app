@@ -2,7 +2,6 @@ package com.nubari.montra.data.local.models
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.nubari.montra.data.local.models.enums.TransactionType
 import java.math.BigDecimal

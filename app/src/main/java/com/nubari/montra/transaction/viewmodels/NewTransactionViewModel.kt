@@ -100,12 +100,16 @@ class NewTransactionViewModel @Inject constructor(
                 )
             }
             is TransactionFormEvent.CreateTransaction -> {
+                _state.value = state.value.copy(
+                    isProcessing = true
+                )
                 var categoryId = ""
                 state.value.categories?.forEach {
                     if (it.second == event.categoryName) {
                         categoryId = it.first
                     }
                 }
+
                 viewModelScope.launch {
                     val tx = Transaction(
                         id = UUID.randomUUID().toString(),
@@ -119,6 +123,9 @@ class NewTransactionViewModel @Inject constructor(
                     )
                     Log.i("account-tx", tx.toString())
                     transactionUseCases.createTransaction(tx)
+                    _state.value = state.value.copy(
+                        isProcessing = false
+                    )
                     _eventFlow.emit(
                         TransactionProcessEvent.TransactionCreationSuccess
                     )

@@ -8,16 +8,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-private val dummyData = listOf(
-    700.0,
-    450.0,
-    1400.0,
-    0.0,
-    600.0,
-)
-
 @Composable
-fun SpendingFrequency() {
+fun SpendingFrequency(
+    spendingData: List<Double>
+) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -37,7 +31,7 @@ fun SpendingFrequency() {
                 .height(120.dp)
         ) {
             SpendingFrequencyCanvas(
-                data = dummyData,
+                data = spendingData,
                 modifier = Modifier.height(120.dp)
             )
         }
