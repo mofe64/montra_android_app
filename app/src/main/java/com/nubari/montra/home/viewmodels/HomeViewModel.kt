@@ -71,24 +71,15 @@ class HomeViewModel @Inject constructor(
     private fun setupTransactions() {
         val activeAccountId = preferences.activeAccountId
         viewModelScope.launch {
-            var totalIncome = BigDecimal.ZERO
-            var totalExpense = BigDecimal.ZERO
             val accountTransactions =
                 accountUseCases.getAccountTransactions(accountId = activeAccountId)
-
             accountTransactions?.let {
                 Log.i("account-tx", it.toString())
-                it.transactions.forEach { tx ->
-                    if (tx.type == TransactionType.EXPENSE) {
-                        totalExpense = totalExpense.add(tx.amount)
-                    } else {
-                        totalIncome = totalIncome.add(tx.amount)
-                    }
-                }
                 val recentTx = getRecentTransactions(it)
                 val monthTx = getMonthTransactions(it)
-                Log.i("spending-data-init", monthTx.size.toString())
-                Log.i("spending-data-init", monthTx.toString())
+                val incomeAndExpense = calculateIncomeAndExpenses(monthTx);
+                val totalIncome = incomeAndExpense.first
+                val totalExpense = incomeAndExpense.second
                 val data = generateSpendingData(monthTx)
                 _state.value = state.value.copy(
                     income = totalIncome.toPlainString(),
@@ -100,6 +91,19 @@ class HomeViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    private fun calculateIncomeAndExpenses(list: List<Transaction>): Pair<BigDecimal, BigDecimal> {
+        var totalIncome = BigDecimal.ZERO
+        var totalExpense = BigDecimal.ZERO
+        list.forEach {
+            if (it.type == TransactionType.EXPENSE) {
+                totalExpense = totalExpense.add(it.amount)
+            } else {
+                totalIncome = totalIncome.add(it.amount)
+            }
+        }
+        return Pair(totalIncome, totalExpense)
     }
 
     private fun getMonthTransactions(accountTx: AccountTransactions): List<Transaction> {
@@ -145,9 +149,14 @@ class HomeViewModel @Inject constructor(
                 )
                 state.value.accountTransactions?.let {
                     val monthTx = getMonthTransactions(it)
+                    val incomeAndExpenses = calculateIncomeAndExpenses(monthTx)
+                    val totalIncome = incomeAndExpenses.first
+                    val totalExpense = incomeAndExpenses.second
                     _state.value = state.value.copy(
                         monthsTransactions = monthTx,
-                        spendingData = generateSpendingData(monthTx)
+                        spendingData = generateSpendingData(monthTx),
+                        income = totalIncome.toPlainString(),
+                        expenses = totalExpense.toPlainString(),
                     )
                 }
             }

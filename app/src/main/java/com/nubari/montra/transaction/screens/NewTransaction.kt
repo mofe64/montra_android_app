@@ -251,7 +251,14 @@ fun NewTransaction(
                                 newTransactionViewModel.createEvent(
                                     TransactionFormEvent.ToggledRepeatTransaction
                                 )
-                            }
+                            },
+                            colors = SwitchDefaults.colors(
+                                checkedThumbColor = if (isExpense) {
+                                    red100
+                                } else {
+                                    green100
+                                }
+                            )
                         )
                     }
                     AnimatedVisibility(visible = !shouldExpand) {
