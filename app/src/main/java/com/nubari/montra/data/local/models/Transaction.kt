@@ -3,6 +3,7 @@ package com.nubari.montra.data.local.models
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.nubari.montra.data.local.models.enums.TransactionFrequency
 import com.nubari.montra.data.local.models.enums.TransactionType
 import java.math.BigDecimal
 import java.util.*
@@ -26,5 +27,15 @@ data class Transaction(
     @ColumnInfo(name = "amount")
     val amount: BigDecimal,
     @ColumnInfo(name = "is_recurring")
-    val isRecurring: Boolean
+    val isRecurring: Boolean,
+    @ColumnInfo(name = "transaction_name")
+    val name: String,
+    @ColumnInfo(name = "transaction_description")
+    val description: String,
+    @ColumnInfo(name = "attachment_local")
+    val attachmentLocal: String?,
+    @ColumnInfo(name = "attachment_remote")
+    val attachmentRemote: String?,
+    @ColumnInfo(name = "transaction_frequency")
+    val frequency: TransactionFrequency?
 )

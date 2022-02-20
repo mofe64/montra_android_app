@@ -21,7 +21,7 @@ import com.nubari.montra.data.local.typeconverters.ApplicationTypeConverters
         Subscription::class,
         Category::class
     ],
-    version = 2,
+    version = 4,
     autoMigrations = [
         AutoMigration(from = 1, to = 2)
     ]

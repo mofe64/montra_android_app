@@ -35,6 +35,9 @@ object Util {
                 }
             }
             InputType.NUMBER -> {
+                if (inputValue.toBigDecimal().toDouble() <= 0.0) {
+                    return Pair(false, "Value cannot be less than 0.1")
+                }
                 return Pair(true, "")
             }
 

@@ -1,7 +1,9 @@
 package com.nubari.montra.general.components.input
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -10,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import com.nubari.montra.R
 import com.nubari.montra.transaction.events.TransactionFormEvent
 import com.nubari.montra.ui.theme.grayBorderColor
@@ -25,9 +28,14 @@ fun SelectInput(
     placeHolder: String = "",
     options: List<String>,
     onSelect: (String) -> Unit,
-    textColor: Color = Color.Black
+    textColor: Color = Color.Black,
+    hasError: Boolean = false,
+    errorMessage: String = ""
 ) {
     var expanded by remember { mutableStateOf(false) }
+
+
+
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = {
@@ -83,5 +91,12 @@ fun SelectInput(
                 }
             }
         }
+    }
+    if (hasError) {
+        Text(
+            text = errorMessage,
+            color = Color.Red,
+            modifier = Modifier.padding(start = 10.dp)
+        )
     }
 }

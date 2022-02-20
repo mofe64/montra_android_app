@@ -3,6 +3,8 @@ package com.nubari.montra.di
 import android.app.Application
 import androidx.room.Room
 import com.nubari.montra.data.local.MontraDatabase
+import com.nubari.montra.data.local.migrations.MIGRATION_2_3
+import com.nubari.montra.data.local.migrations.MIGRATION_3_4
 import com.nubari.montra.data.remote.AuthInterceptor
 import com.nubari.montra.data.remote.MontraApi
 import com.nubari.montra.data.repository.AccountRepositoryImpl
@@ -49,6 +51,7 @@ object AppModule {
             MontraDatabase.DATABASE_NAME
         )
             .createFromAsset("database/Montra.db")
+            .addMigrations(MIGRATION_2_3, MIGRATION_3_4)
             .build()
     }
 

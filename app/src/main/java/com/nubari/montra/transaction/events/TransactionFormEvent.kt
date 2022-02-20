@@ -1,5 +1,6 @@
 package com.nubari.montra.transaction.events
 
+import com.nubari.montra.data.local.models.enums.TransactionFrequency
 import com.nubari.montra.data.local.models.enums.TransactionType
 
 sealed class TransactionFormEvent {
@@ -10,10 +11,16 @@ sealed class TransactionFormEvent {
     object ToggledRepeatTransaction : TransactionFormEvent()
     data class FocusChange(val focusFieldName: String) : TransactionFormEvent()
     data class EnteredAmount(val amount: String) : TransactionFormEvent()
+    data class SetRecurringFrequency(val frequency: String): TransactionFormEvent()
     data class CreateTransaction(
         val categoryName: String,
         val description: String,
         val amount: String,
-        val type: TransactionType
+        val type: TransactionType,
+        val repeat: Boolean,
+        val txName: String,
+        val txDescription: String,
+        val txFrequency: String?
     ) : TransactionFormEvent()
+
 }
