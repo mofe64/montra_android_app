@@ -9,5 +9,7 @@ data class Category(
     @PrimaryKey(autoGenerate = false)
     val id: String,
     @ColumnInfo(name = "category_name")
-    val name: String
+    val name: String,
+    @ColumnInfo(name = "icon_name")
+    val iconName: String
 )

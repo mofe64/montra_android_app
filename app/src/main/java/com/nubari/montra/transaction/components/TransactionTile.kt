@@ -22,7 +22,10 @@ fun TransactionTile(
     modifier: Modifier = Modifier,
     colorPair: Pair<Color, Color>,
     icon: Int,
-    name: String = "some name"
+    name: String,
+    description: String,
+    isExpense: Boolean,
+    amount: String
 ) {
     Box(
         modifier = modifier
@@ -62,7 +65,7 @@ fun TransactionTile(
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
-                    text = "Some description",
+                    text = description,
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Normal,
                     color = light20
@@ -74,8 +77,16 @@ fun TransactionTile(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "-123",
-                    color = red100,
+                    text = if (isExpense) {
+                        "- ₦$amount"
+                    } else {
+                        "+ ₦$amount"
+                    },
+                    color = if (isExpense) {
+                        red100
+                    } else {
+                        green100
+                    },
                     fontSize = 16.sp,
                     fontWeight = FontWeight(600)
                 )

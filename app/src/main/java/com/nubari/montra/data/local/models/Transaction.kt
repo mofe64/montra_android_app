@@ -18,6 +18,8 @@ data class Transaction(
     val accountId: String,
     @ColumnInfo(name = "category_id")
     val categoryId: String,
+    @ColumnInfo(name = "category_name", defaultValue = "General")
+    val categoryName: String,
     @ColumnInfo(name = "subscription_id")
     val subscriptionId: String?,
     @ColumnInfo(name = "date", index = true)

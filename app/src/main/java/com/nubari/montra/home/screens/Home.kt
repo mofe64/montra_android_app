@@ -70,7 +70,8 @@ fun Home(
                 spendingData = state.spendingData ?: emptyList()
             )
             RecentTransactions(
-                recentTx = state.recentTransactions ?: emptyList()
+                recentTx = state.recentTransactions ?: emptyList(),
+                navController = navController
             )
         }
     }

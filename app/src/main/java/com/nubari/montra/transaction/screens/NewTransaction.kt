@@ -35,6 +35,7 @@ import com.nubari.montra.general.components.app.MainAppBar
 import com.nubari.montra.general.components.input.SelectInput
 import com.nubari.montra.navigation.destinations.PrimaryDestination
 import com.nubari.montra.preferences
+import com.nubari.montra.transaction.components.AttachmentBottomModalSheet
 import com.nubari.montra.transaction.events.TransactionFormEvent
 import com.nubari.montra.transaction.events.TransactionProcessEvent
 import com.nubari.montra.transaction.viewmodels.NewTransactionViewModel
@@ -122,7 +123,7 @@ fun NewTransaction(
         BottomSheetScaffold(
             scaffoldState = bottomSheetScaffoldState,
             sheetContent = {
-                AttachmentSheet()
+                AttachmentBottomModalSheet()
             },
             sheetPeekHeight = 0.dp,
             sheetBackgroundColor = light80,
@@ -393,80 +394,3 @@ fun NewTransaction(
     }
 }
 
-@Composable
-fun AttachmentSheet() {
-    Box(
-        Modifier
-            .fillMaxWidth()
-            .height(200.dp)
-            .padding(10.dp)
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(20))
-                    .height(100.dp)
-                    .weight(1f)
-                    .background(violet40),
-                contentAlignment = Alignment.Center
-            ) {
-                IconButton(onClick = { /*TODO*/ }) {
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.camera),
-                            contentDescription = "Camera",
-                            tint = violet100
-                        )
-                        Text(
-                            text = "Camera",
-                            color = violet100
-                        )
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.width(20.dp))
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(20))
-                    .height(100.dp)
-                    .weight(1f)
-                    .background(violet40),
-                contentAlignment = Alignment.Center
-
-            ) {
-                IconButton(
-                    onClick = { /*TODO*/ },
-                    modifier = Modifier
-                        .height(60.dp)
-                        .width(60.dp)
-                ) {
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.gallery),
-                            contentDescription = "Gallery",
-                            tint = violet100
-                        )
-                        Text(
-                            text = "Gallery",
-                            color = violet100
-                        )
-                    }
-
-                }
-            }
-
-        }
-    }
-}

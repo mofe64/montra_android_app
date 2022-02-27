@@ -1,7 +1,9 @@
 package com.nubari.montra.general.util
 
 import android.text.TextUtils
+import com.nubari.montra.R
 import com.nubari.montra.general.util.InputType
+import com.nubari.montra.ui.theme.*
 
 object Util {
     fun validateInput(inputValue: String, inputType: InputType): Pair<Boolean, String> {
@@ -48,6 +50,29 @@ object Util {
     fun cleanNumberInput(inputValue: String): String {
         val numberParts = inputValue.split(",")
         return numberParts.joinToString("")
-
     }
+
+    val iconMap = mapOf(
+        Pair("Transport", R.drawable.car),
+        Pair("Food", R.drawable.restaurant),
+        Pair("Bills", R.drawable.recurring_bill),
+        Pair("Salary", R.drawable.salary),
+        Pair("Shopping", R.drawable.shopping_bag),
+        Pair("Entertainment", R.drawable.movie_open_settings),
+        Pair("Health", R.drawable.hospital_building),
+        Pair("Investment", R.drawable.chart_areaspline),
+        Pair("Groceries", R.drawable.bread_slice),
+        Pair("Travel", R.drawable.airplane),
+        Pair("Love", R.drawable.heart),
+        Pair("Drinks", R.drawable.glass_cocktail),
+        Pair("General", R.drawable.rocket_launch),
+    )
+
+    val txColors = listOf(
+        Pair(yellow20, yellow100),
+        Pair(violet20, violet100),
+        Pair(red20, red100),
+        Pair(blue20, blue100),
+        Pair(green20, green100)
+    )
 }

@@ -3,7 +3,6 @@ package com.nubari.montra.transaction.viewmodels
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.text.toLowerCase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nubari.montra.data.local.models.Transaction
@@ -119,7 +118,7 @@ class NewTransactionViewModel @Inject constructor(
                             formValid = validity.first
                         )
                     }
-                    "frequency"-> {
+                    "frequency" -> {
                         val selectedFrequency = state.value.recurringFrequency.text
                         val validFrequencyOptions = TransactionFrequency.values().map {
                             it.name
@@ -188,7 +187,8 @@ class NewTransactionViewModel @Inject constructor(
                         description = event.txDescription,
                         attachmentLocal = null,
                         attachmentRemote = null,
-                        frequency = frequency
+                        frequency = frequency,
+                        categoryName = event.categoryName,
                     )
                     Log.i("account-tx", tx.toString())
                     transactionUseCases.createTransaction(tx)

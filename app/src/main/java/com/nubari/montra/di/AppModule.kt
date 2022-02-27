@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.nubari.montra.data.local.MontraDatabase
 import com.nubari.montra.data.local.migrations.MIGRATION_2_3
 import com.nubari.montra.data.local.migrations.MIGRATION_3_4
+import com.nubari.montra.data.local.migrations.MIGRATION_4_5
 import com.nubari.montra.data.remote.AuthInterceptor
 import com.nubari.montra.data.remote.MontraApi
 import com.nubari.montra.data.repository.AccountRepositoryImpl
@@ -27,6 +28,7 @@ import com.nubari.montra.domain.usecases.auth.VerifyEmail
 import com.nubari.montra.domain.usecases.category.CategoryUseCases
 import com.nubari.montra.domain.usecases.category.GetAllCategories
 import com.nubari.montra.domain.usecases.transaction.CreateTransaction
+import com.nubari.montra.domain.usecases.transaction.GetTransactionsForAccount
 import com.nubari.montra.domain.usecases.transaction.TransactionUseCases
 import com.nubari.montra.general.util.Constants.BASE_URL
 import dagger.Module
@@ -51,7 +53,7 @@ object AppModule {
             MontraDatabase.DATABASE_NAME
         )
             .createFromAsset("database/Montra.db")
-            .addMigrations(MIGRATION_2_3, MIGRATION_3_4)
+            .addMigrations(MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
             .build()
     }
 
@@ -131,13 +133,16 @@ object AppModule {
     @Provides
     @Singleton
     fun provideTransactionUseCases(
-        repository: TransactionRepository,
+        transactionRepository: TransactionRepository,
         accountRepository: AccountRepository
     ): TransactionUseCases {
         return TransactionUseCases(
             createTransaction = CreateTransaction(
-                repository = repository,
+                repository = transactionRepository,
                 accountRepository = accountRepository
+            ),
+            getTransactionsForAccount = GetTransactionsForAccount(
+                repository = transactionRepository
             )
         )
     }

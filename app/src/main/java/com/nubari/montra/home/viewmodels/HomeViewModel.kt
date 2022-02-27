@@ -24,7 +24,7 @@ class HomeViewModel @Inject constructor(
     private val accountUseCases: AccountUseCases
 ) : ViewModel() {
     private val _state = mutableStateOf(
-        HomeState(
+         HomeState(
             account = null,
             accountTransactions = null,
             recentTransactions = null,
@@ -43,6 +43,7 @@ class HomeViewModel @Inject constructor(
         setupTransactions()
     }
 
+    //todo refactor this to use the get account tx call to retrieve both account and tx together
     private fun setupAccount() {
         val activeAccountId = preferences.activeAccountId
         Log.i("account", activeAccountId)
@@ -73,6 +74,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             val accountTransactions =
                 accountUseCases.getAccountTransactions(accountId = activeAccountId)
+
             accountTransactions?.let {
                 Log.i("account-tx", it.toString())
                 val recentTx = getRecentTransactions(it)

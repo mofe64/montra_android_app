@@ -1,6 +1,5 @@
 package com.nubari.montra.transaction.state
 
-import com.nubari.montra.data.local.models.Category
 import com.nubari.montra.data.local.models.enums.TransactionFrequency
 import com.nubari.montra.general.state.InputState
 import com.nubari.montra.general.util.InputType
