@@ -133,7 +133,12 @@ fun Transaction(
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(state.transactions) { tx ->
                         TransactionTile(
-                            colorPair = Util.txColors.random(),
+                            colorPair =
+                            if (tx.type == TransactionType.EXPENSE) {
+                                Pair(red20, red100)
+                            } else {
+                                Pair(green20, green100)
+                            },
                             icon = Util.iconMap[tx.categoryName] ?: R.drawable.rocket_launch,
                             name = tx.categoryName,
                             description = tx.description,
