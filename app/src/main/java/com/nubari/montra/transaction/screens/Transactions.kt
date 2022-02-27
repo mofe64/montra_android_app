@@ -23,6 +23,7 @@ import com.nubari.montra.R
 import com.nubari.montra.data.local.models.enums.TransactionType
 import com.nubari.montra.general.components.app.MainAppBar
 import com.nubari.montra.general.util.Util
+import com.nubari.montra.navigation.destinations.Destination
 import com.nubari.montra.transaction.components.FilterBottomModal
 import com.nubari.montra.transaction.components.TransactionTile
 import com.nubari.montra.transaction.viewmodels.TransactionsViewModel
@@ -112,7 +113,11 @@ fun Transaction(
                     modifier = Modifier
                         .clip(RoundedCornerShape(15))
                         .fillMaxWidth()
-                        .clickable { }
+                        .clickable {
+                            navController.navigate(
+                                Destination.TransactionReportPreview.route
+                            )
+                        }
                         .height(50.dp)
                         .background(violet40)
                         .padding(10.dp),

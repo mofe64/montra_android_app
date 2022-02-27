@@ -23,6 +23,8 @@ import com.nubari.montra.preferences
 import com.nubari.montra.profile.screens.Profile
 import com.nubari.montra.transaction.screens.NewTransaction
 import com.nubari.montra.transaction.screens.Transaction
+import com.nubari.montra.transaction.screens.TransactionReport
+import com.nubari.montra.transaction.screens.TransactionReportPreview
 
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
@@ -105,6 +107,18 @@ fun NavigationHost(
                 Transaction(
                     navController = navController
                 )
+            }
+            composable(Destination.TransactionReportPreview.route) {
+                LaunchedEffect(Unit) {
+                    bottomBarState.value = false
+                }
+                TransactionReportPreview(navController = navController)
+            }
+            composable(Destination.TransactionReport.route) {
+                LaunchedEffect(Unit) {
+                    bottomBarState.value = true
+                }
+                TransactionReport(navController = navController)
             }
         }
 
