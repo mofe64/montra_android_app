@@ -1,5 +1,6 @@
 package com.nubari.montra.navigation.navhosts
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,6 +27,7 @@ import com.nubari.montra.transaction.screens.Transaction
 import com.nubari.montra.transaction.screens.TransactionReport
 import com.nubari.montra.transaction.screens.TransactionReportPreview
 
+@ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
 @ExperimentalComposeUiApi

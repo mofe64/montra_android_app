@@ -1,6 +1,7 @@
 package com.nubari.montra.application
 
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FabPosition
 import androidx.compose.runtime.Composable
@@ -14,6 +15,7 @@ import com.nubari.montra.general.components.app.AnimatedBottomAppBar
 import com.nubari.montra.general.components.MultiActionFAB
 import com.nubari.montra.navigation.navhosts.NavigationHost
 
+@ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
 @ExperimentalComposeUiApi

@@ -12,35 +12,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nubari.montra.R
-import java.util.*
 
 @Composable
-fun MonthDropDown(
+fun DropDown(
     modifier: Modifier = Modifier,
-    updateMonth: (month: Int) -> Unit
+    updateValue: (index: Int) -> Unit,
+    options: List<String>,
+    startingIndex: Int
 ) {
     var expanded by remember {
         mutableStateOf(false)
     }
-    val calender = Calendar.getInstance(Locale.getDefault())
-    var monthIndex by remember {
-        mutableStateOf(calender.get(Calendar.MONTH))
+    var index by remember {
+        mutableStateOf(startingIndex)
 
     }
-    val months = listOf(
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December"
-    )
+
     Box(
         modifier = modifier
             .background(Color.Transparent)
@@ -59,7 +46,7 @@ fun MonthDropDown(
                 )
                 Spacer(modifier = Modifier.width(10.dp))
                 Text(
-                    text = months[monthIndex],
+                    text = options[index],
                     fontSize = 14.sp,
                     fontWeight = FontWeight(500)
                 )
@@ -73,14 +60,14 @@ fun MonthDropDown(
                     Color.Transparent
                 )
         ) {
-            months.forEachIndexed { index, month ->
+            options.forEachIndexed { optionIndex, option ->
                 DropdownMenuItem(onClick = {
-                    monthIndex = index
+                    index = optionIndex
                     expanded = false
-                    updateMonth(index)
+                    updateValue(optionIndex)
                 }) {
                     Text(
-                        text = month,
+                        text = option,
                         fontSize = 14.sp,
                         fontWeight = FontWeight(500)
                     )

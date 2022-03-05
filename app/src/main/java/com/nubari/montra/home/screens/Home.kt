@@ -12,13 +12,14 @@ import com.google.accompanist.insets.ui.Scaffold
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.nubari.montra.R
 import com.nubari.montra.general.components.app.MainAppBar
-import com.nubari.montra.general.components.input.MonthDropDown
+import com.nubari.montra.general.components.input.DropDown
 import com.nubari.montra.home.components.HomeBanner
 import com.nubari.montra.home.components.RecentTransactions
 import com.nubari.montra.home.components.SpendingFrequency
 import com.nubari.montra.home.events.HomeEvent
 import com.nubari.montra.home.viewmodels.HomeViewModel
 import com.nubari.montra.ui.theme.*
+import java.util.*
 
 
 @ExperimentalPagerApi
@@ -29,17 +30,35 @@ fun Home(
 ) {
     val scaffoldState = rememberScaffoldState()
     val state = homeViewModel.state.value
+
+    val months = listOf(
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+    )
+    val calender = Calendar.getInstance(Locale.getDefault())
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
             MainAppBar(
                 navController = navController,
                 title = {
-                    MonthDropDown(
+                    DropDown(
                         modifier = Modifier.fillMaxWidth(),
-                        updateMonth = {
+                        updateValue = {
                             homeViewModel.createEvent(HomeEvent.ChangeMonth(it))
-                        }
+                        },
+                        options = months,
+                        startingIndex = calender.get(Calendar.MONTH)
                     )
                 },
                 backgroundColor = oldLace

@@ -1,4 +1,4 @@
-package com.nubari.montra.general.components
+package com.nubari.montra.general.components.util
 
 
 import android.graphics.PointF

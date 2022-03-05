@@ -10,20 +10,24 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun SpendingFrequency(
-    spendingData: List<Double>
+    spendingData: List<Double>,
+    shouldDisplayHeader: Boolean = true
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-        Text(
-            text = "Spend Frequency",
-            fontSize = 18.sp,
-            fontWeight = FontWeight(600),
-            modifier = Modifier.padding(
-                start = 10.dp,
-                end = 10.dp
+        if (shouldDisplayHeader) {
+            Text(
+                text = "Spend Frequency",
+                fontSize = 18.sp,
+                fontWeight = FontWeight(600),
+                modifier = Modifier.padding(
+                    start = 10.dp,
+                    end = 10.dp
+                )
             )
-        )
+        }
+
         Spacer(modifier = Modifier.height(10.dp))
         Box(
             modifier = Modifier
