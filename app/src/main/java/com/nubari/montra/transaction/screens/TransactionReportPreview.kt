@@ -1,5 +1,9 @@
 package com.nubari.montra.transaction.screens
 
+import android.annotation.SuppressLint
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -14,6 +18,8 @@ import com.google.accompanist.insets.ui.Scaffold
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.*
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.nubari.montra.navigation.destinations.Destination
@@ -23,6 +29,7 @@ import com.nubari.montra.ui.theme.*
 import kotlin.math.max
 import kotlin.math.min
 
+@SuppressLint("LongLogTag")
 @Composable
 fun TransactionReportPreview(
     navController: NavController,
@@ -85,10 +92,18 @@ fun TransactionReportPreview(
                     onStepChanged = { currentStep.value = it },
                     isPaused = isPaused.value,
                     onComplete = {
-                        navController.popBackStack(
-                            Destination.TransactionReportPreview.route,
-                            true
-                        )
+                        navController.currentBackStackEntry?.let { navBackStackEntry ->
+                            if (navBackStackEntry.destination.route === Destination.TransactionReportPreview.route) {
+                                navController.backQueue.remove(navBackStackEntry)
+                            }
+                            val x = navBackStackEntry.destination.hierarchy
+                            x.iterator().forEach {
+                                Log.i(
+                                    "Transaction-report-preview-back-stack-hierarchy",
+                                    it.route ?: "empty"
+                                )
+                            }
+                        }
                         navController.navigate(
                             Destination.TransactionReport.route
                         )
@@ -133,6 +148,7 @@ fun TransactionReportPreview(
         }
     }
 }
+
 
 
 

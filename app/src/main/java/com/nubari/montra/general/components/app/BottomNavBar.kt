@@ -52,7 +52,7 @@ fun BottomNavBar(
             } else {
                 BottomNavigationItem(
                     selected = currentRoute?.hierarchy?.any {
-                        destination.startRoute == it.route
+                        destination.rootRoute == it.route
                     } == true,
                     onClick = {
                         navController.navigate(destination.startRoute) {
