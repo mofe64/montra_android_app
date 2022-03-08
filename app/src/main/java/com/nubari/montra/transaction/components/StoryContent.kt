@@ -21,7 +21,8 @@ fun StoryContent(
     amount: String = "0",
     categoryName: String = "General",
     categoryAmount: String = "0",
-    navController: NavController? = null
+    navController: NavController? = null,
+    quote: Pair<String, String>? = null,
 ) {
     Box(
         modifier = Modifier
@@ -62,7 +63,9 @@ fun StoryContent(
             }
             isRandomQuote -> {
                 RandomQuote(
-                    navController = navController
+                    navController = navController,
+                    quote = quote?.first ?: "",
+                    author = quote?.second ?: "",
                 )
             }
         }

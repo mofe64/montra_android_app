@@ -29,6 +29,7 @@ import com.nubari.montra.domain.usecases.category.CategoryUseCases
 import com.nubari.montra.domain.usecases.category.GetAllCategories
 import com.nubari.montra.domain.usecases.transaction.CreateTransaction
 import com.nubari.montra.domain.usecases.transaction.GetTransactionsForAccount
+import com.nubari.montra.domain.usecases.transaction.GetTransactionsForAccountWithinDateRange
 import com.nubari.montra.domain.usecases.transaction.TransactionUseCases
 import com.nubari.montra.general.util.Constants.BASE_URL
 import dagger.Module
@@ -142,6 +143,10 @@ object AppModule {
                 accountRepository = accountRepository
             ),
             getTransactionsForAccount = GetTransactionsForAccount(
+                repository = transactionRepository
+            ),
+            getTransactionsForAccountWithinDateRange =
+            GetTransactionsForAccountWithinDateRange(
                 repository = transactionRepository
             )
         )

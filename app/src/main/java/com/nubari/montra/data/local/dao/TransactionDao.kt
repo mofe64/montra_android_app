@@ -18,4 +18,12 @@ interface TransactionDao {
 
     @Query("select * from transactions where account_id = :accountId")
     fun getAllTransactionsForAccount(accountId: String): Flow<List<Transaction>>
+
+    @Query("select * from transactions where account_id = :accountId and date between :startDate and :endDate order by date desc")
+    fun getAllTransactionsForAccountWithinDatePeriod(
+        accountId: String,
+        startDate: Long,
+        endDate: Long
+    )
+            : Flow<List<Transaction>>
 }

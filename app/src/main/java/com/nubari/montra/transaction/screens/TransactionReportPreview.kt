@@ -18,6 +18,7 @@ import com.google.accompanist.insets.ui.Scaffold
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.*
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.SystemUiController
@@ -25,6 +26,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.nubari.montra.navigation.destinations.Destination
 import com.nubari.montra.transaction.components.StoryContent
 import com.nubari.montra.transaction.components.StoryIndicators
+import com.nubari.montra.transaction.viewmodels.TransactionReportPreviewViewModel
 import com.nubari.montra.ui.theme.*
 import kotlin.math.max
 import kotlin.math.min
@@ -33,6 +35,7 @@ import kotlin.math.min
 @Composable
 fun TransactionReportPreview(
     navController: NavController,
+    viewModel: TransactionReportPreviewViewModel = hiltViewModel()
 ) {
     val systemUiController: SystemUiController = rememberSystemUiController()
     systemUiController.isNavigationBarVisible = false
@@ -48,6 +51,7 @@ fun TransactionReportPreview(
         },
         animationSpec = tween(durationMillis = 100, easing = LinearEasing)
     )
+    val state = viewModel.state.value
     Scaffold {
         BoxWithConstraints(
             modifier = Modifier
@@ -114,18 +118,18 @@ fun TransactionReportPreview(
                         StoryContent(
                             isIncomeExpenseBreakDown = true,
                             isExpense = true,
-                            amount = "1,256,637",
-                            categoryName = "Travel",
-                            categoryAmount = "760,000"
+                            amount = state.monthExpenses,
+                            categoryName = state.biggestSpendCategory,
+                            categoryAmount = state.biggestSpendAmount
                         )
                     }
                     1 -> {
                         StoryContent(
                             isIncomeExpenseBreakDown = true,
                             isExpense = false,
-                            amount = "2,714,050",
-                            categoryName = "Salary",
-                            categoryAmount = "2,167,023"
+                            amount = state.monthIncome,
+                            categoryName = state.biggestIncomeCategory,
+                            categoryAmount = state.biggestIncomeAmount
                         )
                     }
                     2 -> {
@@ -139,7 +143,8 @@ fun TransactionReportPreview(
                             isBudgetBreakDown = false,
                             isIncomeExpenseBreakDown = false,
                             isRandomQuote = true,
-                            navController = navController
+                            navController = navController,
+                            quote = state.randomQuote
                         )
                     }
                 }

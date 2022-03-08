@@ -17,7 +17,9 @@ import com.nubari.montra.ui.theme.violet100
 
 @Composable
 fun RandomQuote(
-    navController: NavController? = null
+    navController: NavController? = null,
+    quote: String,
+    author: String
 ) {
     Column(
         modifier =
@@ -26,14 +28,14 @@ fun RandomQuote(
             .padding(top = 20.dp)
     ) {
         Text(
-            text = "\"Chop life oh, make life no chop you\"",
+            text = "\"$quote\"",
             fontSize = 30.sp,
             fontWeight = FontWeight(700),
             color = Color.White
         )
         Spacer(modifier = Modifier.height(10.dp))
         Text(
-            text = " - Unknown",
+            text = " - $author",
             fontSize = 24.sp,
             fontWeight = FontWeight(600),
             color = Color.White
