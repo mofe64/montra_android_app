@@ -16,6 +16,7 @@ import com.nubari.montra.R
 import com.nubari.montra.data.local.models.Transaction
 import com.nubari.montra.data.local.models.enums.TransactionType
 import com.nubari.montra.general.util.Util
+import com.nubari.montra.navigation.destinations.Destination
 import com.nubari.montra.navigation.destinations.PrimaryDestination
 import com.nubari.montra.transaction.components.transactions.TransactionTile
 import com.nubari.montra.ui.theme.*
@@ -84,7 +85,12 @@ fun RecentTransactions(
                         isExpense = it.type == TransactionType.EXPENSE,
                         amount = it.amount.toPlainString(),
                         name = it.categoryName,
-                        description = it.description
+                        description = it.description,
+                        toDetail = {
+                            val route = Destination.TransactionDetail.route +
+                                    "?txId=${it.id}"
+                            navController.navigate(route)
+                        }
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                 }

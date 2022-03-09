@@ -18,7 +18,11 @@ sealed class Destination(val name: String, val route: String) {
     object NewTransaction : Destination(name = "new transaction", route = "new_transaction")
     object TransactionReportPreview :
         Destination(name = "transaction report preview", route = "transaction_report_preview")
+
     object TransactionReport :
-            Destination(name = "transaction report", route = "transaction_report")
+        Destination(name = "transaction report", route = "transaction_report")
+
+    object TransactionDetail :
+        Destination(name = "transaction detail", route = "transaction_detail")
 
 }

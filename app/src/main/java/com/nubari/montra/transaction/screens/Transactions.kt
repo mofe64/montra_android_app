@@ -148,7 +148,12 @@ fun Transaction(
                             name = tx.categoryName,
                             description = tx.description,
                             isExpense = tx.type == TransactionType.EXPENSE,
-                            amount = tx.amount.toPlainString()
+                            amount = tx.amount.toPlainString(),
+                            toDetail = {
+                                val route = Destination.TransactionDetail.route +
+                                        "?txId=${tx.id}"
+                                navController.navigate(route)
+                            }
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                     }

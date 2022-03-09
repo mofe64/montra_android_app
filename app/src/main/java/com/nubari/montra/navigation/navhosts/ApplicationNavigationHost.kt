@@ -23,10 +23,7 @@ import com.nubari.montra.navigation.destinations.Destination
 import com.nubari.montra.navigation.destinations.PrimaryDestination
 import com.nubari.montra.preferences
 import com.nubari.montra.profile.screens.Profile
-import com.nubari.montra.transaction.screens.NewTransaction
-import com.nubari.montra.transaction.screens.Transaction
-import com.nubari.montra.transaction.screens.TransactionReport
-import com.nubari.montra.transaction.screens.TransactionReportPreview
+import com.nubari.montra.transaction.screens.*
 import com.nubari.montra.transaction.viewmodels.TransactionReportViewModel
 
 @ExperimentalFoundationApi
@@ -131,6 +128,22 @@ fun NavigationHost(
                     navController = navController,
                     viewModel = transactionReportViewModel,
                 )
+            }
+            composable(
+               route= Destination.TransactionDetail.route + "?txId={txId}",
+                arguments = listOf(
+                    navArgument(
+                        name = "txId"
+                    ) {
+                        type = NavType.StringType
+                        defaultValue = ""
+                    }
+                )
+            ) {
+                LaunchedEffect(Unit) {
+                    bottomBarState.value = false
+                }
+                TransactionDetail()
             }
         }
 

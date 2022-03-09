@@ -20,11 +20,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.nubari.montra.R
 import com.nubari.montra.data.local.models.Transaction
 import com.nubari.montra.data.local.models.enums.TransactionType
 import com.nubari.montra.data.models.CategoryBreakdown
 import com.nubari.montra.general.util.Util
+import com.nubari.montra.navigation.destinations.Destination
 import com.nubari.montra.transaction.components.transactions.TransactionTile
 import com.nubari.montra.ui.theme.*
 
@@ -43,7 +45,8 @@ fun ExpenseIncomeSection(
     expenses: List<Transaction>,
     income: List<Transaction>,
     sortDir: String,
-    updateSortDir: (String) -> Unit
+    updateSortDir: (String) -> Unit,
+    navController: NavController
 ) {
 
 
@@ -141,7 +144,12 @@ fun ExpenseIncomeSection(
                                 name = tx.categoryName,
                                 description = tx.description,
                                 isExpense = tx.type == TransactionType.EXPENSE,
-                                amount = tx.amount.toPlainString()
+                                amount = tx.amount.toPlainString(),
+                                toDetail = {
+                                    val route = Destination.TransactionDetail.route +
+                                            "?txId=${tx.id}"
+                                    navController.navigate(route)
+                                }
                             )
                             Spacer(modifier = Modifier.height(10.dp))
                         }
@@ -178,7 +186,12 @@ fun ExpenseIncomeSection(
                                 name = tx.categoryName,
                                 description = tx.description,
                                 isExpense = tx.type == TransactionType.EXPENSE,
-                                amount = tx.amount.toPlainString()
+                                amount = tx.amount.toPlainString(),
+                                toDetail = {
+                                    val route = Destination.TransactionDetail.route +
+                                            "?txId=${tx.id}"
+                                    navController.navigate(route)
+                                }
                             )
                             Spacer(modifier = Modifier.height(10.dp))
                         }

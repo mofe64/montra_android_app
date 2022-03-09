@@ -1,6 +1,7 @@
 package com.nubari.montra.transaction.components.transactions
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -25,7 +26,8 @@ fun TransactionTile(
     name: String,
     description: String,
     isExpense: Boolean,
-    amount: String
+    amount: String,
+    toDetail: ()-> Unit
 ) {
     Box(
         modifier = modifier
@@ -35,6 +37,9 @@ fun TransactionTile(
             .background(
                 light80
             )
+            .clickable {
+                toDetail()
+            }
             .padding(10.dp),
         contentAlignment = Alignment.Center
 

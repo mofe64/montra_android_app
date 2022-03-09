@@ -267,12 +267,14 @@ fun TransactionReport(
                 },
                 expenses = state.expenses,
                 income = state.income,
-                sortDir = state.sortDir
-            ) { dir ->
-                viewModel.createEvent(
-                    TransactionReportEvent.ChangeSortDirection(dir)
-                )
-            }
+                sortDir = state.sortDir,
+                navController = navController,
+                updateSortDir = { dir ->
+                    viewModel.createEvent(
+                        TransactionReportEvent.ChangeSortDirection(dir)
+                    )
+                }
+            )
         }
     }
 }
