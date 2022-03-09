@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -26,6 +27,7 @@ import com.nubari.montra.transaction.screens.NewTransaction
 import com.nubari.montra.transaction.screens.Transaction
 import com.nubari.montra.transaction.screens.TransactionReport
 import com.nubari.montra.transaction.screens.TransactionReportPreview
+import com.nubari.montra.transaction.viewmodels.TransactionReportViewModel
 
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
@@ -41,6 +43,7 @@ fun NavigationHost(
     if (!userHasOnboarded) {
         startDestination = PrimaryDestination.AccountSetup.rootRoute
     }
+    val transactionReportViewModel : TransactionReportViewModel = hiltViewModel()
     NavHost(
         navController = navController,
         startDestination = startDestination,
@@ -102,6 +105,7 @@ fun NavigationHost(
             startDestination = PrimaryDestination.Transaction.startRoute,
             route = PrimaryDestination.Transaction.rootRoute
         ) {
+
             composable(PrimaryDestination.Transaction.startRoute) {
                 LaunchedEffect(Unit) {
                     bottomBarState.value = true
@@ -114,13 +118,19 @@ fun NavigationHost(
                 LaunchedEffect(Unit) {
                     bottomBarState.value = false
                 }
-                TransactionReportPreview(navController = navController)
+                TransactionReportPreview(
+                    navController = navController,
+                    viewModel = transactionReportViewModel
+                )
             }
             composable(Destination.TransactionReport.route) {
                 LaunchedEffect(Unit) {
                     bottomBarState.value = true
                 }
-                TransactionReport(navController = navController)
+                TransactionReport(
+                    navController = navController,
+                    viewModel = transactionReportViewModel,
+                )
             }
         }
 

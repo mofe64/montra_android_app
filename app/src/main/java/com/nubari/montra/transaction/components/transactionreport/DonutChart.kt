@@ -1,11 +1,10 @@
-package com.nubari.montra.transaction.components
+package com.nubari.montra.transaction.components.transactionreport
 
 import android.util.Log
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -16,9 +15,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.*
 
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
-import kotlin.math.atan2
 
 import kotlin.math.min
 

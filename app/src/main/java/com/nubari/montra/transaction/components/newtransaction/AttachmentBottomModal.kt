@@ -1,4 +1,4 @@
-package com.nubari.montra.transaction.components
+package com.nubari.montra.transaction.components.newtransaction
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

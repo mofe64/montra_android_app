@@ -24,8 +24,8 @@ import com.nubari.montra.data.local.models.enums.TransactionType
 import com.nubari.montra.general.components.app.MainAppBar
 import com.nubari.montra.general.util.Util
 import com.nubari.montra.navigation.destinations.Destination
-import com.nubari.montra.transaction.components.FilterBottomModal
-import com.nubari.montra.transaction.components.TransactionTile
+import com.nubari.montra.transaction.components.transactions.FilterBottomModal
+import com.nubari.montra.transaction.components.transactions.TransactionTile
 import com.nubari.montra.transaction.viewmodels.TransactionsViewModel
 import com.nubari.montra.ui.theme.*
 import kotlinx.coroutines.launch

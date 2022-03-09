@@ -1,9 +1,7 @@
 package com.nubari.montra.transaction.screens
 
 import android.annotation.SuppressLint
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -18,15 +16,13 @@ import com.google.accompanist.insets.ui.Scaffold
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.*
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.nubari.montra.navigation.destinations.Destination
-import com.nubari.montra.transaction.components.StoryContent
-import com.nubari.montra.transaction.components.StoryIndicators
-import com.nubari.montra.transaction.viewmodels.TransactionReportPreviewViewModel
+import com.nubari.montra.transaction.components.transactionreport.preview.StoryContent
+import com.nubari.montra.transaction.components.transactionreport.preview.StoryIndicators
+import com.nubari.montra.transaction.viewmodels.TransactionReportViewModel
 import com.nubari.montra.ui.theme.*
 import kotlin.math.max
 import kotlin.math.min
@@ -35,7 +31,7 @@ import kotlin.math.min
 @Composable
 fun TransactionReportPreview(
     navController: NavController,
-    viewModel: TransactionReportPreviewViewModel = hiltViewModel()
+    viewModel: TransactionReportViewModel,
 ) {
     val systemUiController: SystemUiController = rememberSystemUiController()
     systemUiController.isNavigationBarVisible = false

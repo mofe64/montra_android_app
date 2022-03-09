@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,7 +25,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.insets.ui.Scaffold
 import com.nubari.montra.R
-import com.nubari.montra.auth.events.AuthUIEvent
 import com.nubari.montra.general.components.input.InputField
 import com.nubari.montra.auth.util.Keyboard
 import com.nubari.montra.auth.util.keyboardAsState
@@ -34,8 +32,7 @@ import com.nubari.montra.data.local.models.enums.TransactionType
 import com.nubari.montra.general.components.app.MainAppBar
 import com.nubari.montra.general.components.input.SelectInput
 import com.nubari.montra.navigation.destinations.PrimaryDestination
-import com.nubari.montra.preferences
-import com.nubari.montra.transaction.components.AttachmentBottomModalSheet
+import com.nubari.montra.transaction.components.newtransaction.AttachmentBottomModalSheet
 import com.nubari.montra.transaction.events.TransactionFormEvent
 import com.nubari.montra.transaction.events.TransactionProcessEvent
 import com.nubari.montra.transaction.viewmodels.NewTransactionViewModel

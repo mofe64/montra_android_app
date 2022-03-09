@@ -1,4 +1,4 @@
-package com.nubari.montra.transaction.components
+package com.nubari.montra.transaction.components.transactionreport.preview
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing

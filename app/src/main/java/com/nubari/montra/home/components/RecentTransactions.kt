@@ -8,7 +8,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -18,7 +17,7 @@ import com.nubari.montra.data.local.models.Transaction
 import com.nubari.montra.data.local.models.enums.TransactionType
 import com.nubari.montra.general.util.Util
 import com.nubari.montra.navigation.destinations.PrimaryDestination
-import com.nubari.montra.transaction.components.TransactionTile
+import com.nubari.montra.transaction.components.transactions.TransactionTile
 import com.nubari.montra.ui.theme.*
 
 val icons = Util.iconMap

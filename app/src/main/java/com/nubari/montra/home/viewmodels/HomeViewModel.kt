@@ -119,40 +119,10 @@ class HomeViewModel @Inject constructor(
         Log.i("month", state.value.currentMonth.toString())
         Log.i("spending-data-init-test", x.toString())
         return x
-//        return custom(accountTx = accountTx)
 
     }
 
-    private fun custom(accountTx: AccountTransactions): List<Transaction> {
-        val currentMonth = Calendar.getInstance(Locale.getDefault()).get(Calendar.MONTH)
-        val currentYear = Calendar.getInstance(Locale.getDefault()).get(Calendar.YEAR)
-        val thirtyMonthDays = listOf(8, 10, 5, 3)
-        val monthStartAndEndDays = if (currentMonth in thirtyMonthDays) {
-            Pair("01", "30")
-        } else if (currentMonth == 1) {
-            if (currentYear % 4 == 0) {
-                Pair("01", "29")
-            } else {
-                Pair("01", "28")
-            }
-        } else {
-            Pair("01", "31")
-        }
-        val startDate = Calendar.getInstance()
-        val endDate = Calendar.getInstance()
 
-        startDate.set(currentYear, currentMonth, monthStartAndEndDays.first.toInt())
-        endDate.set(currentYear, currentMonth, monthStartAndEndDays.second.toInt())
-
-        val startX = startDate.time
-        val endX = endDate.time
-        val x = accountTx.transactions.filter {
-            it.date.time >= startX.time && it.date.time <= endX.time
-        }
-        Log.i("home-view-model", x.toString())
-        return x
-
-    }
 
     private fun getRecentTransactions(accountTx: AccountTransactions): List<Transaction> {
         val sortedTx = accountTx.transactions.sortedByDescending { it.date }

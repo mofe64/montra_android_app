@@ -1,4 +1,4 @@
-package com.nubari.montra.transaction.components
+package com.nubari.montra.transaction.components.transactions
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape

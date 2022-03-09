@@ -1,4 +1,4 @@
-package com.nubari.montra.transaction.components
+package com.nubari.montra.transaction.components.transactionreport.preview
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
@@ -11,6 +11,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.nubari.montra.transaction.components.transactionreport.preview.BudgetBreakDown
+import com.nubari.montra.transaction.components.transactionreport.preview.IncomeExpenseBreakDown
+import com.nubari.montra.transaction.components.transactionreport.preview.RandomQuote
 
 @Composable
 fun StoryContent(
