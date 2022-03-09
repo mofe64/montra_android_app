@@ -1,5 +1,7 @@
 package com.nubari.montra.transaction.components.transactionreport
 
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
@@ -16,20 +18,29 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nubari.montra.transaction.screens.colors
+import com.nubari.montra.data.models.CategoryBreakdown
+import com.nubari.montra.ui.theme.green100
+import com.nubari.montra.ui.theme.light60
 import com.nubari.montra.ui.theme.red100
 
+private const val tag = "Category-break-down-tile"
+
+@SuppressLint("LongLogTag")
 @Composable
-fun CategoryTile(
-    color: Color = colors.random()
+fun CategoryBreakDownTile(
+    color: Color,
+    breakdown: CategoryBreakdown,
+    isPositive: Boolean = true
 ) {
+    Log.i("$tag-breakdown", breakdown.toString())
     val progress = remember { Animatable(0f) }
-    val y = listOf(.7f, .4f, .9f, .8f, .1f, .34f)
+    val progressDestination = breakdown.categoryPercentage / 100f
     LaunchedEffect(Unit) {
         progress.animateTo(
-            y.random(),
+            progressDestination,
             animationSpec = tween(
                 durationMillis = 1000,
                 easing = LinearEasing
@@ -43,7 +54,8 @@ fun CategoryTile(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Row {
+
+            Row(modifier = Modifier.padding(start = 5.dp)) {
                 Box(
                     modifier = Modifier
                         .clip(CircleShape)
@@ -52,9 +64,28 @@ fun CategoryTile(
                         .width(20.dp)
                 )
                 Spacer(modifier = Modifier.width(10.dp))
-                Text(text = "Shopping")
+                Text(
+                    text = breakdown.categoryName,
+                    fontWeight = FontWeight(500),
+                    fontSize = 14.sp
+                )
             }
-            Text(text = "- ₦2000", fontSize = 20.sp, color = red100)
+
+            val symbol = if (isPositive) {
+                "+"
+            } else {
+                "-"
+            }
+            Text(
+                text = "$symbol ₦${breakdown.categoryAmount.toPlainString()}",
+                fontSize = 24.sp,
+                color = if (isPositive) {
+                    green100
+                } else {
+                    red100
+                },
+                fontWeight = FontWeight(500)
+            )
         }
         Spacer(modifier = Modifier.height(5.dp))
         LinearProgressIndicator(
@@ -64,7 +95,8 @@ fun CategoryTile(
                 .fillMaxWidth()
                 .padding(2.dp)
                 .height(10.dp)
-                .clip(RoundedCornerShape(40))
+                .clip(RoundedCornerShape(40)),
+            backgroundColor = light60
         )
     }
 }

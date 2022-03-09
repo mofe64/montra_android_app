@@ -7,7 +7,8 @@ import androidx.compose.ui.graphics.Path
 
 fun generateSpendingLineGraphStrokePath(
     size: Size,
-    spendingData: List<Double>
+    spendingData: List<Double>,
+    animationControlValue: Float
 ): Path {
     // determine distance between points on graph
     val distance = size.width / (spendingData.size + 1)
@@ -47,16 +48,16 @@ fun generateSpendingLineGraphStrokePath(
         )
     }
     val path = Path()
-    path.moveTo(points.first().x, points.first().y)
+    path.moveTo(points.first().x * animationControlValue, points.first().y * animationControlValue)
 
     for (i in 1 until points.size) {
         path.cubicTo(
-            conPoint1[i - 1].x,
-            conPoint1[i - 1].y,
-            conPoint2[i - 1].x,
-            conPoint2[i - 1].y,
-            points[i].x,
-            points[i].y
+            conPoint1[i - 1].x * animationControlValue,
+            conPoint1[i - 1].y * animationControlValue,
+            conPoint2[i - 1].x * animationControlValue,
+            conPoint2[i - 1].y * animationControlValue,
+            points[i].x * animationControlValue,
+            points[i].y * animationControlValue
         )
     }
     return path
@@ -64,7 +65,8 @@ fun generateSpendingLineGraphStrokePath(
 
 fun generateSpendingLineGraphFillPath(
     size: Size,
-    spendingData: List<Double>
+    spendingData: List<Double>,
+    animationControlValue: Float = 1f
 ): Path {
     return Path().apply {
         val distance = size.width / (spendingData.size + 1)
@@ -100,15 +102,15 @@ fun generateSpendingLineGraphFillPath(
                 )
             )
         }
-        moveTo(points.first().x, points.first().y)
+        moveTo(points.first().x * animationControlValue, points.first().y * animationControlValue)
         for (i in 1 until points.size) {
             cubicTo(
-                conPoint1[i - 1].x,
-                conPoint1[i - 1].y,
-                conPoint2[i - 1].x,
-                conPoint2[i - 1].y,
-                points[i].x,
-                points[i].y
+                conPoint1[i - 1].x * animationControlValue,
+                conPoint1[i - 1].y * animationControlValue,
+                conPoint2[i - 1].x * animationControlValue,
+                conPoint2[i - 1].y * animationControlValue,
+                points[i].x * animationControlValue,
+                points[i].y* animationControlValue
             )
         }
         lineTo(size.width + 40f, size.height + 40f)

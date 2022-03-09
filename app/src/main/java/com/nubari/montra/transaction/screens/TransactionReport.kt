@@ -19,11 +19,14 @@ import androidx.navigation.NavController
 import com.google.accompanist.insets.ui.Scaffold
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.nubari.montra.data.local.models.enums.TransactionType
+import com.nubari.montra.data.models.CategoryBreakdown
 import com.nubari.montra.general.components.app.MainAppBar
 import com.nubari.montra.general.components.input.DropDown
 import com.nubari.montra.transaction.components.transactionreport.DonutChart
 import com.nubari.montra.transaction.components.transactionreport.ExpenseIncomeSection
 import com.nubari.montra.transaction.components.transactionreport.LineChart
+import com.nubari.montra.transaction.events.TransactionReportEvent
 import com.nubari.montra.transaction.viewmodels.TransactionReportViewModel
 import com.nubari.montra.ui.theme.*
 
@@ -36,6 +39,35 @@ val colors = listOf(
     dark75
 )
 
+private object TransactionReportUtil {
+    fun generateExpenseCategoriesList(list: List<CategoryBreakdown>): List<CategoryBreakdown> {
+        return list.filter { it.txType == TransactionType.EXPENSE }
+    }
+
+    fun generateColorInt(): Int {
+        return ((Math.random() * 16777215).toInt() or (0xFF shl 24))
+    }
+
+    fun generateIncomeCategoriesList(list: List<CategoryBreakdown>): List<CategoryBreakdown> {
+        return list.filter { it.txType == TransactionType.INCOME }
+    }
+
+    // TODO look into generating colors from a pallete
+    fun generateColors(number: Int): List<Color> {
+        val colors = mutableListOf<Color>()
+        for (i in 1..number) {
+            var colorInt = generateColorInt()
+            var color = Color(color = colorInt)
+            while (colors.contains(color)) {
+                colorInt = generateColorInt()
+                color = Color(color = colorInt)
+            }
+            colors.add(color)
+        }
+        return colors
+    }
+}
+
 @ExperimentalFoundationApi
 @Composable
 fun TransactionReport(
@@ -47,9 +79,19 @@ fun TransactionReport(
     LaunchedEffect(Unit) {
         systemUiController.isNavigationBarVisible = true
     }
-    var activeGraph by remember {
-        mutableStateOf("line")
+    val activeGraph = state.activeGraph
+
+    val expenseCategoriesList =
+        TransactionReportUtil.generateExpenseCategoriesList(state.categoryBreakDown)
+    val expenseColors = remember {
+        TransactionReportUtil.generateColors(number = expenseCategoriesList.size)
     }
+    val incomeCategoriesList =
+        TransactionReportUtil.generateIncomeCategoriesList(state.categoryBreakDown)
+    val incomeColors = remember {
+        TransactionReportUtil.generateColors(number = incomeCategoriesList.size)
+    }
+
     Scaffold(
         topBar = {
             MainAppBar(
@@ -103,7 +145,14 @@ fun TransactionReport(
                                 }
                             )
                     ) {
-                        IconButton(onClick = { activeGraph = "line" }) {
+                        IconButton(onClick = {
+                            viewModel.createEvent(
+                                TransactionReportEvent.ChangeActiveGraph("line")
+                            )
+                            viewModel.createEvent(
+                                TransactionReportEvent.SwitchedActiveTabView("Transactions")
+                            )
+                        }) {
                             Icon(
                                 painter = painterResource(
                                     id = R.drawable.line_chart_icon
@@ -131,7 +180,14 @@ fun TransactionReport(
                                 }
                             )
                     ) {
-                        IconButton(onClick = { activeGraph = "pie" }) {
+                        IconButton(onClick = {
+                            viewModel.createEvent(
+                                TransactionReportEvent.ChangeActiveGraph("pie")
+                            )
+                            viewModel.createEvent(
+                                TransactionReportEvent.SwitchedActiveTabView("Categories")
+                            )
+                        }) {
                             Icon(
                                 painter = painterResource(
                                     id = R.drawable.pie_chart_icon
@@ -165,7 +221,7 @@ fun TransactionReport(
                     pathColor = if (state.activeTab == "Income") {
                         green100
                     } else {
-                        red100
+                        redLight
                     },
                     fillColor = if (state.activeTab == "Income") {
                         green100
@@ -181,8 +237,16 @@ fun TransactionReport(
                     contentAlignment = Alignment.Center
                 ) {
                     DonutChart(
-                        data = state.incomeSpendingData.map { data -> data.toFloat() },
-                        colors = colors,
+                        data = if (state.activeTab == "Income") {
+                            state.categoryIncomePieChartData
+                        } else {
+                            state.categoryExpensePieChartData
+                        },
+                        colors = if (state.activeTab == "Income") {
+                            incomeColors
+                        } else {
+                            expenseColors
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(180.dp),
@@ -190,10 +254,30 @@ fun TransactionReport(
                 }
             }
             Spacer(modifier = Modifier.height(20.dp))
-            ExpenseIncomeSection(viewModel = viewModel)
+            ExpenseIncomeSection(
+                expenseCategoryBreakdowns = expenseCategoriesList,
+                incomeCategoryBreakdowns = incomeCategoriesList,
+                incomeColors = incomeColors,
+                expenseColors = expenseColors,
+                activeTabView = state.activeTabView,
+                updateActiveTab = { tab ->
+                    viewModel.createEvent(
+                        TransactionReportEvent.SwitchedActiveTab(tab)
+                    )
+                },
+                expenses = state.expenses,
+                income = state.income,
+                sortDir = state.sortDir
+            ) { dir ->
+                viewModel.createEvent(
+                    TransactionReportEvent.ChangeSortDirection(dir)
+                )
+            }
         }
     }
 }
+
+
 
 
 

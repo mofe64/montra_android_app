@@ -13,12 +13,15 @@ data class TransactionReportState(
     val exceededBudgets: List<String> = emptyList(),
     val randomQuote: Pair<String, String> = Pair("", ""),
     val expenses: List<Transaction> = emptyList(),
-    val income : List<Transaction> = emptyList(),
+    val income: List<Transaction> = emptyList(),
     val categoryBreakDown: List<CategoryBreakdown> = emptyList(),
     val incomeSpendingData: List<Double> = emptyList(),
     val expenseSpendingData: List<Double> = emptyList(),
+    val categoryIncomePieChartData : List<Float> = emptyList(),
+    val categoryExpensePieChartData : List<Float> = emptyList(),
     val transactionsToView: String = "",
     val activeTab: String = "",
-    val activeTabView : String = "Transaction",
-    val sortDir : String = "desc"
+    val activeTabView: String = "Transactions",
+    val sortDir: String = "desc",
+    val activeGraph: String = "line"
 )

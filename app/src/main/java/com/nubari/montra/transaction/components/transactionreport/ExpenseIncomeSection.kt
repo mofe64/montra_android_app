@@ -1,35 +1,52 @@
 package com.nubari.montra.transaction.components.transactionreport
 
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nubari.montra.R
+import com.nubari.montra.data.local.models.Transaction
 import com.nubari.montra.data.local.models.enums.TransactionType
-import com.nubari.montra.general.components.input.DropDown
+import com.nubari.montra.data.models.CategoryBreakdown
 import com.nubari.montra.general.util.Util
 import com.nubari.montra.transaction.components.transactions.TransactionTile
-import com.nubari.montra.transaction.events.TransactionReportEvent
-import com.nubari.montra.transaction.viewmodels.TransactionReportViewModel
 import com.nubari.montra.ui.theme.*
 
+private const val tag = "Expense-Income-Section"
+
+@SuppressLint("LongLogTag")
 @Composable
 fun ExpenseIncomeSection(
-    viewModel: TransactionReportViewModel
+
+    expenseCategoryBreakdowns: List<CategoryBreakdown>,
+    incomeCategoryBreakdowns: List<CategoryBreakdown>,
+    incomeColors: List<Color>,
+    expenseColors: List<Color>,
+    activeTabView: String,
+    updateActiveTab: (String) -> Unit,
+    expenses: List<Transaction>,
+    income: List<Transaction>,
+    sortDir: String,
+    updateSortDir: (String) -> Unit
 ) {
-    val state = viewModel.state.value
+
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -61,8 +78,8 @@ fun ExpenseIncomeSection(
                     selected = selectedTab == index,
                     onClick = {
                         selectedTab = index
-                        viewModel.createEvent(
-                            TransactionReportEvent.SwitchedActiveTab(tabs[index])
+                        updateActiveTab(
+                            tabs[index]
                         )
                     },
                     modifier = Modifier
@@ -80,30 +97,11 @@ fun ExpenseIncomeSection(
         Spacer(modifier = Modifier.height(10.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            val dropDownOptions = listOf("Transaction", "Category")
-            DropDown(
-                updateValue = { optionIndex ->
-                    viewModel.createEvent(
-                        TransactionReportEvent.SwitchedActiveTabView(
-                            dropDownOptions[optionIndex]
-                        )
-                    )
-                },
-                options = dropDownOptions,
-                startingIndex = 0,
-                modifier = Modifier
-                    .border(
-                        width = 2.dp,
-                        color = violet20,
-                        shape = RoundedCornerShape(40)
-                    )
-                    .padding(start = 10.dp, end = 10.dp)
-            )
-            var sortDir by remember {
-                mutableStateOf("desc")
-            }
+            Text(text = activeTabView, fontSize = 24.sp, fontWeight = FontWeight.Bold)
+
             val rotation by animateFloatAsState(
                 if (sortDir == "asc") {
                     180f
@@ -112,10 +110,10 @@ fun ExpenseIncomeSection(
                 }
             )
             IconButton(onClick = {
-                sortDir = if (sortDir == "asc") {
-                    "desc"
+                if (sortDir == "asc") {
+                    updateSortDir("desc")
                 } else {
-                    "asc"
+                    updateSortDir("asc")
                 }
             }) {
                 Icon(
@@ -129,8 +127,8 @@ fun ExpenseIncomeSection(
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             when (selectedTab) {
                 0 -> {
-                    items(state.expenses) { tx ->
-                        if (state.activeTabView == "Transaction") {
+                    if (activeTabView == "Transactions") {
+                        items(expenses) { tx ->
                             TransactionTile(
                                 colorPair =
                                 if (tx.type == TransactionType.EXPENSE) {
@@ -145,16 +143,29 @@ fun ExpenseIncomeSection(
                                 isExpense = tx.type == TransactionType.EXPENSE,
                                 amount = tx.amount.toPlainString()
                             )
-                            Spacer(modifier = Modifier.height(10.dp))
-                        } else {
-                            CategoryTile()
                             Spacer(modifier = Modifier.height(10.dp))
                         }
+                    } else {
+                        Log.i(
+                            "$tag-expense-category-breakdown-size",
+                            expenseCategoryBreakdowns.size.toString()
+                        )
+                        itemsIndexed(expenseCategoryBreakdowns) { index, item ->
+                            CategoryBreakDownTile(
+                                breakdown = item,
+                                isPositive = false,
+                                color = expenseColors[index]
+                            )
+                            Spacer(modifier = Modifier.height(10.dp))
+                        }
+
+
                     }
                 }
+
                 1 -> {
-                    items(state.income) { tx ->
-                        if (state.activeTabView == "Transaction") {
+                    if (activeTabView == "Transactions") {
+                        items(income) { tx ->
                             TransactionTile(
                                 colorPair =
                                 if (tx.type == TransactionType.EXPENSE) {
@@ -170,14 +181,20 @@ fun ExpenseIncomeSection(
                                 amount = tx.amount.toPlainString()
                             )
                             Spacer(modifier = Modifier.height(10.dp))
-                        } else {
-                            CategoryTile()
+                        }
+                    } else {
+                        itemsIndexed(incomeCategoryBreakdowns) { index, item ->
+                            CategoryBreakDownTile(
+                                breakdown = item,
+                                color = incomeColors[index],
+                            )
                             Spacer(modifier = Modifier.height(10.dp))
+
                         }
                     }
                 }
             }
-
         }
+
     }
 }

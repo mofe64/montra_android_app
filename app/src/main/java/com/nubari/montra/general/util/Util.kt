@@ -4,6 +4,9 @@ import android.text.TextUtils
 import com.nubari.montra.R
 import com.nubari.montra.general.util.InputType
 import com.nubari.montra.ui.theme.*
+import java.math.BigDecimal
+import java.math.MathContext
+import java.math.RoundingMode
 
 object Util {
     fun validateInput(inputValue: String, inputType: InputType): Pair<Boolean, String> {
@@ -76,3 +79,5 @@ object Util {
         Pair(green20, green100)
     )
 }
+
+fun BigDecimal.setPrecision(newPrecision: Int) = BigDecimal(toPlainString(), MathContext(newPrecision,RoundingMode.HALF_UP))
