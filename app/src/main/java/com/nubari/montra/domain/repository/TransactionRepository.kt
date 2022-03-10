@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface TransactionRepository {
     suspend fun createTransaction(tx: Transaction)
+    suspend fun getTransactionById(txId: String) : Transaction?
     fun getTransactionsOnAccount(id: String): Flow<List<Transaction>>
     fun getTransactionsOnAccountWithinDateRange(
         id: String,

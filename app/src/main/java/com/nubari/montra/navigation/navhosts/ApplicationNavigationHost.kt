@@ -143,7 +143,9 @@ fun NavigationHost(
                 LaunchedEffect(Unit) {
                     bottomBarState.value = false
                 }
-                TransactionDetail()
+                TransactionDetail(
+                    navController = navController
+                )
             }
         }
 
