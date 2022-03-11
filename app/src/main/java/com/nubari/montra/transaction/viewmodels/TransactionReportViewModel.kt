@@ -102,7 +102,6 @@ class TransactionReportViewModel @Inject constructor(
                 totalIncome = totalMonthIncome,
                 totalExpense = totalMonthExpenses
             )
-//            val categoryData = emptyList<CategoryBreakdown>()
             _state.value = state.value.copy(
                 monthExpenses = totalMonthExpenses.toPlainString(),
                 monthIncome = totalMonthIncome.toPlainString(),

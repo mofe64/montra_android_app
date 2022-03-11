@@ -22,13 +22,13 @@ import com.nubari.montra.transaction.components.transactions.TransactionTile
 import com.nubari.montra.ui.theme.*
 
 val icons = Util.iconMap
-val colors = listOf(
-    Pair(yellow20, yellow100),
-    Pair(violet20, violet100),
-    Pair(red20, red100),
-    Pair(blue20, blue100),
-    Pair(green20, green100)
-)
+//val colors = listOf(
+//    Pair(yellow20, yellow100),
+//    Pair(violet20, violet100),
+//    Pair(red20, red100),
+//    Pair(blue20, blue100),
+//    Pair(green20, green100)
+//)
 
 @Composable
 fun RecentTransactions(
@@ -76,10 +76,10 @@ fun RecentTransactions(
             ) {
                 recentTx.forEach {
                     TransactionTile(
-                        colorPair = if (it.categoryName == "Salary") {
+                        colorPair = if (it.type == TransactionType.INCOME) {
                             Pair(green20, green100)
                         } else {
-                            colors.random()
+                            Pair(red20, red100)
                         },
                         icon = icons[it.categoryName] ?: R.drawable.rocket_launch,
                         isExpense = it.type == TransactionType.EXPENSE,

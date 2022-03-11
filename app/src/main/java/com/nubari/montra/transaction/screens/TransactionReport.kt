@@ -1,5 +1,7 @@
 package com.nubari.montra.transaction.screens
 
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -38,7 +40,7 @@ val colors = listOf(
     blue100,
     dark75
 )
-
+private const val tag = "Transaction-Report-Screen"
 private object TransactionReportUtil {
     fun generateExpenseCategoriesList(list: List<CategoryBreakdown>): List<CategoryBreakdown> {
         return list.filter { it.txType == TransactionType.EXPENSE }
@@ -68,6 +70,7 @@ private object TransactionReportUtil {
     }
 }
 
+@SuppressLint("LongLogTag")
 @ExperimentalFoundationApi
 @Composable
 fun TransactionReport(
@@ -91,6 +94,7 @@ fun TransactionReport(
     val incomeColors = remember {
         TransactionReportUtil.generateColors(number = incomeCategoriesList.size)
     }
+    Log.i("$tag-expenses", state.expenses.toString())
 
     Scaffold(
         topBar = {

@@ -75,7 +75,6 @@ fun Login(
                 backIconColor = Color.Black
             )
         },
-
         )
     {
         Column(

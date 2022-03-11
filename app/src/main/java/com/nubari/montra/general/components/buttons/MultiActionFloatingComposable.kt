@@ -1,4 +1,4 @@
-package com.nubari.montra.general.components
+package com.nubari.montra.general.components.buttons
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background

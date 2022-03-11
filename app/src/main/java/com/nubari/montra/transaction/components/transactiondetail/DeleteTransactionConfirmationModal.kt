@@ -75,6 +75,7 @@ fun DeleteTransactionConfirmationModal(
                 Button(
                     onClick = {
                         delete()
+                        dismiss()
                     },
                     modifier = Modifier
                         .height(56.dp)

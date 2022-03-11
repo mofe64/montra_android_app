@@ -12,7 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.insets.ui.Scaffold
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.nubari.montra.general.components.app.AnimatedBottomAppBar
-import com.nubari.montra.general.components.MultiActionFAB
+import com.nubari.montra.general.components.buttons.MultiActionFAB
 import com.nubari.montra.navigation.navhosts.NavigationHost
 
 @ExperimentalFoundationApi

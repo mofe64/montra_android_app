@@ -7,10 +7,7 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,6 +23,7 @@ import com.google.accompanist.insets.ui.Scaffold
 import com.nubari.montra.R
 import com.nubari.montra.data.local.models.enums.TransactionType
 import com.nubari.montra.general.components.app.MainAppBar
+import com.nubari.montra.general.components.dialogs.SuccessDialog
 import com.nubari.montra.transaction.components.transactiondetail.DeleteTransactionConfirmationModal
 import com.nubari.montra.transaction.events.TransactionDetailEvent
 import com.nubari.montra.transaction.events.TransactionProcessEvent
@@ -49,6 +47,9 @@ fun TransactionDetail(
     val state = transactionDetailViewModel.state.value
     val isExpense = state.transaction?.type == TransactionType.EXPENSE
     val coroutineScope = rememberCoroutineScope()
+    var showConfirmationDialog by remember {
+        mutableStateOf(false)
+    }
 
     val dismissModal = fun() {
         coroutineScope.launch {
@@ -63,41 +64,14 @@ fun TransactionDetail(
                 TransactionDetailEvent.DeleteTransaction(tx = it)
             )
         }
-
     }
+
+
     LaunchedEffect(Unit) {
         transactionDetailViewModel.eventFlow.collectLatest { event ->
             when (event) {
                 is TransactionProcessEvent.TransactionDeleteSuccess -> {
-                    coroutineScope.launch {
-                        val snackBarRes = scaffoldState.snackbarHostState.showSnackbar(
-                            message = "Transaction Deleted",
-                            actionLabel = "Dismiss"
-                        )
-                        if (
-                            snackBarRes == SnackbarResult.Dismissed ||
-                            snackBarRes == SnackbarResult.ActionPerformed
-                        ) {
-                            //TODO update this to use navigate.up
-                            /**
-                             * This is a work around to ensure that we force
-                             * the previous screen to reload its data in the
-                             * view model
-                             * This work around was neccessary for the home screen
-                             * since it's list of tx does not use a flow and as such
-                             * is not updated in real time
-                             * This will force the view model to be re instantiated
-                             * when the home screen composable is re rendered
-                             * TODO replace the home screen tx list with a flow
-                             * */
-                            val previousRoute =
-                                navController.previousBackStackEntry?.destination?.route
-                            previousRoute?.let {
-                                navController.navigate(it)
-                            }
-
-                        }
-                    }
+                    showConfirmationDialog = true
                 }
                 else -> {}
             }
@@ -177,6 +151,31 @@ fun TransactionDetail(
                     .fillMaxSize()
                     .background(color = scrim),
             ) {
+                if (showConfirmationDialog) {
+                    SuccessDialog(
+                        dismiss = {
+                            showConfirmationDialog = false
+                            //TODO update this to use navigate.up
+                            /**
+                             * This is a work around to ensure that we force
+                             * the previous screen to reload its data in the
+                             * view model
+                             * This work around was neccessary for the home screen
+                             * since it's list of tx does not use a flow and as such
+                             * is not updated in real time
+                             * This will force the view model to be re instantiated
+                             * when the home screen composable is re rendered
+                             * TODO replace the home screen tx list with a flow
+                             * */
+                            val previousRoute =
+                                navController.previousBackStackEntry?.destination?.route
+                            previousRoute?.let {
+                                navController.navigate(it)
+                            }
+                        },
+                        message = "Transaction deleted successfully"
+                    )
+                }
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -295,7 +294,7 @@ fun TransactionDetail(
                         )
                         Spacer(modifier = Modifier.height(5.dp))
                         Text(
-                            text = state.transaction?.isRecurring.toString() ?: "--",
+                            text = state.transaction?.isRecurring.toString(),
                             fontSize = 20.sp,
                             color = Color.Black,
                         )
@@ -313,7 +312,9 @@ fun TransactionDetail(
                         }
                     }
                     Button(
-                        onClick = {},
+                        onClick = {
+                            showConfirmationDialog = true
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(56.dp),
@@ -331,5 +332,4 @@ fun TransactionDetail(
             }
         }
     }
-
 }

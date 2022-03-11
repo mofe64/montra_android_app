@@ -55,7 +55,8 @@ fun TransactionTile(
                 Icon(
                     painter = painterResource(id = icon),
                     contentDescription = "icon",
-                    tint = colorPair.second
+                    tint = colorPair.second,
+                    modifier = Modifier.defaultMinSize(minHeight = 40.dp, minWidth = 40.dp)
                 )
             }
             Spacer(modifier = Modifier.width(10.dp))
