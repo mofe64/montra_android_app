@@ -5,8 +5,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nubari.montra.domain.usecases.transaction.TransactionUseCases
+import com.nubari.montra.transaction.events.TransactionDetailEvent
+import com.nubari.montra.transaction.events.TransactionProcessEvent
 import com.nubari.montra.transaction.state.TransactionDetailState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,6 +28,9 @@ class TransactionDetailViewModel @Inject constructor(
 
     val state = _state
 
+    private val _eventFlow = MutableSharedFlow<TransactionProcessEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
+
     init {
         savedStateHandle.get<String>("txId")?.let {
             if (it.isNotEmpty()) {
@@ -37,6 +44,25 @@ class TransactionDetailViewModel @Inject constructor(
                         }
                 }
             }
+        }
+    }
+
+    fun createEvent(event: TransactionDetailEvent) {
+        onEvent(event)
+    }
+
+    private fun onEvent(event: TransactionDetailEvent) {
+        when (event) {
+            is TransactionDetailEvent.DeleteTransaction -> {
+                viewModelScope.launch {
+                    transactionUseCases.deleteTransaction(event.tx)
+                    _eventFlow.emit(
+                        TransactionProcessEvent.TransactionDeleteSuccess
+                    )
+                }
+
+            }
+
         }
     }
 }

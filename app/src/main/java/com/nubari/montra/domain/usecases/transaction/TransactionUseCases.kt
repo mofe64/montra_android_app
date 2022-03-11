@@ -5,4 +5,5 @@ data class TransactionUseCases(
     val getTransactionsForAccount: GetTransactionsForAccount,
     val getTransactionsForAccountWithinDateRange: GetTransactionsForAccountWithinDateRange,
     val getTransactionById: GetTransactionById,
+    val deleteTransaction: DeleteTransaction
 )

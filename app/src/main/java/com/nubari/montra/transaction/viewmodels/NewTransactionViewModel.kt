@@ -27,7 +27,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NewTransactionViewModel @Inject constructor(
-    private val categoryUseCases: CategoryUseCases,
+    categoryUseCases: CategoryUseCases,
     private val transactionUseCases: TransactionUseCases
 ) : ViewModel() {
     private val _state = mutableStateOf(
@@ -231,7 +231,7 @@ class NewTransactionViewModel @Inject constructor(
                 )
             )
         }
-        val cleanedAmount = Util.cleanNumberInput(state.value.amount.text);
+        val cleanedAmount = Util.cleanNumberInput(state.value.amount.text)
         val amountValidity = Util.validateInput(cleanedAmount, InputType.NUMBER)
         if (!amountValidity.first) {
             inputValid = false

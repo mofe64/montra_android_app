@@ -102,6 +102,7 @@ class TransactionReportViewModel @Inject constructor(
                 totalIncome = totalMonthIncome,
                 totalExpense = totalMonthExpenses
             )
+//            val categoryData = emptyList<CategoryBreakdown>()
             _state.value = state.value.copy(
                 monthExpenses = totalMonthExpenses.toPlainString(),
                 monthIncome = totalMonthIncome.toPlainString(),
@@ -186,9 +187,10 @@ class TransactionReportViewModel @Inject constructor(
         val categories = mutableListOf<String>()
         val breakdownList = mutableListOf<CategoryBreakdown>()
         tx.forEach {
-            if (!categories.contains(it.categoryName)) {
-                Log.i("$tag-debug", "not found adding ${it.categoryName}")
-                categories.add(it.categoryName)
+            val categoryDesignation = it.categoryName + "-" +it.type
+            if (!categories.contains(categoryDesignation)) {
+                Log.i("$tag-debug", "not found adding $categoryDesignation")
+                categories.add(categoryDesignation)
                 if (it.type == TransactionType.INCOME) {
                     val incomeBreakdown = CategoryBreakdown(
                         categoryName = it.categoryName,
@@ -207,6 +209,9 @@ class TransactionReportViewModel @Inject constructor(
                 }
             } else {
                 val breakdown = if (it.type == TransactionType.INCOME) {
+                    Log.i("debug", it.categoryName)
+                    Log.i("debug", it.toString())
+                    Log.i("debug", breakdownList.toString())
                     breakdownList.first { bd -> bd.categoryName == it.categoryName && bd.txType == TransactionType.INCOME }
                 } else {
                     breakdownList.first { bd -> bd.categoryName == it.categoryName && bd.txType == TransactionType.EXPENSE }

@@ -78,6 +78,7 @@ fun NewTransaction(
                     )
                 }
                 is TransactionProcessEvent.TransactionCreationFail -> {}
+                else -> {}
             }
 
         }

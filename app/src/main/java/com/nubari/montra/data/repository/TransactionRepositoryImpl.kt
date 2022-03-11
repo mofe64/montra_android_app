@@ -18,6 +18,10 @@ class TransactionRepositoryImpl(
         return transactionDao.getTransaction(id = txId)
     }
 
+    override suspend fun deleteTransaction(tx: Transaction) {
+        transactionDao.deleteTransaction(tx)
+    }
+
     override fun getTransactionsOnAccount(id: String): Flow<List<Transaction>> {
         return transactionDao.getAllTransactionsForAccount(accountId = id)
     }

@@ -148,6 +148,9 @@ object AppModule {
             ),
             GetTransactionById(
                 repository = transactionRepository
+            ),
+            DeleteTransaction(
+                repository = transactionRepository
             )
         )
     }
