@@ -48,6 +48,24 @@ fun TransactionReportPreview(
         animationSpec = tween(durationMillis = 100, easing = LinearEasing)
     )
     val state = viewModel.state.value
+
+    val completeNavigationFunction = {
+        navController.currentBackStackEntry?.let { navBackStackEntry ->
+            if (navBackStackEntry.destination.route === Destination.TransactionReportPreview.route) {
+                navController.backQueue.remove(navBackStackEntry)
+            }
+            val x = navBackStackEntry.destination.hierarchy
+            x.iterator().forEach {
+                Log.i(
+                    "Transaction-report-preview-back-stack-hierarchy",
+                    it.route ?: "empty"
+                )
+            }
+        }
+        navController.navigate(
+            Destination.TransactionReport.route
+        )
+    }
     Scaffold {
         BoxWithConstraints(
             modifier = Modifier
@@ -92,21 +110,7 @@ fun TransactionReportPreview(
                     onStepChanged = { currentStep.value = it },
                     isPaused = isPaused.value,
                     onComplete = {
-                        navController.currentBackStackEntry?.let { navBackStackEntry ->
-                            if (navBackStackEntry.destination.route === Destination.TransactionReportPreview.route) {
-                                navController.backQueue.remove(navBackStackEntry)
-                            }
-                            val x = navBackStackEntry.destination.hierarchy
-                            x.iterator().forEach {
-                                Log.i(
-                                    "Transaction-report-preview-back-stack-hierarchy",
-                                    it.route ?: "empty"
-                                )
-                            }
-                        }
-                        navController.navigate(
-                            Destination.TransactionReport.route
-                        )
+                        completeNavigationFunction()
                     }
                 )
                 when (currentStep.value) {
@@ -139,7 +143,7 @@ fun TransactionReportPreview(
                             isBudgetBreakDown = false,
                             isIncomeExpenseBreakDown = false,
                             isRandomQuote = true,
-                            navController = navController,
+                            navigationFunction = { completeNavigationFunction() },
                             quote = state.randomQuote
                         )
                     }

@@ -12,17 +12,11 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import androidx.navigation.navigation
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.nubari.montra.accountsetup.screens.AccountSetupComplete
-import com.nubari.montra.accountsetup.screens.AccountSetupPrompt
-import com.nubari.montra.accountsetup.screens.SetupAccount
-import com.nubari.montra.budget.screens.Budget
-import com.nubari.montra.home.screens.Home
 import com.nubari.montra.navigation.destinations.Destination
 import com.nubari.montra.navigation.destinations.PrimaryDestination
+import com.nubari.montra.navigation.navgraphs.*
 import com.nubari.montra.preferences
-import com.nubari.montra.profile.screens.Profile
 import com.nubari.montra.transaction.screens.*
 import com.nubari.montra.transaction.viewmodels.TransactionReportViewModel
 
@@ -40,11 +34,15 @@ fun NavigationHost(
     if (!userHasOnboarded) {
         startDestination = PrimaryDestination.AccountSetup.rootRoute
     }
-    val transactionReportViewModel : TransactionReportViewModel = hiltViewModel()
+    val transactionReportViewModel: TransactionReportViewModel = hiltViewModel()
     NavHost(
         navController = navController,
         startDestination = startDestination,
     ) {
+        /**
+         * The New Transaction route is a global destination and
+         * should not be bound to any navigation graph
+         * **/
         composable(
             route = Destination.NewTransaction.route + "?isExpense={isExpense}",
             arguments = listOf(
@@ -62,115 +60,18 @@ fun NavigationHost(
             val isExpense = it.arguments?.getBoolean("isExpense") ?: false
             NewTransaction(navController = navController, isExpense = isExpense)
         }
-        navigation(
-            startDestination = PrimaryDestination.AccountSetup.startRoute,
-            route = PrimaryDestination.AccountSetup.rootRoute
-        ) {
-            composable(PrimaryDestination.AccountSetup.startRoute) {
-                LaunchedEffect(Unit) {
-                    bottomBarState.value = false
-                }
-                AccountSetupPrompt(navController = navController)
-            }
-            composable(Destination.AccountSetupFormDestination.route) {
-                LaunchedEffect(Unit) {
-                    bottomBarState.value = false
-                }
-                SetupAccount(navController = navController)
-            }
-            composable(Destination.AccountSetupCompleteDestination.route) {
-                LaunchedEffect(Unit) {
-                    bottomBarState.value = false
-                }
-                AccountSetupComplete(navController = navController)
-            }
-        }
+        accountSetupNavGraph(navController = navController, bottomBarState = bottomBarState)
 
-        navigation(
-            startDestination = PrimaryDestination.Home.startRoute,
-            route = PrimaryDestination.Home.rootRoute
-        ) {
-            composable(PrimaryDestination.Home.startRoute) {
-                LaunchedEffect(Unit) {
-                    bottomBarState.value = true
-                }
-                Home(navController = navController)
-            }
-        }
+        homeNavGraph(navController = navController, bottomBarState = bottomBarState)
 
-        navigation(
-            startDestination = PrimaryDestination.Transaction.startRoute,
-            route = PrimaryDestination.Transaction.rootRoute
-        ) {
+        transactionNavGraph(
+            navController = navController,
+            bottomBarState = bottomBarState,
+            transactionReportViewModel = transactionReportViewModel
+        )
 
-            composable(PrimaryDestination.Transaction.startRoute) {
-                LaunchedEffect(Unit) {
-                    bottomBarState.value = true
-                }
-                Transaction(
-                    navController = navController
-                )
-            }
-            composable(Destination.TransactionReportPreview.route) {
-                LaunchedEffect(Unit) {
-                    bottomBarState.value = false
-                }
-                TransactionReportPreview(
-                    navController = navController,
-                    viewModel = transactionReportViewModel
-                )
-            }
-            composable(Destination.TransactionReport.route) {
-                LaunchedEffect(Unit) {
-                    bottomBarState.value = true
-                }
-                TransactionReport(
-                    navController = navController,
-                    viewModel = transactionReportViewModel,
-                )
-            }
-            composable(
-               route= Destination.TransactionDetail.route + "?txId={txId}",
-                arguments = listOf(
-                    navArgument(
-                        name = "txId"
-                    ) {
-                        type = NavType.StringType
-                        defaultValue = ""
-                    }
-                )
-            ) {
-                LaunchedEffect(Unit) {
-                    bottomBarState.value = false
-                }
-                TransactionDetail(
-                    navController = navController
-                )
-            }
-        }
+        budgetNavGraph(navController = navController, bottomBarState = bottomBarState)
 
-        navigation(
-            startDestination = PrimaryDestination.Budget.startRoute,
-            route = PrimaryDestination.Budget.rootRoute
-        ) {
-            composable(PrimaryDestination.Budget.startRoute) {
-                LaunchedEffect(Unit) {
-                    bottomBarState.value = true
-                }
-                Budget()
-            }
-        }
-
-        navigation(
-            startDestination = PrimaryDestination.Profile.startRoute,
-            route = PrimaryDestination.Profile.rootRoute
-        ) {
-            composable(PrimaryDestination.Profile.startRoute) {
-                LaunchedEffect(Unit) {
-                    bottomBarState.value = true
-                }
-                Profile()
-            }
-        }
+        profileNavGraph(navController = navController, bottomBarState = bottomBarState)
     }
 }

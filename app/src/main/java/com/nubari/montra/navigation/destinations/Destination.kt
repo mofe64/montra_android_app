@@ -15,6 +15,12 @@ sealed class Destination(val name: String, val route: String) {
     object AccountSetupCompleteDestination :
         Destination(name = "account setup complete", route = "account_setup_complete")
 
+    object Home : Destination(name = "home", route = "home")
+    object Transactions : Destination(name = "transactions", route = "transactions")
+    object Budget : Destination(name = "budget", route = "budget")
+    object Profile : Destination(name = "profile", route = "profile")
+
+
     object NewTransaction : Destination(name = "new transaction", route = "new_transaction")
     object TransactionReportPreview :
         Destination(name = "transaction report preview", route = "transaction_report_preview")

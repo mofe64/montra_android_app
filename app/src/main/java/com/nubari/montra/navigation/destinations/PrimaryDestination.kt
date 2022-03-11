@@ -17,28 +17,28 @@ sealed class PrimaryDestination(
 
     object Home : PrimaryDestination(
         name = "home",
-        startRoute = "home",
+        startRoute = Destination.Home.route,
         rootRoute = "home_root",
         icon = R.drawable.home
     )
 
     object Transaction : PrimaryDestination(
         name = "transaction",
-        startRoute = "transaction",
+        startRoute = Destination.Transactions.route,
         rootRoute = "transaction_root",
         icon = R.drawable.transaction
     )
 
     object Budget : PrimaryDestination(
         name = "budget",
-        startRoute = "budget",
+        startRoute = Destination.Budget.route,
         rootRoute = "budget_root",
         icon = R.drawable.pie_chart
     )
 
     object Profile : PrimaryDestination(
         name = "profile",
-        startRoute = "profile",
+        startRoute = Destination.Profile.route,
         rootRoute = "profile_root",
         icon = R.drawable.user
     )

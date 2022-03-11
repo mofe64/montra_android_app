@@ -1,5 +1,7 @@
 package com.nubari.montra.general.components.app
 
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -20,6 +22,7 @@ import com.google.accompanist.insets.ui.BottomNavigation
 import com.nubari.montra.navigation.destinations.PrimaryDestination
 import com.nubari.montra.navigation.destinations.primaryDestinations
 
+@SuppressLint("LongLogTag")
 @Composable
 fun BottomNavBar(
     modifier: Modifier = Modifier,
@@ -55,6 +58,7 @@ fun BottomNavBar(
                         destination.rootRoute == it.route
                     } == true,
                     onClick = {
+                        Log.i("Main-App-Bar-nav-tab-click", destination.startRoute)
                         navController.navigate(destination.startRoute) {
                             launchSingleTop = true
                             restoreState = true

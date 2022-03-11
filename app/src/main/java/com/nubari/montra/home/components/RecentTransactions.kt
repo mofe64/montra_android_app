@@ -8,6 +8,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -22,14 +23,6 @@ import com.nubari.montra.transaction.components.transactions.TransactionTile
 import com.nubari.montra.ui.theme.*
 
 val icons = Util.iconMap
-//val colors = listOf(
-//    Pair(yellow20, yellow100),
-//    Pair(violet20, violet100),
-//    Pair(red20, red100),
-//    Pair(blue20, blue100),
-//    Pair(green20, green100)
-//)
-
 @Composable
 fun RecentTransactions(
     recentTx: List<Transaction>,
@@ -52,18 +45,14 @@ fun RecentTransactions(
                 fontSize = 18.sp
             )
             TextButton(
-                onClick = {
-                    navController.navigate(
-                        PrimaryDestination.Transaction.startRoute
-                    )
-                },
+                onClick = {},
                 colors = ButtonDefaults.buttonColors(
-                    backgroundColor = violet40,
+                    backgroundColor = Color.Transparent,
                     contentColor = violet100,
                 ),
                 shape = RoundedCornerShape(20),
             ) {
-                Text(text = "See All")
+                Text(text = "")
             }
 
         }

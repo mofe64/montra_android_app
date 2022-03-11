@@ -17,7 +17,7 @@ import com.nubari.montra.ui.theme.violet100
 
 @Composable
 fun RandomQuote(
-    navController: NavController? = null,
+    navFunction: () -> Unit,
     quote: String,
     author: String
 ) {
@@ -43,7 +43,7 @@ fun RandomQuote(
         Spacer(modifier = Modifier.fillMaxHeight(.8f))
         Button(
             onClick = {
-                navController?.navigate(Destination.TransactionReport.route)
+                navFunction()
             },
             modifier = Modifier
                 .fillMaxWidth()

@@ -65,6 +65,7 @@ fun Transaction(
                     )
                 },
                 backgroundColor = Color.White,
+                backIconColor = Color.Black
             ) {
                 IconButton(onClick = {
                     coroutineScope.launch {
