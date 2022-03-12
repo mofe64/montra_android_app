@@ -4,14 +4,8 @@ import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.nubari.montra.data.local.dao.AccountDao
-import com.nubari.montra.data.local.dao.CategoryDao
-import com.nubari.montra.data.local.dao.SubscriptionDao
-import com.nubari.montra.data.local.dao.TransactionDao
-import com.nubari.montra.data.local.models.Account
-import com.nubari.montra.data.local.models.Category
-import com.nubari.montra.data.local.models.Subscription
-import com.nubari.montra.data.local.models.Transaction
+import com.nubari.montra.data.local.dao.*
+import com.nubari.montra.data.local.models.*
 import com.nubari.montra.data.local.typeconverters.ApplicationTypeConverters
 
 @Database(
@@ -19,12 +13,14 @@ import com.nubari.montra.data.local.typeconverters.ApplicationTypeConverters
         Account::class,
         Transaction::class,
         Subscription::class,
-        Category::class
+        Category::class,
+        Budget::class,
     ],
-    version = 6,
+    version = 7,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
-        AutoMigration(from=5, to=6)
+        AutoMigration(from = 5, to = 6),
+        AutoMigration(from = 6, to = 7)
     ]
 )
 @TypeConverters(ApplicationTypeConverters::class)
@@ -33,6 +29,7 @@ abstract class MontraDatabase : RoomDatabase() {
     abstract val transactionDao: TransactionDao
     abstract val categoryDao: CategoryDao
     abstract val subscriptionDao: SubscriptionDao
+    abstract val budgetDao : BudgetDao
 
     companion object {
         const val DATABASE_NAME = "montra_db"

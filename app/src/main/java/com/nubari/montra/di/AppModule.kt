@@ -8,14 +8,8 @@ import com.nubari.montra.data.local.migrations.MIGRATION_3_4
 import com.nubari.montra.data.local.migrations.MIGRATION_4_5
 import com.nubari.montra.data.remote.AuthInterceptor
 import com.nubari.montra.data.remote.MontraApi
-import com.nubari.montra.data.repository.AccountRepositoryImpl
-import com.nubari.montra.data.repository.CategoryRepositoryImpl
-import com.nubari.montra.data.repository.TransactionRepositoryImpl
-import com.nubari.montra.data.repository.UserRepositoryImpl
-import com.nubari.montra.domain.repository.AccountRepository
-import com.nubari.montra.domain.repository.CategoryRepository
-import com.nubari.montra.domain.repository.TransactionRepository
-import com.nubari.montra.domain.repository.UserRepository
+import com.nubari.montra.data.repository.*
+import com.nubari.montra.domain.repository.*
 import com.nubari.montra.domain.usecases.account.GetAccountTransactions
 import com.nubari.montra.domain.usecases.account.AccountUseCases
 import com.nubari.montra.domain.usecases.account.CreateAccount
@@ -97,6 +91,12 @@ object AppModule {
     @Singleton
     fun provideTransactionRepository(db: MontraDatabase): TransactionRepository {
         return TransactionRepositoryImpl(transactionDao = db.transactionDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideBudgetRepository(db: MontraDatabase) : BudgetRepository {
+        return BudgetRepositoryImpl(budgetDao = db.budgetDao)
     }
 
     @Provides
