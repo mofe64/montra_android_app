@@ -78,6 +78,21 @@ object Util {
         Pair(blue20, blue100),
         Pair(green20, green100)
     )
+    val months = listOf(
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+    )
 }
 
-fun BigDecimal.setPrecision(newPrecision: Int) = BigDecimal(toPlainString(), MathContext(newPrecision,RoundingMode.HALF_UP))
+fun BigDecimal.setPrecision(newPrecision: Int) =
+    BigDecimal(toPlainString(), MathContext(newPrecision, RoundingMode.HALF_UP))

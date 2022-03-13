@@ -19,6 +19,7 @@ import com.nubari.montra.domain.usecases.auth.AuthenticationUseCases
 import com.nubari.montra.domain.usecases.auth.Login
 import com.nubari.montra.domain.usecases.auth.Register
 import com.nubari.montra.domain.usecases.auth.VerifyEmail
+import com.nubari.montra.domain.usecases.budget.*
 import com.nubari.montra.domain.usecases.category.CategoryUseCases
 import com.nubari.montra.domain.usecases.category.GetAllCategories
 import com.nubari.montra.domain.usecases.transaction.*
@@ -95,7 +96,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideBudgetRepository(db: MontraDatabase) : BudgetRepository {
+    fun provideBudgetRepository(db: MontraDatabase): BudgetRepository {
         return BudgetRepositoryImpl(budgetDao = db.budgetDao)
     }
 
@@ -151,6 +152,30 @@ object AppModule {
             ),
             DeleteTransaction(
                 repository = transactionRepository
+            )
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideBudgetUseCases(
+        budgetRepository: BudgetRepository
+    ): BudgetUseCases {
+        return BudgetUseCases(
+            createBudget = CreateBudget(
+                repository = budgetRepository
+            ),
+            getBudgetByID = GetBudgetByID(
+                repository = budgetRepository
+            ),
+            getBudgets = GetBudgets(
+                repository = budgetRepository
+            ),
+            deleteBudget = DeleteBudget(
+                repository = budgetRepository
+            ),
+            updateBudgetSpend = UpdateBudgetSpend(
+                repository = budgetRepository
             )
         )
     }

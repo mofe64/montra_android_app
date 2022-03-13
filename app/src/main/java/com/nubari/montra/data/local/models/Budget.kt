@@ -18,7 +18,7 @@ data class Budget(
     @ColumnInfo(name = "threshold")
     val threshold: Int,
     @ColumnInfo(name = "exceeded")
-    val exceeded: Boolean,
+    val exceeded: Boolean = false,
     @ColumnInfo(name = "budget_start_date")
     val startDate: Date,
     @ColumnInfo(name = "budget_limit")

@@ -14,46 +14,42 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.insets.ui.Scaffold
+import com.nubari.montra.budget.events.BudgetsEvent
+import com.nubari.montra.budget.viewmodels.BudgetViewModel
+import com.nubari.montra.general.util.Util.months
 import com.nubari.montra.navigation.destinations.Destination
 import com.nubari.montra.ui.theme.violet100
-import java.util.*
+
 
 @Composable
 fun Budget(
     navController: NavController,
+    budgetsViewModel: BudgetViewModel = hiltViewModel()
 ) {
-    val months = listOf(
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December"
-    )
-    val calender = Calendar.getInstance(Locale.getDefault())
-    val index = calender.get(Calendar.MONTH)
-    var monthIndex by remember {
-        mutableStateOf(index)
-    }
-    var threshold by remember {
-        mutableStateOf(0f)
-    }
+    val state = budgetsViewModel.state.value
+    val monthIndex = state.currentMonth
+
     val incrementIndex = {
         if (monthIndex < months.size - 1) {
-            monthIndex++
+            val newMonth = monthIndex + 1
+            budgetsViewModel.createEvent(
+                BudgetsEvent.ChangeMonth(
+                    newMonth = newMonth
+                )
+            )
         }
     }
     val decrementIndex = {
         if (monthIndex > 0) {
-            monthIndex--
+            val newMonth = monthIndex - 1
+            budgetsViewModel.createEvent(
+                BudgetsEvent.ChangeMonth(
+                    newMonth = newMonth
+                )
+            )
 
         }
     }
@@ -90,8 +86,8 @@ fun Budget(
                         contentDescription = "Previous Month",
                         tint = Color.White,
                         modifier = Modifier
-                            .width(56.dp)
-                            .height(56.dp)
+                            .width(40.dp)
+                            .height(40.dp)
                     )
                 }
                 Text(
@@ -109,8 +105,8 @@ fun Budget(
                         contentDescription = "Next Month",
                         tint = Color.White,
                         modifier = Modifier
-                            .width(56.dp)
-                            .height(56.dp)
+                            .width(40.dp)
+                            .height(40.dp)
                     )
                 }
             }
@@ -134,19 +130,22 @@ fun Budget(
                             end = 10.dp
                         ),
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .fillMaxHeight(.8f),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = "You do not have a budget set for this month," +
-                                    " create one to stay in control of your finances",
-                            fontSize = 16.sp,
-                            textAlign = TextAlign.Center
-                        )
+                    if (state.monthsBudgets.isEmpty()) {
+                        NoBudgetSection()
+                    } else {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .fillMaxHeight(.8f),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = "Some budgets",
+                                fontSize = 16.sp,
+                                textAlign = TextAlign.Center
+                            )
+                        }
                     }
                     Button(
                         onClick = {
@@ -172,4 +171,23 @@ fun Budget(
         }
     }
 
+
+}
+
+@Composable
+fun NoBudgetSection() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(.8f),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "You do not have a budget set for this month," +
+                    " create one to stay in control of your finances",
+            fontSize = 16.sp,
+            textAlign = TextAlign.Center
+        )
+    }
 }

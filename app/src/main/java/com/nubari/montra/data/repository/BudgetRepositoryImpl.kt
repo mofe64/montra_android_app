@@ -4,6 +4,7 @@ import com.nubari.montra.data.local.dao.BudgetDao
 import com.nubari.montra.data.local.models.Budget
 import com.nubari.montra.domain.repository.BudgetRepository
 import kotlinx.coroutines.flow.Flow
+import java.math.BigDecimal
 
 class BudgetRepositoryImpl(
     private val budgetDao: BudgetDao
@@ -26,5 +27,9 @@ class BudgetRepositoryImpl(
 
     override suspend fun updateBudget(bd: Budget) {
         budgetDao.updateBudget(budget = bd)
+    }
+
+    override suspend fun updateBudgetSpend(spend: BigDecimal, id: String) {
+        budgetDao.updateBudgetSpend(spend = spend, id = id)
     }
 }

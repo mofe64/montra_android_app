@@ -13,6 +13,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.nubari.montra.R
 import com.nubari.montra.general.components.app.MainAppBar
 import com.nubari.montra.general.components.input.DropDown
+import com.nubari.montra.general.util.Util.months
 import com.nubari.montra.home.components.HomeBanner
 import com.nubari.montra.home.components.RecentTransactions
 import com.nubari.montra.home.components.SpendingFrequency
@@ -31,20 +32,7 @@ fun Home(
     val scaffoldState = rememberScaffoldState()
     val state = homeViewModel.state.value
 
-    val months = listOf(
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December"
-    )
+
     val calender = Calendar.getInstance(Locale.getDefault())
     Scaffold(
         scaffoldState = scaffoldState,
