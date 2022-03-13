@@ -1,5 +1,6 @@
 package com.nubari.montra.transaction.state
 
+import com.nubari.montra.data.local.models.Budget
 import com.nubari.montra.data.local.models.enums.TransactionFrequency
 import com.nubari.montra.general.state.InputState
 import com.nubari.montra.general.util.InputType
@@ -17,5 +18,6 @@ data class TransactionFormState(
     val isRecurring: Boolean = false,
     val isProcessing: Boolean = false,
     val recurringFrequency: InputState = InputState(type = InputType.TEXT),
-    val frequencies: List<TransactionFrequency> = TransactionFrequency.values().toList()
+    val frequencies: List<TransactionFrequency> = TransactionFrequency.values().toList(),
+    val userBudgets: List<Budget> = emptyList()
 )

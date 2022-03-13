@@ -6,7 +6,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nubari.montra.data.local.models.Transaction
+import com.nubari.montra.data.local.models.enums.BudgetType
 import com.nubari.montra.data.local.models.enums.TransactionFrequency
+import com.nubari.montra.data.local.models.enums.TransactionType
+import com.nubari.montra.domain.usecases.budget.BudgetUseCases
 import com.nubari.montra.domain.usecases.category.CategoryUseCases
 import com.nubari.montra.domain.usecases.transaction.TransactionUseCases
 import com.nubari.montra.general.util.InputType
@@ -27,8 +30,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NewTransactionViewModel @Inject constructor(
-    categoryUseCases: CategoryUseCases,
-    private val transactionUseCases: TransactionUseCases
+    private val categoryUseCases: CategoryUseCases,
+    private val transactionUseCases: TransactionUseCases,
+    private val budgetUseCases: BudgetUseCases
 ) : ViewModel() {
     private val _state = mutableStateOf(
         TransactionFormState(
@@ -42,6 +46,11 @@ class NewTransactionViewModel @Inject constructor(
     val eventFlow = _eventFlow.asSharedFlow()
 
     init {
+        getAllCategories()
+        getUserBudgets()
+    }
+
+    private fun getAllCategories() {
         categoryUseCases.getAllCategories()
             .onEach {
                 val categoryNameIdMap = mutableMapOf<String, String>()
@@ -52,6 +61,15 @@ class NewTransactionViewModel @Inject constructor(
                     categories = categoryNameIdMap
                 )
             }.launchIn(viewModelScope)
+    }
+
+    //TODO update this to get all budgets belong to account not all budgets
+    private fun getUserBudgets() {
+        budgetUseCases.getBudgets().onEach {
+            _state.value = state.value.copy(
+                userBudgets = it
+            )
+        }.launchIn(viewModelScope)
     }
 
     fun createEvent(event: TransactionFormEvent) {
@@ -173,6 +191,7 @@ class NewTransactionViewModel @Inject constructor(
                     isProcessing = true
                 )
 
+                val amount = BigDecimal(Util.cleanNumberInput(event.amount))
                 viewModelScope.launch {
                     val tx = Transaction(
                         id = UUID.randomUUID().toString(),
@@ -180,7 +199,7 @@ class NewTransactionViewModel @Inject constructor(
                         categoryId = categoryId,
                         date = Date(),
                         type = event.type,
-                        amount = BigDecimal(Util.cleanNumberInput(event.amount)),
+                        amount = amount,
                         isRecurring = event.repeat,
                         subscriptionId = null,
                         name = event.txName,
@@ -192,6 +211,29 @@ class NewTransactionViewModel @Inject constructor(
                     )
                     Log.i("account-tx", tx.toString())
                     transactionUseCases.createTransaction(tx)
+
+
+                    if (event.type == TransactionType.EXPENSE) {
+                        // get user category budgets
+                        val categoryBudgets = state.value.userBudgets.filter { budget ->
+                            budget.budgetType == BudgetType.CATEGORY
+                        }
+                        if (categoryBudgets.isNotEmpty()) {
+                            // get category budget matching transaction category
+                            val budgetToUpdate = categoryBudgets.filter {
+                                it.categoryName == event.categoryName
+                            }
+                            budgetUseCases.updateBudgetSpend(budgetToUpdate[0].id, amount)
+                        }
+                        // get user general budget if any
+                        val generalBudgets = state.value.userBudgets.filter { budget ->
+                            budget.budgetType == BudgetType.GENERAL
+                        }
+                        if (generalBudgets.isNotEmpty()) {
+                            budgetUseCases.updateBudgetSpend(generalBudgets[0].id, amount)
+                        }
+                    }
+
                     _state.value = state.value.copy(
                         isProcessing = false
                     )

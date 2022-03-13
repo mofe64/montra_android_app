@@ -23,7 +23,7 @@ import com.google.accompanist.insets.ui.Scaffold
 import com.nubari.montra.R
 import com.nubari.montra.data.local.models.enums.TransactionType
 import com.nubari.montra.general.components.app.MainAppBar
-import com.nubari.montra.general.components.dialogs.SuccessDialog
+import com.nubari.montra.general.components.dialogs.CustomDialog
 import com.nubari.montra.transaction.components.transactiondetail.DeleteTransactionConfirmationModal
 import com.nubari.montra.transaction.events.TransactionDetailEvent
 import com.nubari.montra.transaction.events.TransactionProcessEvent
@@ -47,7 +47,7 @@ fun TransactionDetail(
     val state = transactionDetailViewModel.state.value
     val isExpense = state.transaction?.type == TransactionType.EXPENSE
     val coroutineScope = rememberCoroutineScope()
-    var showConfirmationDialog by remember {
+    var showDialog by remember {
         mutableStateOf(false)
     }
 
@@ -71,7 +71,7 @@ fun TransactionDetail(
         transactionDetailViewModel.eventFlow.collectLatest { event ->
             when (event) {
                 is TransactionProcessEvent.TransactionDeleteSuccess -> {
-                    showConfirmationDialog = true
+                    showDialog = true
                 }
                 else -> {}
             }
@@ -151,10 +151,10 @@ fun TransactionDetail(
                     .fillMaxSize()
                     .background(color = scrim),
             ) {
-                if (showConfirmationDialog) {
-                    SuccessDialog(
+                if (showDialog) {
+                    CustomDialog(
                         dismiss = {
-                            showConfirmationDialog = false
+                            showDialog = false
                             //TODO update this to use navigate.up
                             /**
                              * This is a work around to ensure that we force
@@ -313,7 +313,7 @@ fun TransactionDetail(
                     }
                     Button(
                         onClick = {
-                            showConfirmationDialog = true
+                            showDialog = true
                         },
                         modifier = Modifier
                             .fillMaxWidth()

@@ -13,16 +13,19 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.nubari.montra.R
 import com.nubari.montra.ui.theme.green100
+import com.nubari.montra.ui.theme.red100
 
 @Composable
-fun SuccessDialog(
+fun CustomDialog(
     dismiss: () -> Unit,
-    message: String
+    message: String,
+    success: Boolean = true
 ) {
     Dialog(onDismissRequest = {
         dismiss()
@@ -48,11 +51,23 @@ fun SuccessDialog(
                         .clip(CircleShape)
                         .width(56.dp)
                         .height(56.dp)
-                        .background(green100),
+                        .background(
+                            color = if (success) {
+                                green100
+                            } else {
+                                red100
+                            }
+                        ),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_check),
+                        painter = painterResource(
+                            id = if (success) {
+                                R.drawable.ic_check
+                            } else {
+                                R.drawable.ic_error
+                            }
+                        ),
                         contentDescription = "",
                         tint = Color.White
                     )
@@ -61,7 +76,8 @@ fun SuccessDialog(
                 Text(
                     text = message,
                     fontSize = 18.sp,
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
+                    textAlign = TextAlign.Center
                 )
             }
         }

@@ -1,6 +1,7 @@
 package com.nubari.montra.domain.repository
 
 import com.nubari.montra.data.local.models.Budget
+import com.nubari.montra.data.local.models.enums.BudgetType
 import kotlinx.coroutines.flow.Flow
 import java.math.BigDecimal
 
@@ -11,4 +12,6 @@ interface BudgetRepository {
     fun getAllBudgets() : Flow<List<Budget>>
     suspend fun updateBudget(bd: Budget)
     suspend fun updateBudgetSpend(spend: BigDecimal, id: String)
+    suspend fun getBudgetWithCategoryId(categoryId: String) : Budget?
+    suspend fun getBudgetMatchingBudgetType(budgetType: BudgetType) : List<Budget>
 }

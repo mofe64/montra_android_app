@@ -2,6 +2,7 @@ package com.nubari.montra.data.local.dao
 
 import androidx.room.*
 import com.nubari.montra.data.local.models.Budget
+import com.nubari.montra.data.local.models.enums.BudgetType
 import kotlinx.coroutines.flow.Flow
 import java.math.BigDecimal
 
@@ -22,6 +23,12 @@ interface BudgetDao {
 
     @Query("UPDATE budget set budget_spend= :spend WHERE id = :id")
     suspend fun updateBudgetSpend(spend: BigDecimal, id: String)
+
+    @Query("SELECT * FROM Budget where category_id = :categoryId")
+    suspend fun getBudgetWithCategoryId(categoryId: String): Budget?
+
+    @Query("SELECT * FROM BUDGET where budget_type = :budgetType")
+    suspend fun getBudgetByBudgetType(budgetType: BudgetType) : List<Budget>
 
     @Update
     suspend fun updateBudget(budget: Budget)

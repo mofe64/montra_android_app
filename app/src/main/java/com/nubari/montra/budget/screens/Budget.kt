@@ -11,12 +11,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.insets.ui.Scaffold
+import com.nubari.montra.budget.components.BudgetSection
+import com.nubari.montra.budget.components.NoBudgetSection
 import com.nubari.montra.budget.events.BudgetsEvent
 import com.nubari.montra.budget.viewmodels.BudgetViewModel
 import com.nubari.montra.general.util.Util.months
@@ -140,11 +141,7 @@ fun Budget(
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(
-                                text = "Some budgets",
-                                fontSize = 16.sp,
-                                textAlign = TextAlign.Center
-                            )
+                            BudgetSection(budgetList = state.monthsBudgets)
                         }
                     }
                     Button(
@@ -174,20 +171,5 @@ fun Budget(
 
 }
 
-@Composable
-fun NoBudgetSection() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(.8f),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "You do not have a budget set for this month," +
-                    " create one to stay in control of your finances",
-            fontSize = 16.sp,
-            textAlign = TextAlign.Center
-        )
-    }
-}
+
+
