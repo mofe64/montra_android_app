@@ -1,5 +1,6 @@
 package com.nubari.montra.budget.viewmodels
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -8,6 +9,7 @@ import com.nubari.montra.budget.events.BudgetFormEvent
 import com.nubari.montra.budget.events.BudgetProcessEvent
 import com.nubari.montra.budget.state.BudgetFormState
 import com.nubari.montra.data.local.models.Budget
+import com.nubari.montra.data.local.models.Category
 import com.nubari.montra.data.local.models.enums.BudgetType
 import com.nubari.montra.domain.exceptions.BudgetException
 import com.nubari.montra.domain.usecases.budget.BudgetUseCases
@@ -24,6 +26,7 @@ import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.util.*
 import javax.inject.Inject
+import kotlin.NoSuchElementException
 
 @HiltViewModel
 class BudgetFormViewModel @Inject constructor(
@@ -60,6 +63,7 @@ class BudgetFormViewModel @Inject constructor(
                 )
             }
             is BudgetFormEvent.ChangeBudgetType -> {
+                Log.i("yyy", event.budgetType.name)
                 _state.value = state.value.copy(
                     budgetType = event.budgetType
                 )
@@ -86,9 +90,23 @@ class BudgetFormViewModel @Inject constructor(
                 if (!formIsValid) {
                     return
                 }
-                val category = state.value.categories.first {
-                    it.name == state.value.category.text
+                var category: Category = Category("", "", "")
+                try {
+                    category = state.value.categories.first {
+                        it.name == state.value.category.text
+                    }
+                } catch (e: NoSuchElementException) {
+                    if (state.value.budgetType == BudgetType.CATEGORY) {
+                        viewModelScope.launch {
+                            _eventFlow.emit(
+                                BudgetProcessEvent.BudgetCreationFail("Select a Valid Category")
+                            )
+                        }
+                        return
+                    }
+
                 }
+
                 _state.value = state.value.copy(
                     isProcessing = true
                 )
@@ -170,7 +188,7 @@ class BudgetFormViewModel @Inject constructor(
         val match = validCategories.filter {
             it.name == selectedCategory
         }
-        if (match.isEmpty()) {
+        if (match.isEmpty() && state.value.budgetType == BudgetType.CATEGORY) {
             formValid = false
             _state.value = state.value.copy(
                 formValid = false,

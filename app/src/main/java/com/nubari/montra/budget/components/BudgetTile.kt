@@ -29,10 +29,12 @@ import java.math.BigDecimal
 import java.math.MathContext
 import java.math.RoundingMode
 
+@ExperimentalMaterialApi
 @Composable
 fun BudgetTile(
     budget: Budget,
-    modifier: Modifier
+    modifier: Modifier,
+    toDetail: (String) -> Unit
 ) {
     val budgetRemainder = budget.limit.subtract(budget.spend)
     val budgetSpendPercentage = if (budget.exceeded) {
@@ -51,7 +53,7 @@ fun BudgetTile(
         progress.animateTo(
             progressDestination,
             animationSpec = tween(
-                durationMillis = 1000,
+                durationMillis = 500,
                 easing = LinearEasing
             )
         )
@@ -60,7 +62,10 @@ fun BudgetTile(
     Card(
         modifier = modifier.padding(10.dp),
         shape = RoundedCornerShape(10),
-        elevation = 10.dp
+        elevation = 10.dp,
+        onClick = {
+            toDetail(budget.id)
+        }
     ) {
 
         Column(
@@ -111,7 +116,11 @@ fun BudgetTile(
             Spacer(modifier = Modifier.height(10.dp))
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = "Remaining ₦${budgetRemainder.toPlainString()}",
+                    text = if (budget.exceeded) {
+                        "Remaining ₦0"
+                    } else {
+                        "Remaining ₦${budgetRemainder.toPlainString()}"
+                    },
                     fontSize = 25.sp,
                     fontWeight = FontWeight.SemiBold
                 )

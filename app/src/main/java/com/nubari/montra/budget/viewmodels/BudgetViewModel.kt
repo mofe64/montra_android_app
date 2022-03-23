@@ -63,6 +63,6 @@ class BudgetViewModel @Inject constructor(
     private fun filterBudgetsByMonth(budgets: List<Budget>, monthIndex: Int): List<Budget> {
         return budgets.filter {
             it.startDate.month == monthIndex
-        }
+        }.sortedBy { it.categoryName }
     }
 }

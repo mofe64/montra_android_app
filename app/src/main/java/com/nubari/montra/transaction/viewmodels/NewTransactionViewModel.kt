@@ -214,23 +214,41 @@ class NewTransactionViewModel @Inject constructor(
 
 
                     if (event.type == TransactionType.EXPENSE) {
-                        // get user category budgets
+                        /** Get user category budget
+                         *
+                        User can only have one budget per category so we can be sure
+                        that returned list will only have one element**/
                         val categoryBudgets = state.value.userBudgets.filter { budget ->
                             budget.budgetType == BudgetType.CATEGORY
                         }
-                        if (categoryBudgets.isNotEmpty()) {
+                        // FIXME: 23/03/2022 "Hack for genral category crash" 
+                        if (categoryBudgets.isNotEmpty() && event.categoryName != "General" ) {
                             // get category budget matching transaction category
                             val budgetToUpdate = categoryBudgets.filter {
                                 it.categoryName == event.categoryName
                             }
-                            budgetUseCases.updateBudgetSpend(budgetToUpdate[0].id, amount)
+                            val updatedSpend = budgetToUpdate[0].spend.add(amount)
+                            val hasExceededLimit =
+                                budgetToUpdate[0].limit < updatedSpend
+                            budgetUseCases.updateBudgetSpend(
+                                budgetToUpdate[0].id,
+                                exceeded = hasExceededLimit,
+                                updatedSpend
+                            )
                         }
                         // get user general budget if any
                         val generalBudgets = state.value.userBudgets.filter { budget ->
                             budget.budgetType == BudgetType.GENERAL
                         }
+                        val updatedSpend = generalBudgets[0].spend.add(amount)
+                        val hasExceededLimit =
+                            generalBudgets[0].limit < (updatedSpend)
                         if (generalBudgets.isNotEmpty()) {
-                            budgetUseCases.updateBudgetSpend(generalBudgets[0].id, amount)
+                            budgetUseCases.updateBudgetSpend(
+                                generalBudgets[0].id,
+                                exceeded = hasExceededLimit,
+                               updatedSpend
+                            )
                         }
                     }
 

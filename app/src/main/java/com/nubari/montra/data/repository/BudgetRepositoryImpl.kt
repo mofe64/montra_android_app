@@ -9,13 +9,13 @@ import java.math.BigDecimal
 
 class BudgetRepositoryImpl(
     private val budgetDao: BudgetDao
-) : BudgetRepository{
+) : BudgetRepository {
     override suspend fun createBudget(bd: Budget) {
         return budgetDao.createBudget(budget = bd)
     }
 
     override suspend fun getBudgetById(bdId: String): Budget? {
-        return  budgetDao.getBudget(id = bdId)
+        return budgetDao.getBudget(id = bdId)
     }
 
     override suspend fun deleteBudget(bd: Budget) {
@@ -30,8 +30,10 @@ class BudgetRepositoryImpl(
         budgetDao.updateBudget(budget = bd)
     }
 
-    override suspend fun updateBudgetSpend(spend: BigDecimal, id: String) {
-        budgetDao.updateBudgetSpend(spend = spend, id = id)
+
+
+    override suspend fun updateBudgetSpend(spend: BigDecimal, exceeded: Boolean, id: String) {
+        budgetDao.updateBudgetSpend(spend = spend, exceeded = exceeded, id = id)
     }
 
     override suspend fun getBudgetWithCategoryId(categoryId: String): Budget? {

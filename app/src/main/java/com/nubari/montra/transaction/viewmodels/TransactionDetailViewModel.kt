@@ -1,5 +1,6 @@
 package com.nubari.montra.transaction.viewmodels
 
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -26,7 +27,7 @@ class TransactionDetailViewModel @Inject constructor(
         )
     )
 
-    val state = _state
+    val state: State<TransactionDetailState> = _state
 
     private val _eventFlow = MutableSharedFlow<TransactionProcessEvent>()
     val eventFlow = _eventFlow.asSharedFlow()

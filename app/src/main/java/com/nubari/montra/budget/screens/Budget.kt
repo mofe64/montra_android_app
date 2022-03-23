@@ -1,5 +1,6 @@
 package com.nubari.montra.budget.screens
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,6 +26,7 @@ import com.nubari.montra.navigation.destinations.Destination
 import com.nubari.montra.ui.theme.violet100
 
 
+@ExperimentalMaterialApi
 @Composable
 fun Budget(
     navController: NavController,
@@ -141,7 +143,16 @@ fun Budget(
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            BudgetSection(budgetList = state.monthsBudgets)
+                            BudgetSection(
+                                budgetList = state.monthsBudgets,
+                                toDetailFunc = { id ->
+                                    Log.i("yyy", "detail id $id")
+                                    val route = Destination.BudgetDetail.route +
+                                            "?bdId=${id}"
+                                    Log.i("yyy", route)
+                                    navController.navigate(route = route)
+                                }
+                            )
                         }
                     }
                     Button(

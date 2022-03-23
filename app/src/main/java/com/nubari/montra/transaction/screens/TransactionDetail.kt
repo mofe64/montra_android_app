@@ -24,7 +24,7 @@ import com.nubari.montra.R
 import com.nubari.montra.data.local.models.enums.TransactionType
 import com.nubari.montra.general.components.app.MainAppBar
 import com.nubari.montra.general.components.dialogs.CustomDialog
-import com.nubari.montra.transaction.components.transactiondetail.DeleteTransactionConfirmationModal
+import com.nubari.montra.transaction.components.transactiondetail.DeleteConfirmationModal
 import com.nubari.montra.transaction.events.TransactionDetailEvent
 import com.nubari.montra.transaction.events.TransactionProcessEvent
 import com.nubari.montra.transaction.viewmodels.TransactionDetailViewModel
@@ -132,9 +132,11 @@ fun TransactionDetail(
         BottomSheetScaffold(
             scaffoldState = bottomSheetScaffoldState,
             sheetContent = {
-                DeleteTransactionConfirmationModal(
+                DeleteConfirmationModal(
                     dismiss = dismissModal,
-                    delete = deleteTx
+                    delete = deleteTx,
+                    title = "Delete this transaction ?",
+                    subtitle = "Are you sure you want to delete this transaction ?"
                 )
             },
             sheetPeekHeight = 0.dp,

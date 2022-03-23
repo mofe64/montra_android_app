@@ -38,5 +38,6 @@ sealed class Destination(val name: String, val route: String) {
 
     // Budget Destinations
     object BudgetForm : Destination(name = "budget form", route = "budget_form")
+    object BudgetDetail : Destination(name = "budget detail", route = "budget_detail")
 
 }

@@ -34,7 +34,8 @@ class CreateBudget(
                 )
             }
         }
-        /** If there are no existing matching category or general budgets create a new budget **/
+        /**If there are no existing matching category or
+         *  general budgets create a new budget**/
         repository.createBudget(bd = budget)
     }
 }

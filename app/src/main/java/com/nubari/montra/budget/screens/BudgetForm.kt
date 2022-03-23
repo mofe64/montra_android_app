@@ -67,6 +67,7 @@ fun BudgetForm(
                     showDialog = true
                     dialogMessage = event.message
                 }
+                else -> {}
             }
         }
     }
@@ -99,7 +100,11 @@ fun BudgetForm(
                 Box(modifier = Modifier.fillMaxHeight(.1f))
             }
             if (showDialog) {
-                CustomDialog(dismiss = { showDialog = false }, message = dialogMessage, success = false)
+                CustomDialog(
+                    dismiss = { showDialog = false },
+                    message = dialogMessage,
+                    success = false
+                )
             }
             Box(
                 modifier = Modifier

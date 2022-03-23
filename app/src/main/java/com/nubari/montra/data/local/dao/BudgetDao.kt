@@ -21,14 +21,14 @@ interface BudgetDao {
     @Query("SELECT * FROM BUDGET WHERE id = :id")
     suspend fun getBudget(id: String): Budget?
 
-    @Query("UPDATE budget set budget_spend= :spend WHERE id = :id")
-    suspend fun updateBudgetSpend(spend: BigDecimal, id: String)
+    @Query("UPDATE budget set budget_spend= :spend, exceeded = :exceeded WHERE id = :id")
+    suspend fun updateBudgetSpend(spend: BigDecimal, exceeded: Boolean, id: String)
 
     @Query("SELECT * FROM Budget where category_id = :categoryId")
     suspend fun getBudgetWithCategoryId(categoryId: String): Budget?
 
     @Query("SELECT * FROM BUDGET where budget_type = :budgetType")
-    suspend fun getBudgetByBudgetType(budgetType: BudgetType) : List<Budget>
+    suspend fun getBudgetByBudgetType(budgetType: BudgetType): List<Budget>
 
     @Update
     suspend fun updateBudget(budget: Budget)

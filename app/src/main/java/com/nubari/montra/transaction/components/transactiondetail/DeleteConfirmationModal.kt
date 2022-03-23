@@ -15,9 +15,11 @@ import androidx.compose.ui.unit.sp
 import com.nubari.montra.ui.theme.*
 
 @Composable
-fun DeleteTransactionConfirmationModal(
+fun DeleteConfirmationModal(
     dismiss: () -> Unit,
-    delete: () -> Unit
+    delete: () -> Unit,
+    title: String,
+    subtitle: String
 ) {
     Box(
         Modifier
@@ -37,13 +39,13 @@ fun DeleteTransactionConfirmationModal(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Delete this transaction",
+                    text = title,
                     fontSize = 25.sp,
                     fontWeight = FontWeight.SemiBold
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
-                    text = "Are you sure you want to delete this transaction?",
+                    text = subtitle,
                     color = light20,
                     fontSize = 16.sp
                 )
