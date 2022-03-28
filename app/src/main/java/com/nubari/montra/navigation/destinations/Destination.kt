@@ -40,4 +40,17 @@ sealed class Destination(val name: String, val route: String) {
     object BudgetForm : Destination(name = "budget form", route = "budget_form")
     object BudgetDetail : Destination(name = "budget detail", route = "budget_detail")
 
+    object UserAccounts : Destination(name = "user accounts", route = "user_accounts")
+    object AllSettings : Destination(name = "all settings", route = "all_settings")
+    object CurrencySettings : Destination(name = "currency settings", route = "currency_settings")
+    object LanguageSettings : Destination(name = "language settings", route = "language_settings")
+    object NotificationSettings :
+        Destination(name = "notification settings", route = "notification_settings")
+
+    object ExportDataForm :
+        Destination(name = "export data form", route = "export_data_form")
+
+    object ExportDataSuccess :
+        Destination("export data success", route = "export_data_success")
+
 }

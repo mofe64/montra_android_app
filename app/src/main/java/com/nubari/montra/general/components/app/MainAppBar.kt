@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -24,6 +25,7 @@ fun MainAppBar(
     navController: NavController,
     backgroundColor: Color = Color.White,
     backIconColor: Color = Color.White,
+    elevation: Dp = 0.dp,
     title: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {}
 ) {
@@ -79,7 +81,7 @@ fun MainAppBar(
             }
         },
         backgroundColor = backgroundColor,
-        elevation = 0.dp,
+        elevation = elevation,
         contentPadding = rememberInsetsPaddingValues(
             insets = LocalWindowInsets.current.systemBars,
             applyBottom = false,

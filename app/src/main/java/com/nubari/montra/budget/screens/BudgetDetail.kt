@@ -32,7 +32,7 @@ import com.nubari.montra.general.components.app.MainAppBar
 import com.nubari.montra.general.components.dialogs.CustomDialog
 import com.nubari.montra.general.util.Util
 import com.nubari.montra.navigation.destinations.Destination
-import com.nubari.montra.transaction.components.transactiondetail.DeleteConfirmationModal
+import com.nubari.montra.transaction.components.transactiondetail.ConfirmationModal
 import com.nubari.montra.ui.theme.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -162,9 +162,9 @@ fun BudgetDetail(
         BottomSheetScaffold(
             scaffoldState = bottomSheetScaffoldState,
             sheetContent = {
-                DeleteConfirmationModal(
+                ConfirmationModal(
                     dismiss = dismissModal,
-                    delete = deleteBudget,
+                    action = deleteBudget,
                     title = "Remove this budget ?",
                     subtitle = "Are you sure you want to remove this budget ?"
                 )

@@ -15,11 +15,12 @@ import androidx.compose.ui.unit.sp
 import com.nubari.montra.ui.theme.*
 
 @Composable
-fun DeleteConfirmationModal(
+fun ConfirmationModal(
     dismiss: () -> Unit,
-    delete: () -> Unit,
+    action: () -> Unit,
     title: String,
-    subtitle: String
+    subtitle: String,
+    raiseActionButtons: Boolean = false
 ) {
     Box(
         Modifier
@@ -35,7 +36,13 @@ fun DeleteConfirmationModal(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(.5f),
+                    .fillMaxHeight(
+                        fraction = if (raiseActionButtons) {
+                            .4f
+                        } else {
+                            .5f
+                        }
+                    ),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
@@ -51,7 +58,6 @@ fun DeleteConfirmationModal(
                 )
 
             }
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceAround
@@ -76,7 +82,7 @@ fun DeleteConfirmationModal(
                 Spacer(modifier = Modifier.width(20.dp))
                 Button(
                     onClick = {
-                        delete()
+                        action()
                         dismiss()
                     },
                     modifier = Modifier
