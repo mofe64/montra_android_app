@@ -176,6 +176,9 @@ object AppModule {
             ),
             updateBudgetSpend = UpdateBudgetSpend(
                 repository = budgetRepository
+            ),
+            getBudgetForACategory = GetBudgetForACategory(
+                repository = budgetRepository
             )
         )
     }

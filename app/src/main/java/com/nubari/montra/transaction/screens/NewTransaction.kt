@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -23,6 +24,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.google.accompanist.insets.ui.Scaffold
 import com.nubari.montra.R
 import com.nubari.montra.general.components.input.InputField
@@ -31,6 +35,8 @@ import com.nubari.montra.auth.util.keyboardAsState
 import com.nubari.montra.data.local.models.enums.TransactionType
 import com.nubari.montra.general.components.app.MainAppBar
 import com.nubari.montra.general.components.input.SelectInput
+import com.nubari.montra.general.util.Constants
+import com.nubari.montra.internal.workers.NotificationWorker
 import com.nubari.montra.navigation.destinations.PrimaryDestination
 import com.nubari.montra.transaction.components.newtransaction.AttachmentBottomModalSheet
 import com.nubari.montra.transaction.events.TransactionFormEvent
@@ -39,6 +45,7 @@ import com.nubari.montra.transaction.viewmodels.NewTransactionViewModel
 import com.nubari.montra.ui.theme.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
 
 @ExperimentalComposeUiApi
 @ExperimentalMaterialApi
@@ -48,7 +55,7 @@ fun NewTransaction(
     isExpense: Boolean = true,
     newTransactionViewModel: NewTransactionViewModel = hiltViewModel()
 ) {
-
+    val context = LocalContext.current
     val isKeyboardOpen by keyboardAsState()
     val shouldExpand = isKeyboardOpen == Keyboard.Opened
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -61,7 +68,7 @@ fun NewTransaction(
     val formState = newTransactionViewModel.state.value
 
     val isLoading: Boolean = formState.isProcessing
-    val categoryOptions = formState.categories?.keys?.toList() ?: emptyList()
+    val categoryOptions = formState.categories.map { it.name }
     val frequencyOptions = formState.frequencies.map {
         it.name
     }
@@ -78,6 +85,31 @@ fun NewTransaction(
                     )
                 }
                 is TransactionProcessEvent.TransactionCreationFail -> {}
+                is TransactionProcessEvent.BudgetExceeded -> {
+                    Log.i(
+                        "budget-notification",
+                        "Received Budget Exceeded event, creating budget exceeded notification work request"
+                    )
+                    val notificationWorkRequest =
+                        OneTimeWorkRequestBuilder<NotificationWorker>()
+                            .setInitialDelay(7, TimeUnit.SECONDS)
+                            .setInputData(
+                                workDataOf(
+                                    "title" to "Budget Exceeded",
+                                    "message" to "Looks like you've exceeded your ${event.budget.categoryName} budget",
+                                    "iconResource" to R.drawable.wallet_3,
+                                    "channelId" to Constants.BUDGET_NOTIFICATION_CHANNEL_ID,
+                                    "deepLinkUri" to "https://montra.com/bdId=${event.budget.id}",
+                                    "notificationId" to 1
+
+                                )
+                            ).build()
+                    WorkManager.getInstance(context).enqueue(notificationWorkRequest)
+                    Log.i(
+                        "budget-notification",
+                        "Work request created..."
+                    )
+                }
                 else -> {}
             }
 

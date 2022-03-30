@@ -8,4 +8,9 @@ object Constants {
     const val AUTH_TOKEN_PREF_KEY = "com.nubari.montra.authtoken"
     const val USER_ID_PREF_KEY = "com.nubari.montra.userId"
     const val ACTIVE_ACCOUNT_ID_PREF_KEY = "com.nubari.montra.activeAccountId"
+    const val BUDGET_NOTIFICATION_CHANNEL_ID = "budget_channel"
+    const val BUDGET_NOTIFICATION_CHANNEL_NAME = "Budget"
+    const val SUBSCRIPTION_CHANNEL_ID = "subscription_channel"
+    const val SUBSCRIPTION_CHANNEL_NAME = "Subscription"
+
 }

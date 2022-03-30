@@ -99,7 +99,7 @@ dependencies {
     //glide
     implementation "com.github.skydoves:landscapist-glide:1.4.5"
 
-    //accompanist library systemuicontroller
+    //accompanist library systemUIController
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.22.0-rc"
 
     // accompanist library insets
@@ -119,5 +119,8 @@ dependencies {
 
     // flow layouts
     implementation "com.google.accompanist:accompanist-flowlayout:0.24.3-alpha"
+
+    // Work Manager with coroutines
+    implementation "androidx.work:work-runtime-ktx:2.7.1"
 
 }

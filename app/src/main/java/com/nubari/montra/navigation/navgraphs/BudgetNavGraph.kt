@@ -18,6 +18,7 @@ fun NavGraphBuilder.budgetNavGraph(
     navController: NavHostController,
     bottomBarState: MutableState<Boolean>,
 ) {
+    val uri = "https://montra.com"
     navigation(
         startDestination = PrimaryDestination.Budget.startRoute,
         route = PrimaryDestination.Budget.rootRoute
@@ -45,7 +46,10 @@ fun NavGraphBuilder.budgetNavGraph(
                     type = NavType.StringType
                     defaultValue = ""
                 }
-            )
+            ),
+            deepLinks = listOf(navDeepLink {
+                uriPattern = "$uri/bdId={bdId}"
+            })
         ) {
             LaunchedEffect(Unit) {
                 bottomBarState.value = false

@@ -3,8 +3,15 @@ package com.nubari.montra.transaction.viewmodels
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.core.app.NotificationCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
+import com.nubari.montra.R
+import com.nubari.montra.budget.events.BudgetProcessEvent
+import com.nubari.montra.data.local.models.Category
 import com.nubari.montra.data.local.models.Transaction
 import com.nubari.montra.data.local.models.enums.BudgetType
 import com.nubari.montra.data.local.models.enums.TransactionFrequency
@@ -12,8 +19,10 @@ import com.nubari.montra.data.local.models.enums.TransactionType
 import com.nubari.montra.domain.usecases.budget.BudgetUseCases
 import com.nubari.montra.domain.usecases.category.CategoryUseCases
 import com.nubari.montra.domain.usecases.transaction.TransactionUseCases
+import com.nubari.montra.general.util.Constants.BUDGET_NOTIFICATION_CHANNEL_ID
 import com.nubari.montra.general.util.InputType
 import com.nubari.montra.general.util.Util
+import com.nubari.montra.internal.workers.NotificationWorker
 import com.nubari.montra.preferences
 import com.nubari.montra.transaction.events.TransactionFormEvent
 import com.nubari.montra.transaction.events.TransactionProcessEvent
@@ -26,6 +35,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltViewModel
@@ -37,7 +47,6 @@ class NewTransactionViewModel @Inject constructor(
     private val _state = mutableStateOf(
         TransactionFormState(
             formValid = true,
-            categories = null,
         )
     )
     val state: State<TransactionFormState> = _state
@@ -47,30 +56,17 @@ class NewTransactionViewModel @Inject constructor(
 
     init {
         getAllCategories()
-        getUserBudgets()
     }
 
     private fun getAllCategories() {
         categoryUseCases.getAllCategories()
             .onEach {
-                val categoryNameIdMap = mutableMapOf<String, String>()
-                it.forEach { category ->
-                    categoryNameIdMap[category.name] = category.id
-                }
                 _state.value = state.value.copy(
-                    categories = categoryNameIdMap
+                    categories = it
                 )
             }.launchIn(viewModelScope)
     }
 
-    //TODO update this to get all budgets belong to account not all budgets
-    private fun getUserBudgets() {
-        budgetUseCases.getBudgets().onEach {
-            _state.value = state.value.copy(
-                userBudgets = it
-            )
-        }.launchIn(viewModelScope)
-    }
 
     fun createEvent(event: TransactionFormEvent) {
         onEvent(event = event)
@@ -173,14 +169,25 @@ class NewTransactionViewModel @Inject constructor(
                 val allValuesValid = validateForm()
                 if (!allValuesValid) {
                     return
+                }
+                val category: Category
+                try {
+                    category = state.value.categories.first {
+                        it.name == state.value.category.text
+                    }
+                } catch (e: NoSuchElementException) {
+                    viewModelScope.launch {
+                        _eventFlow.emit(
+                            TransactionProcessEvent.TransactionCreationFail(
+                                "Please select a valid category"
+                            )
+                        )
+                    }
+                    return
+
 
                 }
-                val categoryId = state.value.categories?.get(
-                    event.categoryName
-                ) ?: ""
-                if (categoryId.isEmpty()) {
-                    return
-                }
+
                 val frequencyString = event.txFrequency ?: ""
                 val frequency = if (frequencyString.isNotEmpty()) {
                     TransactionFrequency.valueOf(frequencyString)
@@ -196,7 +203,7 @@ class NewTransactionViewModel @Inject constructor(
                     val tx = Transaction(
                         id = UUID.randomUUID().toString(),
                         accountId = preferences.activeAccountId,
-                        categoryId = categoryId,
+                        categoryId = category.id,
                         date = Date(),
                         type = event.type,
                         amount = amount,
@@ -214,41 +221,32 @@ class NewTransactionViewModel @Inject constructor(
 
 
                     if (event.type == TransactionType.EXPENSE) {
-                        /** Get user category budget
-                         *
-                        User can only have one budget per category so we can be sure
-                        that returned list will only have one element**/
-                        val categoryBudgets = state.value.userBudgets.filter { budget ->
-                            budget.budgetType == BudgetType.CATEGORY
-                        }
-                        // FIXME: 23/03/2022 "Hack for genral category crash" 
-                        if (categoryBudgets.isNotEmpty() && event.categoryName != "General" ) {
-                            // get category budget matching transaction category
-                            val budgetToUpdate = categoryBudgets.filter {
-                                it.categoryName == event.categoryName
-                            }
-                            val updatedSpend = budgetToUpdate[0].spend.add(amount)
-                            val hasExceededLimit =
-                                budgetToUpdate[0].limit < updatedSpend
+                        // Get user category budget
+                        val categoryName = event.categoryName
+                        val budget = budgetUseCases.getBudgetForACategory(
+                            categoryName = categoryName
+                        )
+                        budget?.let { budgetToUpdate ->
+                            val updatedSpend = budgetToUpdate.spend.add(amount)
+                            val hasExceededLimit = budgetToUpdate.limit < updatedSpend
                             budgetUseCases.updateBudgetSpend(
-                                budgetToUpdate[0].id,
+                                budgetId = budgetToUpdate.id,
                                 exceeded = hasExceededLimit,
                                 updatedSpend
                             )
-                        }
-                        // get user general budget if any
-                        val generalBudgets = state.value.userBudgets.filter { budget ->
-                            budget.budgetType == BudgetType.GENERAL
-                        }
-                        val updatedSpend = generalBudgets[0].spend.add(amount)
-                        val hasExceededLimit =
-                            generalBudgets[0].limit < (updatedSpend)
-                        if (generalBudgets.isNotEmpty()) {
-                            budgetUseCases.updateBudgetSpend(
-                                generalBudgets[0].id,
-                                exceeded = hasExceededLimit,
-                               updatedSpend
-                            )
+                            if (hasExceededLimit) {
+                                Log.i(
+                                    "budget-notification",
+                                    "Budget exceeded limit emitting budget exceeded event"
+                                )
+                                _eventFlow.emit(
+                                    TransactionProcessEvent.BudgetExceeded(
+                                        budget = budgetToUpdate
+                                    )
+                                )
+                            }
+
+
                         }
                     }
 
@@ -258,6 +256,7 @@ class NewTransactionViewModel @Inject constructor(
                     _eventFlow.emit(
                         TransactionProcessEvent.TransactionCreationSuccess
                     )
+
                 }
             }
 
@@ -267,8 +266,11 @@ class NewTransactionViewModel @Inject constructor(
     private fun validateForm(): Boolean {
         var inputValid = true
         val selectedCategory = state.value.category.text
-        val validCategoryOptions = state.value.categories?.keys ?: emptySet()
-        if (validCategoryOptions.isNotEmpty() && !validCategoryOptions.contains(selectedCategory)) {
+        val validCategories = state.value.categories
+        val categoryMatch = validCategories.filter {
+            it.name == selectedCategory
+        }
+        if (categoryMatch.isEmpty()) {
             inputValid = false
             _state.value = state.value.copy(
                 formValid = false,

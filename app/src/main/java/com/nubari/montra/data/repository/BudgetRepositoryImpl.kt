@@ -31,13 +31,22 @@ class BudgetRepositoryImpl(
     }
 
 
-
     override suspend fun updateBudgetSpend(spend: BigDecimal, exceeded: Boolean, id: String) {
         budgetDao.updateBudgetSpend(spend = spend, exceeded = exceeded, id = id)
     }
 
     override suspend fun getBudgetWithCategoryId(categoryId: String): Budget? {
         return budgetDao.getBudgetWithCategoryId(categoryId = categoryId)
+    }
+
+    override suspend fun getBudgetWithCategoryName(
+        categoryName: String,
+        activeAccountId: String
+    ): Budget? {
+        return budgetDao.getBudgetWithCategoryName(
+            categoryName = categoryName,
+            activeAccountId = activeAccountId
+        )
     }
 
     override suspend fun getBudgetMatchingBudgetType(budgetType: BudgetType): List<Budget> {

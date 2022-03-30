@@ -5,5 +5,6 @@ data class BudgetUseCases(
     val getBudgetByID: GetBudgetByID,
     val getBudgets: GetBudgets,
     val deleteBudget: DeleteBudget,
-    val updateBudgetSpend: UpdateBudgetSpend
+    val updateBudgetSpend: UpdateBudgetSpend,
+    val getBudgetForACategory: GetBudgetForACategory
 )

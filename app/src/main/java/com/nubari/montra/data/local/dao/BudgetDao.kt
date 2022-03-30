@@ -27,6 +27,9 @@ interface BudgetDao {
     @Query("SELECT * FROM Budget where category_id = :categoryId")
     suspend fun getBudgetWithCategoryId(categoryId: String): Budget?
 
+    @Query("SELECT * FROM Budget where category_name = :categoryName and account_id = :activeAccountId")
+    suspend fun getBudgetWithCategoryName(categoryName: String, activeAccountId: String): Budget?
+
     @Query("SELECT * FROM BUDGET where budget_type = :budgetType")
     suspend fun getBudgetByBudgetType(budgetType: BudgetType): List<Budget>
 

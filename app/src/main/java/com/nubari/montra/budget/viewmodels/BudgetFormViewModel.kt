@@ -63,7 +63,6 @@ class BudgetFormViewModel @Inject constructor(
                 )
             }
             is BudgetFormEvent.ChangeBudgetType -> {
-                Log.i("yyy", event.budgetType.name)
                 _state.value = state.value.copy(
                     budgetType = event.budgetType
                 )
@@ -90,7 +89,7 @@ class BudgetFormViewModel @Inject constructor(
                 if (!formIsValid) {
                     return
                 }
-                var category: Category = Category("", "", "")
+                var category = Category("", "", "")
                 try {
                     category = state.value.categories.first {
                         it.name == state.value.category.text

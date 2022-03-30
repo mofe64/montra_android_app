@@ -13,5 +13,6 @@ interface BudgetRepository {
     suspend fun updateBudget(bd: Budget)
     suspend fun updateBudgetSpend(spend: BigDecimal, exceeded: Boolean, id: String)
     suspend fun getBudgetWithCategoryId(categoryId: String): Budget?
+    suspend fun getBudgetWithCategoryName(categoryName: String, activeAccountId: String): Budget?
     suspend fun getBudgetMatchingBudgetType(budgetType: BudgetType): List<Budget>
 }
