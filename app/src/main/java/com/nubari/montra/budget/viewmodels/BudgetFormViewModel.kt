@@ -131,7 +131,8 @@ class BudgetFormViewModel @Inject constructor(
                         } else {
                             "General"
                         },
-                        accountId = preferences.activeAccountId
+                        accountId = preferences.activeAccountId,
+                        dateCreated = Date()
                     )
                     try {
                         budgetUseCases.createBudget(budget)

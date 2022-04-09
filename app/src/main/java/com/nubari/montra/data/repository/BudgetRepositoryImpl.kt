@@ -14,6 +14,10 @@ class BudgetRepositoryImpl(
         return budgetDao.createBudget(budget = bd)
     }
 
+    override suspend fun saveBudget(vararg budgets: Budget) {
+        budgetDao.saveBudgets(budgets = budgets)
+    }
+
     override suspend fun getBudgetById(bdId: String): Budget? {
         return budgetDao.getBudget(id = bdId)
     }
@@ -24,6 +28,10 @@ class BudgetRepositoryImpl(
 
     override fun getAllBudgets(): Flow<List<Budget>> {
         return budgetDao.getBudgets()
+    }
+
+    override suspend fun getAllExistingBudgets(): List<Budget> {
+        return budgetDao.retrieveBudgetList();
     }
 
     override suspend fun updateBudget(bd: Budget) {

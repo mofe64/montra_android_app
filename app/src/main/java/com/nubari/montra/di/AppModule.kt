@@ -94,8 +94,8 @@ object AppModule {
         return TransactionRepositoryImpl(transactionDao = db.transactionDao)
     }
 
-    @Provides
     @Singleton
+    @Provides
     fun provideBudgetRepository(db: MontraDatabase): BudgetRepository {
         return BudgetRepositoryImpl(budgetDao = db.budgetDao)
     }

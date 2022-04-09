@@ -12,11 +12,17 @@ interface BudgetDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun createBudget(budget: Budget)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveBudgets(vararg budgets: Budget)
+
     @Delete
     suspend fun deleteBudget(budget: Budget)
 
     @Query("SELECT * FROM budget")
     fun getBudgets(): Flow<List<Budget>>
+
+    @Query("SELECT * FROM budget")
+    suspend fun retrieveBudgetList(): List<Budget>
 
     @Query("SELECT * FROM BUDGET WHERE id = :id")
     suspend fun getBudget(id: String): Budget?

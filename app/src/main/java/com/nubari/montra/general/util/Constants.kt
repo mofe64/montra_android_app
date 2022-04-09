@@ -12,5 +12,6 @@ object Constants {
     const val BUDGET_NOTIFICATION_CHANNEL_NAME = "Budget"
     const val SUBSCRIPTION_CHANNEL_ID = "subscription_channel"
     const val SUBSCRIPTION_CHANNEL_NAME = "Subscription"
+    const val BUDGET_PERIODIC_WORK_TAG="Budget_periodic_work"
 
 }

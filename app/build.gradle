@@ -88,6 +88,8 @@ dependencies {
     kapt "com.google.dagger:hilt-android-compiler:2.37"
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03"
     kapt "androidx.hilt:hilt-compiler:1.0.0"
+    implementation("androidx.hilt:hilt-work:1.0.0")
+
 
     // Room
     implementation "androidx.room:room-runtime:2.4.1"
@@ -122,5 +124,8 @@ dependencies {
 
     // Work Manager with coroutines
     implementation "androidx.work:work-runtime-ktx:2.7.1"
+
+    // Timber
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 
 }

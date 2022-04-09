@@ -16,11 +16,12 @@ import com.nubari.montra.data.local.typeconverters.ApplicationTypeConverters
         Category::class,
         Budget::class,
     ],
-    version = 7,
+    version = 8,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
         AutoMigration(from = 5, to = 6),
-        AutoMigration(from = 6, to = 7)
+        AutoMigration(from = 6, to = 7),
+        AutoMigration(from = 7, to = 8)
     ]
 )
 @TypeConverters(ApplicationTypeConverters::class)
@@ -29,7 +30,7 @@ abstract class MontraDatabase : RoomDatabase() {
     abstract val transactionDao: TransactionDao
     abstract val categoryDao: CategoryDao
     abstract val subscriptionDao: SubscriptionDao
-    abstract val budgetDao : BudgetDao
+    abstract val budgetDao: BudgetDao
 
     companion object {
         const val DATABASE_NAME = "montra_db"

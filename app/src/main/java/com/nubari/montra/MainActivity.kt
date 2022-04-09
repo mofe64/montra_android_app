@@ -16,6 +16,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.nubari.montra.application.ApplicationSwitch
 import com.nubari.montra.ui.theme.MontraTheme
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -27,8 +28,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         installSplashScreen()
-        val token = preferences.authenticationToken
-        Log.i("token-test", token)
         setContent {
             MontraTheme {
                 ProvideWindowInsets {

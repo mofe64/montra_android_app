@@ -3,17 +3,22 @@ package com.nubari.montra.internal.workers
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
+import androidx.hilt.work.HiltWorker
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.nubari.montra.R
 import com.nubari.montra.internal.notification.NotificationHelper
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 
-class NotificationWorker(
-    private val context: Context,
-    private val workerParams: WorkerParameters
+@SuppressLint("LongLogTag")
+@HiltWorker
+class NotificationWorker @AssistedInject constructor(
+    @Assisted private val context: Context,
+    @Assisted private val workerParams: WorkerParameters
 ) : Worker(context, workerParams) {
-    @SuppressLint("LongLogTag")
+
     override fun doWork(): Result {
         Log.i(
             "budget-notification",

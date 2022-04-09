@@ -14,21 +14,23 @@ data class Budget(
     @ColumnInfo(name = "budget_type")
     val budgetType: BudgetType,
     @ColumnInfo(name = "should_notify")
-    val shouldNotify: Boolean,
+    var shouldNotify: Boolean,
     @ColumnInfo(name = "threshold")
-    val threshold: Int,
+    var threshold: Int,
     @ColumnInfo(name = "exceeded")
-    val exceeded: Boolean = false,
+    var exceeded: Boolean = false,
     @ColumnInfo(name = "budget_start_date")
     val startDate: Date,
     @ColumnInfo(name = "budget_limit")
-    val limit: BigDecimal,
+    var limit: BigDecimal,
     @ColumnInfo(name = "budget_spend")
-    val spend: BigDecimal,
+    var spend: BigDecimal,
     @ColumnInfo(name = "category_id", index = true)
     val categoryId: String?,
     @ColumnInfo(name = "category_name")
     val categoryName: String?,
     @ColumnInfo(name = "account_id", index = true)
     val accountId: String,
+    @ColumnInfo(name="date_created", defaultValue = "0")
+    val dateCreated: Date
 )

@@ -87,7 +87,6 @@ fun BudgetDetail(
 
     state.budget?.let {
         val budgetSpendPercentage: Float = if (it.exceeded) {
-            Log.i("yyy", "budget exceeded")
             100f
         } else {
             it.spend

@@ -1,5 +1,6 @@
 package com.nubari.montra.transaction.viewmodels
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -33,6 +34,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.math.BigDecimal
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -44,6 +46,7 @@ class NewTransactionViewModel @Inject constructor(
     private val transactionUseCases: TransactionUseCases,
     private val budgetUseCases: BudgetUseCases
 ) : ViewModel() {
+    private val tag = "New_Transaction_ViewModel"
     private val _state = mutableStateOf(
         TransactionFormState(
             formValid = true,
@@ -72,6 +75,7 @@ class NewTransactionViewModel @Inject constructor(
         onEvent(event = event)
     }
 
+    @SuppressLint("TimberArgCount", "TimberTagLength")
     private fun onEvent(event: TransactionFormEvent) {
         when (event) {
             is TransactionFormEvent.ChangedCategory -> {
@@ -216,17 +220,21 @@ class NewTransactionViewModel @Inject constructor(
                         frequency = frequency,
                         categoryName = event.categoryName,
                     )
-                    Log.i("account-tx", tx.toString())
+                    Timber.tag(tag).i("new transaction", tx)
                     transactionUseCases.createTransaction(tx)
 
 
                     if (event.type == TransactionType.EXPENSE) {
+                        Timber.tag(tag).i("Tx type is expense")
+                        Timber.tag(tag).i("Looking for matching category budget")
                         // Get user category budget
                         val categoryName = event.categoryName
                         val budget = budgetUseCases.getBudgetForACategory(
                             categoryName = categoryName
                         )
+
                         budget?.let { budgetToUpdate ->
+                            Timber.tag(tag).i("Matching budget found", budgetToUpdate)
                             val updatedSpend = budgetToUpdate.spend.add(amount)
                             val hasExceededLimit = budgetToUpdate.limit < updatedSpend
                             budgetUseCases.updateBudgetSpend(
@@ -234,11 +242,10 @@ class NewTransactionViewModel @Inject constructor(
                                 exceeded = hasExceededLimit,
                                 updatedSpend
                             )
+                            Timber.tag(tag).i("Budget updated")
                             if (hasExceededLimit) {
-                                Log.i(
-                                    "budget-notification",
-                                    "Budget exceeded limit emitting budget exceeded event"
-                                )
+                                Timber.tag(tag)
+                                    .i("Budget exceeded limit emitting budget exceeded event")
                                 _eventFlow.emit(
                                     TransactionProcessEvent.BudgetExceeded(
                                         budget = budgetToUpdate
