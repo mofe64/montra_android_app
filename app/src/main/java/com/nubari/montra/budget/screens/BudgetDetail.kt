@@ -1,6 +1,5 @@
 package com.nubari.montra.budget.screens
 
-import android.util.Log
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
@@ -33,7 +32,10 @@ import com.nubari.montra.general.components.dialogs.CustomDialog
 import com.nubari.montra.general.util.Util
 import com.nubari.montra.navigation.destinations.Destination
 import com.nubari.montra.transaction.components.transactiondetail.ConfirmationModal
-import com.nubari.montra.ui.theme.*
+import com.nubari.montra.ui.theme.green100
+import com.nubari.montra.ui.theme.light20
+import com.nubari.montra.ui.theme.light60
+import com.nubari.montra.ui.theme.red100
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.math.BigDecimal

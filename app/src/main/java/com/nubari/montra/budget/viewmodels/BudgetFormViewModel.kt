@@ -1,6 +1,5 @@
 package com.nubari.montra.budget.viewmodels
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -26,7 +25,6 @@ import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.util.*
 import javax.inject.Inject
-import kotlin.NoSuchElementException
 
 @HiltViewModel
 class BudgetFormViewModel @Inject constructor(
