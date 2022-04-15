@@ -13,6 +13,9 @@ interface TransactionDao {
     @Delete
     suspend fun deleteTransaction(transaction: Transaction)
 
+    @Query("select * from transactions")
+    fun getAllTransactions(): Flow<List<Transaction>>
+
     @Query("select * from transactions where id = :id")
     suspend fun getTransaction(id: String): Transaction?
 
