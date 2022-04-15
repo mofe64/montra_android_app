@@ -18,8 +18,8 @@ object TestUtil {
                 Date(),
                 BigDecimal(10000),
                 BigDecimal.ZERO,
-                "testCategoryId",
-                "Food",
+                "testCategoryId$i",
+                "Food$i",
                 "test123",
                 Date()
             )

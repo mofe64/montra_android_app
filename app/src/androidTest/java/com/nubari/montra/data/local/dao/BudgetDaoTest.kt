@@ -103,7 +103,7 @@ class BudgetDaoTest {
     }
 
     @Test
-    fun testGetBudgets(){
+    fun testGetBudgets() {
         testScope.runBlockingTest {
             budgetDao.saveBudgets(*(listOf(budget, budget2)).toTypedArray())
 
@@ -114,7 +114,7 @@ class BudgetDaoTest {
     }
 
     @Test
-    fun testRetrieveBudgetList(){
+    fun testRetrieveBudgetList() {
         testScope.runBlockingTest {
             budgetDao.saveBudgets(*(listOf(budget, budget2)).toTypedArray())
             val budgets = budgetDao.retrieveBudgetList()
@@ -123,7 +123,7 @@ class BudgetDaoTest {
     }
 
     @Test
-    fun testGetBudget(){
+    fun testGetBudget() {
         testScope.runBlockingTest {
             budgetDao.saveBudgets(*(listOf(budget, budget2)).toTypedArray())
             val savedBudget = budgetDao.getBudget(budget2.id)
@@ -133,14 +133,58 @@ class BudgetDaoTest {
     }
 
     @Test
-    fun testUpdateBudgetSpend(){
+    fun testUpdateBudgetSpend() {
         testScope.runBlockingTest {
             val oldSpend = budget.spend
             budgetDao.saveBudgets(*(listOf(budget, budget2)).toTypedArray())
             budgetDao.updateBudgetSpend(BigDecimal.valueOf(10000), true, budget.id)
             val updatedBudget = budgetDao.getBudget(budget.id)
             assertThat(oldSpend).isNotEqualTo(updatedBudget!!.spend)
-            assertThat(updatedBudget!!.exceeded).isTrue()
+            assertThat(updatedBudget.exceeded).isTrue()
+        }
+    }
+
+    @Test
+    fun testGetBudgetWithCategoryId() {
+        testScope.runBlockingTest {
+            budgetDao.saveBudgets(*(listOf(budget, budget2)).toTypedArray())
+            val foundBudget = budgetDao.getBudgetWithCategoryId(budget.categoryId!!)
+            assertThat(foundBudget).isNotNull()
+            assertThat(foundBudget!!.categoryId!!).isEqualTo(budget.categoryId!!)
+        }
+    }
+
+    @Test
+    fun testGetBudgetWithCategoryName() {
+        testScope.runBlockingTest {
+            budgetDao.saveBudgets(*(listOf(budget, budget2)).toTypedArray())
+            val foundBudget = budgetDao.getBudgetWithCategoryName(budget.categoryName!!, "test123")
+            assertThat(foundBudget).isNotNull()
+            assertThat(foundBudget!!.categoryName!!).isEqualTo(budget.categoryName!!)
+        }
+    }
+
+
+    @Test
+    fun testGetBudgetByBudgetType() {
+        testScope.runBlockingTest {
+            budgetDao.saveBudgets(*(listOf(budget, budget2)).toTypedArray())
+            val matchingBudgets = budgetDao.getBudgetByBudgetType(BudgetType.CATEGORY)
+            assertThat(matchingBudgets).contains(budget)
+            assertThat(matchingBudgets).contains(budget2)
+        }
+    }
+
+    @Test
+    fun testUpdateBudget() {
+        testScope.runBlockingTest {
+            budgetDao.saveBudgets(*(listOf(budget, budget2)).toTypedArray())
+            budget.spend = BigDecimal.valueOf(100_000)
+            budget.limit = BigDecimal.valueOf(100_000_000)
+            budgetDao.updateBudget(budget)
+            val updatedBudget = budgetDao.getBudget(budget.id)
+            assertThat(updatedBudget!!.spend).isEqualToIgnoringScale(100_000)
+            assertThat(updatedBudget.limit).isEqualToIgnoringScale(100_000_000)
         }
     }
 }
